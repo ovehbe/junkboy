@@ -41,6 +41,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
             <!-- VIEW intent filter - REQUIRED for default SMS app qualification -->
             <intent-filter>
@@ -95,7 +97,7 @@
             android:name="com.ovehbe.junkboy.service.SmsSendService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.SEND_SMS">
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
             <intent-filter>
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -105,6 +107,9 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </service>
+
+        <!-- MMS Service - Required for default SMS app (using support library) -->
+        <service android:name="android.support.v7.mms.MmsService" />
 
         <!-- Background Service for SMS Processing -->
         <service

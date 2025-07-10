@@ -39,8 +39,12 @@ fun DashboardScreen(
     // Check permissions - now reactive to refreshTrigger
     LaunchedEffect(refreshTrigger) {
         hasPermissions = listOf(
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS,
+            "android.permission.RECEIVE_SMS",
+            "android.permission.READ_SMS", 
+            "android.permission.WRITE_SMS",
+            "android.permission.SEND_SMS",
+            "android.permission.RECEIVE_MMS",
+            "android.permission.RECEIVE_WAP_PUSH",
             Manifest.permission.POST_NOTIFICATIONS
         ).all { permission ->
             ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED

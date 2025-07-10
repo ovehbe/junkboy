@@ -63,8 +63,12 @@ class MainActivity : ComponentActivity() {
     
     private fun checkAndRequestPermissions() {
         val requiredPermissions = arrayOf(
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS,
+            "android.permission.RECEIVE_SMS",
+            "android.permission.READ_SMS", 
+            "android.permission.WRITE_SMS",
+            "android.permission.SEND_SMS",
+            "android.permission.RECEIVE_MMS",
+            "android.permission.RECEIVE_WAP_PUSH",
             Manifest.permission.POST_NOTIFICATIONS
         )
         
@@ -81,8 +85,12 @@ class MainActivity : ComponentActivity() {
     
     private fun hasAllPermissions(): Boolean {
         val requiredPermissions = arrayOf(
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_SMS,
+            "android.permission.RECEIVE_SMS",
+            "android.permission.READ_SMS", 
+            "android.permission.WRITE_SMS",
+            "android.permission.SEND_SMS",
+            "android.permission.RECEIVE_MMS",
+            "android.permission.RECEIVE_WAP_PUSH",
             Manifest.permission.POST_NOTIFICATIONS
         )
         

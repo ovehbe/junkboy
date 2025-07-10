@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -324,6 +325,78 @@ fun SettingsScreen() {
                 }
             }
         }
+        
+        item {
+            // Debug Section for troubleshooting
+            SettingsSection(title = "Debug - Default SMS App") {
+                    var debugOutput by remember { mutableStateOf("") }
+                    
+                    OutlinedButton(
+                        onClick = { 
+                            val requirements = smsAppManager.checkDefaultSmsAppRequirements()
+                            debugOutput = "Requirements Check:\n" + requirements.map { (req, met) ->
+                                "${if (met) "✓" else "✗"} $req"
+                            }.joinToString("\n")
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.BugReport, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Check SMS App Requirements")
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    OutlinedButton(
+                        onClick = { 
+                            val success = smsAppManager.requestDefaultSmsApp()
+                            debugOutput += "\n\nRequest Default SMS App: ${if (success) "Started" else "Failed"}"
+                            
+                            // If the automatic method doesn't work, show manual instructions
+                            if (success) {
+                                debugOutput += "\n\nIf dialog doesn't appear, try manual method below:"
+                                debugOutput += "\n" + smsAppManager.getManualDefaultSmsInstructions()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.PhoneAndroid, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Test Default SMS App Request")
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    OutlinedButton(
+                        onClick = { 
+                            debugOutput = "Manual Instructions:\n" + smsAppManager.getManualDefaultSmsInstructions()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Settings, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Show Manual Instructions")
+                    }
+                    
+                    if (debugOutput.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Text(
+                                text = debugOutput,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace,
+                                modifier = Modifier.padding(12.dp)
+                            )
+                        }
+                    }
+                }
+            }
         
         item {
             // Custom Keywords Section
