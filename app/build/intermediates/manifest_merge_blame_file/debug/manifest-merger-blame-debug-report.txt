@@ -1,0 +1,560 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.ovehbe.junkboy"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- SMS Permissions -->
+12    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+12-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:6:5-70
+12-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:6:22-67
+13    <uses-permission android:name="android.permission.READ_SMS" />
+13-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:7:5-67
+13-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:7:22-64
+14    <uses-permission android:name="android.permission.WRITE_SMS" />
+14-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:8:5-68
+14-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:8:22-65
+15    <uses-permission android:name="android.permission.SEND_SMS" />
+15-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:9:5-67
+15-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:9:22-64
+16
+17    <!-- MMS Permissions -->
+18    <uses-permission android:name="android.permission.RECEIVE_MMS" />
+18-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:12:5-70
+18-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:12:22-67
+19    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
+19-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:13:5-75
+19-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:13:22-72
+20
+21    <!-- Foreground Service Permission -->
+22    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+22-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:16:5-77
+22-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:16:22-74
+23    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+23-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:17:5-87
+23-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:17:22-84
+24
+25    <!-- Notification Permission (Android 13+) -->
+26    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+26-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:20:5-77
+26-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:20:22-74
+27
+28    <!-- Wake Lock for background processing -->
+29    <uses-permission android:name="android.permission.WAKE_LOCK" />
+29-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:23:5-68
+29-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:23:22-65
+30    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+30-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:5-79
+30-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:24:22-76
+31    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+31-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:5-81
+31-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:25:22-78
+32
+33    <permission
+33-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+34        android:name="com.ovehbe.junkboy.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+34-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+35        android:protectionLevel="signature" />
+35-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+36
+37    <uses-permission android:name="com.ovehbe.junkboy.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+37-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+37-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+38
+39    <application
+39-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:25:5-133:19
+40        android:allowBackup="true"
+40-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:26:9-35
+41        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+41-->[androidx.core:core:1.12.0] /home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+42        android:dataExtractionRules="@xml/data_extraction_rules"
+42-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:27:9-65
+43        android:debuggable="true"
+44        android:extractNativeLibs="false"
+45        android:fullBackupContent="@xml/backup_rules"
+45-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:28:9-54
+46        android:icon="@mipmap/ic_launcher"
+46-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:29:9-43
+47        android:label="@string/app_name"
+47-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:31:9-41
+48        android:roundIcon="@mipmap/ic_launcher_round"
+48-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:30:9-54
+49        android:supportsRtl="true"
+49-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:32:9-35
+50        android:theme="@style/Theme.Junkboy.Safe" >
+50-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:33:9-50
+51
+52        <!-- Main Activity -->
+53        <activity
+53-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:37:9-65:20
+54            android:name="com.ovehbe.junkboy.ui.MainActivity"
+54-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:38:13-62
+55            android:exported="true"
+55-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:39:13-36
+56            android:theme="@style/Theme.Junkboy.Safe" >
+56-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:40:13-54
+57            <intent-filter>
+57-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:41:13-44:29
+58                <action android:name="android.intent.action.MAIN" />
+58-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:42:17-69
+58-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:42:25-66
+59
+60                <category android:name="android.intent.category.LAUNCHER" />
+60-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:43:17-77
+60-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:43:27-74
+61            </intent-filter>
+62            <!-- VIEW intent filter - REQUIRED for default SMS app qualification -->
+63            <intent-filter>
+63-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:46:13-53:29
+64                <action android:name="android.intent.action.VIEW" />
+64-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:47:17-69
+64-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:47:25-66
+65
+66                <category android:name="android.intent.category.DEFAULT" />
+66-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:17-76
+66-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:27-73
+67
+68                <data android:scheme="sms" />
+68-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+68-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+69                <data android:scheme="smsto" />
+69-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+69-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+70                <data android:scheme="mms" />
+70-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+70-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+71                <data android:scheme="mmsto" />
+71-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+71-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+72            </intent-filter>
+73            <!-- SENDTO intent filter for default SMS app qualification -->
+74            <intent-filter>
+74-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:55:13-64:29
+75                <action android:name="android.intent.action.SEND" />
+75-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:56:17-69
+75-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:56:25-66
+76                <action android:name="android.intent.action.SENDTO" />
+76-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:57:17-71
+76-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:57:25-68
+77
+78                <category android:name="android.intent.category.DEFAULT" />
+78-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:17-76
+78-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:27-73
+79                <category android:name="android.intent.category.BROWSABLE" />
+79-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:59:17-78
+79-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:59:27-75
+80
+81                <data android:scheme="sms" />
+81-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+81-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+82                <data android:scheme="smsto" />
+82-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+82-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+83                <data android:scheme="mms" />
+83-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+83-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+84                <data android:scheme="mmsto" />
+84-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+84-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+85            </intent-filter>
+86        </activity>
+87
+88        <!-- SMS Receiver - Required for default SMS app -->
+89        <receiver
+89-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:68:9-79:20
+90            android:name="com.ovehbe.junkboy.smsreceiver.SmsReceiver"
+90-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:69:13-70
+91            android:enabled="true"
+91-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:70:13-35
+92            android:exported="true"
+92-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:71:13-36
+93            android:permission="android.permission.BROADCAST_SMS" >
+93-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:72:13-66
+94            <intent-filter android:priority="2147483647" >
+94-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:73:13-75:29
+94-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:73:28-57
+95                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+95-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:74:17-82
+95-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:74:25-79
+96            </intent-filter>
+97            <intent-filter>
+97-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:76:13-78:29
+98                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+98-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:77:17-81
+98-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:77:25-78
+99            </intent-filter>
+100        </receiver>
+101
+102        <!-- MMS Receiver - Required for default SMS app -->
+103        <receiver
+103-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:82:9-91:20
+104            android:name="com.ovehbe.junkboy.smsreceiver.MmsReceiver"
+104-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:83:13-70
+105            android:enabled="true"
+105-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:84:13-35
+106            android:exported="true"
+106-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:85:13-36
+107            android:permission="android.permission.BROADCAST_WAP_PUSH" >
+107-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:86:13-71
+108            <intent-filter>
+108-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:87:13-90:29
+109                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+109-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:88:17-86
+109-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:88:25-83
+110
+111                <data android:mimeType="application/vnd.wap.mms-message" />
+111-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+111-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:89:23-73
+112            </intent-filter>
+113        </receiver>
+114
+115        <!-- SMS Send Service - Required for default SMS app -->
+116        <service
+116-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:94:9-107:19
+117            android:name="com.ovehbe.junkboy.service.SmsSendService"
+117-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:95:13-69
+118            android:enabled="true"
+118-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:96:13-35
+119            android:exported="true"
+119-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:97:13-36
+120            android:permission="android.permission.SEND_SMS" >
+120-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:98:13-61
+121            <intent-filter>
+121-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:99:13-106:29
+122                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+122-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:100:17-84
+122-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:100:25-81
+123
+124                <category android:name="android.intent.category.DEFAULT" />
+124-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:17-76
+124-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:48:27-73
+125
+126                <data android:scheme="sms" />
+126-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+126-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+127                <data android:scheme="smsto" />
+127-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+127-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+128                <data android:scheme="mms" />
+128-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+128-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+129                <data android:scheme="mmsto" />
+129-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:17-46
+129-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:49:23-43
+130            </intent-filter>
+131        </service>
+132
+133        <!-- Background Service for SMS Processing -->
+134        <service
+134-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:110:9-114:56
+135            android:name="com.ovehbe.junkboy.service.SmsFilterService"
+135-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:111:13-71
+136            android:enabled="true"
+136-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:112:13-35
+137            android:exported="false"
+137-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:113:13-37
+138            android:foregroundServiceType="dataSync" />
+138-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:114:13-53
+139
+140        <!-- WorkManager Worker for periodic cleanup -->
+141        <service
+141-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:117:9-120:34
+142            android:name="androidx.work.impl.foreground.SystemForegroundService"
+142-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:118:13-81
+143            android:directBootAware="false"
+143-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:55:13-44
+144            android:enabled="@bool/enable_system_foreground_service_default"
+144-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:56:13-77
+145            android:exported="false"
+145-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:57:13-37
+146            android:foregroundServiceType="dataSync" />
+146-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:119:13-53
+147
+148        <!-- FileProvider for CSV export -->
+149        <provider
+150            android:name="androidx.core.content.FileProvider"
+150-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:124:13-62
+151            android:authorities="com.ovehbe.junkboy.fileprovider"
+151-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:125:13-64
+152            android:exported="false"
+152-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:126:13-37
+153            android:grantUriPermissions="true" >
+153-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:127:13-47
+154            <meta-data
+154-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:128:13-130:54
+155                android:name="android.support.FILE_PROVIDER_PATHS"
+155-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:129:17-67
+156                android:resource="@xml/file_paths" />
+156-->/home/ovehbe/Code/Junkboy/app/src/main/AndroidManifest.xml:130:17-51
+157        </provider>
+158
+159        <activity
+159-->[androidx.compose.ui:ui-tooling-android:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/f71aa2620eb69c9a64afd91a17bbda1b/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+160            android:name="androidx.compose.ui.tooling.PreviewActivity"
+160-->[androidx.compose.ui:ui-tooling-android:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/f71aa2620eb69c9a64afd91a17bbda1b/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+161            android:exported="true" />
+161-->[androidx.compose.ui:ui-tooling-android:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/f71aa2620eb69c9a64afd91a17bbda1b/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+162        <activity
+162-->[androidx.compose.ui:ui-test-manifest:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/45d2e39677cfdb4a31b33fb9d389325e/transformed/ui-test-manifest-1.5.4/AndroidManifest.xml:23:9-25:39
+163            android:name="androidx.activity.ComponentActivity"
+163-->[androidx.compose.ui:ui-test-manifest:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/45d2e39677cfdb4a31b33fb9d389325e/transformed/ui-test-manifest-1.5.4/AndroidManifest.xml:24:13-63
+164            android:exported="true" />
+164-->[androidx.compose.ui:ui-test-manifest:1.5.4] /home/ovehbe/.gradle/caches/transforms-3/45d2e39677cfdb4a31b33fb9d389325e/transformed/ui-test-manifest-1.5.4/AndroidManifest.xml:25:13-36
+165
+166        <provider
+166-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:29:9-37:20
+167            android:name="androidx.startup.InitializationProvider"
+167-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:30:13-67
+168            android:authorities="com.ovehbe.junkboy.androidx-startup"
+168-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:31:13-68
+169            android:exported="false" >
+169-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:32:13-37
+170            <meta-data
+170-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:34:13-36:52
+171                android:name="androidx.work.WorkManagerInitializer"
+171-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:35:17-68
+172                android:value="androidx.startup" />
+172-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:36:17-49
+173            <meta-data
+173-->[androidx.emoji2:emoji2:1.4.0] /home/ovehbe/.gradle/caches/transforms-3/63652da23b6f0b0900936780077b6c03/transformed/emoji2-1.4.0/AndroidManifest.xml:29:13-31:52
+174                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+174-->[androidx.emoji2:emoji2:1.4.0] /home/ovehbe/.gradle/caches/transforms-3/63652da23b6f0b0900936780077b6c03/transformed/emoji2-1.4.0/AndroidManifest.xml:30:17-75
+175                android:value="androidx.startup" />
+175-->[androidx.emoji2:emoji2:1.4.0] /home/ovehbe/.gradle/caches/transforms-3/63652da23b6f0b0900936780077b6c03/transformed/emoji2-1.4.0/AndroidManifest.xml:31:17-49
+176            <meta-data
+176-->[androidx.lifecycle:lifecycle-process:2.7.0] /home/ovehbe/.gradle/caches/transforms-3/f417a17bfebf3400b1bad5dfb14a4314/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+177                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+177-->[androidx.lifecycle:lifecycle-process:2.7.0] /home/ovehbe/.gradle/caches/transforms-3/f417a17bfebf3400b1bad5dfb14a4314/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+178                android:value="androidx.startup" />
+178-->[androidx.lifecycle:lifecycle-process:2.7.0] /home/ovehbe/.gradle/caches/transforms-3/f417a17bfebf3400b1bad5dfb14a4314/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+179            <meta-data
+179-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+180                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+180-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+181                android:value="androidx.startup" />
+181-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+182        </provider>
+183
+184        <service
+184-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:39:9-45:35
+185            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+185-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:40:13-88
+186            android:directBootAware="false"
+186-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:41:13-44
+187            android:enabled="@bool/enable_system_alarm_service_default"
+187-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:42:13-72
+188            android:exported="false" />
+188-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:43:13-37
+189        <service
+189-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:46:9-52:35
+190            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+190-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:47:13-84
+191            android:directBootAware="false"
+191-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:48:13-44
+192            android:enabled="@bool/enable_system_job_service_default"
+192-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:49:13-70
+193            android:exported="true"
+193-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:50:13-36
+194            android:permission="android.permission.BIND_JOB_SERVICE" />
+194-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:51:13-69
+195
+196        <receiver
+196-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:61:9-66:35
+197            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+197-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:62:13-88
+198            android:directBootAware="false"
+198-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:63:13-44
+199            android:enabled="true"
+199-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:64:13-35
+200            android:exported="false" />
+200-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:65:13-37
+201        <receiver
+201-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:67:9-77:20
+202            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+202-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:68:13-106
+203            android:directBootAware="false"
+203-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:69:13-44
+204            android:enabled="false"
+204-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:70:13-36
+205            android:exported="false" >
+205-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:71:13-37
+206            <intent-filter>
+206-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:73:13-76:29
+207                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+207-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:17-87
+207-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:74:25-84
+208                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+208-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:17-90
+208-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:75:25-87
+209            </intent-filter>
+210        </receiver>
+211        <receiver
+211-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:78:9-88:20
+212            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+212-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:79:13-104
+213            android:directBootAware="false"
+213-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:80:13-44
+214            android:enabled="false"
+214-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:81:13-36
+215            android:exported="false" >
+215-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:82:13-37
+216            <intent-filter>
+216-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:84:13-87:29
+217                <action android:name="android.intent.action.BATTERY_OKAY" />
+217-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:17-77
+217-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:85:25-74
+218                <action android:name="android.intent.action.BATTERY_LOW" />
+218-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:17-76
+218-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:86:25-73
+219            </intent-filter>
+220        </receiver>
+221        <receiver
+221-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:89:9-99:20
+222            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+222-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:90:13-104
+223            android:directBootAware="false"
+223-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:91:13-44
+224            android:enabled="false"
+224-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:92:13-36
+225            android:exported="false" >
+225-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:93:13-37
+226            <intent-filter>
+226-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:95:13-98:29
+227                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+227-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:17-83
+227-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:96:25-80
+228                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+228-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:17-82
+228-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:97:25-79
+229            </intent-filter>
+230        </receiver>
+231        <receiver
+231-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:100:9-109:20
+232            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+232-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:101:13-103
+233            android:directBootAware="false"
+233-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:102:13-44
+234            android:enabled="false"
+234-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:103:13-36
+235            android:exported="false" >
+235-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:104:13-37
+236            <intent-filter>
+236-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:106:13-108:29
+237                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+237-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:17-79
+237-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:107:25-76
+238            </intent-filter>
+239        </receiver>
+240        <receiver
+240-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:110:9-121:20
+241            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+241-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:111:13-88
+242            android:directBootAware="false"
+242-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:112:13-44
+243            android:enabled="false"
+243-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:113:13-36
+244            android:exported="false" >
+244-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:114:13-37
+245            <intent-filter>
+245-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:116:13-120:29
+246                <action android:name="android.intent.action.BOOT_COMPLETED" />
+246-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:17-79
+246-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:117:25-76
+247                <action android:name="android.intent.action.TIME_SET" />
+247-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:17-73
+247-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:118:25-70
+248                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+248-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:17-81
+248-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:119:25-78
+249            </intent-filter>
+250        </receiver>
+251        <receiver
+251-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:122:9-131:20
+252            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+252-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:123:13-99
+253            android:directBootAware="false"
+253-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:124:13-44
+254            android:enabled="@bool/enable_system_alarm_service_default"
+254-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:125:13-72
+255            android:exported="false" >
+255-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:126:13-37
+256            <intent-filter>
+256-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:128:13-130:29
+257                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+257-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:17-98
+257-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:129:25-95
+258            </intent-filter>
+259        </receiver>
+260        <receiver
+260-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:132:9-142:20
+261            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+261-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:133:13-78
+262            android:directBootAware="false"
+262-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:134:13-44
+263            android:enabled="true"
+263-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:135:13-35
+264            android:exported="true"
+264-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:136:13-36
+265            android:permission="android.permission.DUMP" >
+265-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:137:13-57
+266            <intent-filter>
+266-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:139:13-141:29
+267                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+267-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:17-88
+267-->[androidx.work:work-runtime:2.9.0] /home/ovehbe/.gradle/caches/transforms-3/c1bab49257fcee7035dd146931d89c99/transformed/work-runtime-2.9.0/AndroidManifest.xml:140:25-85
+268            </intent-filter>
+269        </receiver>
+270
+271        <service
+271-->[androidx.room:room-runtime:2.6.1] /home/ovehbe/.gradle/caches/transforms-3/40fdaac2fc36c75487a29865c0bd6dbb/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
+272            android:name="androidx.room.MultiInstanceInvalidationService"
+272-->[androidx.room:room-runtime:2.6.1] /home/ovehbe/.gradle/caches/transforms-3/40fdaac2fc36c75487a29865c0bd6dbb/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
+273            android:directBootAware="true"
+273-->[androidx.room:room-runtime:2.6.1] /home/ovehbe/.gradle/caches/transforms-3/40fdaac2fc36c75487a29865c0bd6dbb/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
+274            android:exported="false" />
+274-->[androidx.room:room-runtime:2.6.1] /home/ovehbe/.gradle/caches/transforms-3/40fdaac2fc36c75487a29865c0bd6dbb/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
+275
+276        <receiver
+276-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+277            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+277-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+278            android:directBootAware="false"
+278-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+279            android:enabled="true"
+279-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+280            android:exported="true"
+280-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+281            android:permission="android.permission.DUMP" >
+281-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+282            <intent-filter>
+282-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+283                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+283-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+283-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+284            </intent-filter>
+285            <intent-filter>
+285-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+286                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+286-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+286-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+287            </intent-filter>
+288            <intent-filter>
+288-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+289                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+289-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+289-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+290            </intent-filter>
+291            <intent-filter>
+291-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+292                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+292-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+292-->[androidx.profileinstaller:profileinstaller:1.3.0] /home/ovehbe/.gradle/caches/transforms-3/751b2841bb6c18b02b94a4c3d47ceeda/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+293            </intent-filter>
+294        </receiver>
+295    </application>
+296
+297</manifest>

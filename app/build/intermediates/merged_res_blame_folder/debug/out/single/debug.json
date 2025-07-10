@@ -1,0 +1,102 @@
+[
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/xml_backup_rules.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_notifications.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_notifications.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_local_offer.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_local_offer.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_block.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_block.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_message.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_message.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/xml_file_paths.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/xml_data_extraction_rules.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_analytics.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_analytics.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_delete.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_filter_list.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_filter_list.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_check.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_check.xml"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.ovehbe.junkboy.app-merged_res-75:/drawable_ic_account_balance.xml.flat",
+        "source": "com.ovehbe.junkboy.app-main-77:/drawable/ic_account_balance.xml"
+    }
+]

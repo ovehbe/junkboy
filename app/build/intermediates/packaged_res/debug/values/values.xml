@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="ic_launcher_background">#E3F2FD</color>
+    <string name="allow">Allow</string>
+    <string name="app_name">Junkboy</string>
+    <string name="block">Block</string>
+    <string name="category_general">General</string>
+    <string name="category_junk">Junk</string>
+    <string name="category_notification">Notification</string>
+    <string name="category_promotion">Promotion</string>
+    <string name="category_transaction">Transaction</string>
+    <string name="custom_keywords">Custom Keywords</string>
+    <string name="custom_regex">Custom Regex Patterns</string>
+    <string name="delete">Delete</string>
+    <string name="enable_keyword_filtering">Enable Keyword Filtering</string>
+    <string name="enable_ml_filtering">Enable ML Filtering</string>
+    <string name="enable_regex_filtering">Enable Regex Filtering</string>
+    <string name="filter_settings">Filter Settings</string>
+    <string name="filtered_messages">Filtered Messages</string>
+    <string name="mark_as_junk">Mark as Junk</string>
+    <string name="mark_as_safe">Mark as Safe</string>
+    <string name="message_log">Message Log</string>
+    <string name="no_messages">No filtered messages yet</string>
+    <string name="notification_channel_description">Notifications for filtered SMS messages</string>
+    <string name="notification_channel_name">SMS Filter</string>
+    <string name="notification_junk_blocked">Junk message blocked from %1$s</string>
+    <string name="notification_title_filtered">Message Filtered</string>
+    <string name="permission_notification_message">Allow notifications to see filtered messages</string>
+    <string name="permission_notification_title">Notification Permission</string>
+    <string name="permission_sms_message">Junkboy needs SMS permission to filter your messages</string>
+    <string name="permission_sms_title">SMS Permission Required</string>
+    <string name="restore">Restore</string>
+    <string name="under_attack_mode">Under Attack Mode</string>
+    <style name="Theme.Junkboy" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" ns1:targetApi="m">true</item>
+    </style>
+    <style name="Theme.Junkboy.Fallback" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+    <style name="Theme.Junkboy.Safe" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

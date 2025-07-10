@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.ovehbe.junkboy.app-mergeDebugResources-73:/values-watch-v20/values-watch-v20.xml",
+            "map": [
+                {
+                    "source": "/home/ovehbe/.gradle/caches/transforms-3/ad17b4694e47641c42875121f0f63a5f/transformed/appcompat-1.6.1/res/values-watch-v20/values-watch-v20.xml",
+                    "from": {
+                        "startLines": "2,5,8",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "209,380,553"
+                    }
+                }
+            ]
+        }
+    ]
+}

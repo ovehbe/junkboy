@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.ovehbe.junkboy.app-mergeDebugResources-73:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/ovehbe/.gradle/caches/transforms-3/04f9e35504962de77ae1f5e56a058dce/transformed/core-1.12.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/home/ovehbe/.gradle/caches/transforms-3/ad17b4694e47641c42875121f0f63a5f/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}

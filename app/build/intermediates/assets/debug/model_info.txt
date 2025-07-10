@@ -1,0 +1,35 @@
+# SMS Classification Model Information
+
+## Model File: sms_model.tflite
+
+This is a placeholder for your trained TensorFlow Lite model.
+
+### How to Create Your Model:
+
+1. **Prepare Dataset**: Collect SMS messages with labels (GENERAL, PROMOTION, NOTIFICATION, TRANSACTION, JUNK)
+   Format: "message text", "label"
+
+2. **Train Model**: Use TensorFlow/Keras to train a text classification model
+   - Use TextVectorization for preprocessing
+   - Try LSTM, GRU, or 1D-CNN architectures
+   - Include both English and Turkish text samples
+
+3. **Convert to TensorFlow Lite**: 
+   ```python
+   converter = tf.lite.TFLiteConverter.from_saved_model(model_path)
+   converter.optimizations = [tf.lite.Optimize.DEFAULT]
+   tflite_model = converter.convert()
+   ```
+
+4. **Place Model**: Save the .tflite file as "sms_model.tflite" in this assets folder
+
+### Model Requirements:
+- Input: Text sequence (up to 100 tokens)
+- Output: 5 class probabilities (GENERAL, PROMOTION, NOTIFICATION, TRANSACTION, JUNK)
+- Format: TensorFlow Lite (.tflite)
+
+### For Testing:
+The app will work without the model file using rule-based classification as fallback.
+
+### Example Training Script:
+See the project documentation for a complete training script example. 
