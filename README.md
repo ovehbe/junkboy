@@ -2,6 +2,8 @@
 
 **An intelligent, AI-powered SMS filtering application for Android that automatically categorizes and manages your text messages using machine learning and customizable rules.**
 
+*Inspired by [Junkman](https://apps.apple.com/tr/app/junkman-a-i-sms-spam-blocker/id1591815272) for iOS, bringing similar AI-powered SMS filtering capabilities to Android with enhanced features and open-source transparency.*
+
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com)
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
 [![Material Design 3](https://img.shields.io/badge/UI-Material%20Design%203-purple.svg)](https://m3.material.io)
@@ -322,6 +324,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
+Special thanks to:
+- **[Junkman: A.I. SMS Spam Blocker](https://apps.apple.com/tr/app/junkman-a-i-sms-spam-blocker/id1591815272)** by **Kerem Erkan** - This project was heavily inspired by Junkman's excellent approach to AI-powered SMS filtering on iOS. Kerem's pioneering work in on-device ML classification and privacy-first design served as the foundation for bringing similar functionality to Android.
+- **Cursor AI** - This project was built with the assistance of Cursor AI, which provided invaluable support in architecting the codebase, implementing complex features, and maintaining best practices throughout development.
 - **TensorFlow Team** for the excellent Lite framework
 - **Android Team** for Jetpack Compose and Material Design 3
 - **Kotlin Team** for the amazing programming language

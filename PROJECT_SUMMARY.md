@@ -4,6 +4,8 @@
 
 Junkboy is a privacy-first Android SMS filtering app that automatically categorizes and blocks unwanted messages using a combination of machine learning and rule-based filtering. All processing happens on-device, ensuring user privacy while providing effective spam protection.
 
+*This project was heavily inspired by [Junkman: A.I. SMS Spam Blocker](https://apps.apple.com/tr/app/junkman-a-i-sms-spam-blocker/id1591815272) for iOS by Kerem Erkan, bringing similar intelligent SMS filtering capabilities to Android with enhanced features and open-source transparency. Built with the assistance of Cursor AI.*
+
 ## ✨ Key Features
 
 ### 🔒 Privacy-First Architecture
@@ -232,5 +234,13 @@ Open source project welcoming contributions. Key areas for improvement:
 - UI/UX improvements
 - Performance optimizations
 - Testing coverage expansion
+
+## 🙏 Acknowledgments
+
+- **[Junkman: A.I. SMS Spam Blocker](https://apps.apple.com/tr/app/junkman-a-i-sms-spam-blocker/id1591815272)** by **Kerem Erkan** - This project was heavily inspired by Junkman's excellent approach to AI-powered SMS filtering on iOS. Kerem's pioneering work in on-device ML classification and privacy-first design served as the foundation for bringing similar functionality to Android.
+- **Cursor AI** - This project was built with the assistance of Cursor AI, which provided invaluable support in architecting the codebase, implementing complex features, and maintaining best practices throughout development.
+- **TensorFlow Team** for the excellent Lite framework
+- **Android Team** for Jetpack Compose and Material Design 3
+- **Open Source Community** for inspiration and best practices
 
 This app demonstrates modern Android development best practices while solving a real-world problem with privacy as the core principle. 
