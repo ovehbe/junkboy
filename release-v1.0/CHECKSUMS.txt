@@ -1,0 +1,41 @@
+# Junkboy SMS Filter v1.0.0 - File Checksums
+
+## SHA256 Checksums
+
+```
+d793c1146bb441df615340eaecde2f72d8ab823677c87025355bfe7327a8aea3  junkboy-v1.0-release.apk
+```
+
+## Verification Instructions
+
+### On Linux/macOS:
+```bash
+sha256sum junkboy-v1.0-release.apk
+```
+
+### On Windows (PowerShell):
+```powershell
+Get-FileHash -Algorithm SHA256 junkboy-v1.0-release.apk
+```
+
+### On Android (using Terminal app):
+```bash
+sha256sum junkboy-v1.0-release.apk
+```
+
+## File Information
+
+- **File**: junkboy-v1.0-release.apk
+- **Size**: 29 MB
+- **Package**: com.ovehbe.junkboy
+- **Version**: 1.0 (Code: 1)
+- **Signing**: APK Signature Scheme v2
+- **Min Android**: 8.0 (API 26)
+- **Target Android**: 14 (API 34)
+
+## Security Notes
+
+- Always verify checksums before installation
+- Only download from official GitHub releases
+- APK is signed with developer certificate
+- No modifications should be made to the APK file 
