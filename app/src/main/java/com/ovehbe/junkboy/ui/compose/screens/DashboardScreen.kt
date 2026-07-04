@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.database.MessageCategory
 import com.ovehbe.junkboy.ui.theme.*
 import com.ovehbe.junkboy.utils.PreferencesManager
@@ -27,6 +29,7 @@ fun DashboardScreen(
     onRequestPermissions: () -> Unit,
     onNavigateToMessages: () -> Unit,
     onNavigateToSettings: () -> Unit,
+    isDefaultSmsApp: Boolean,
     refreshTrigger: Int = 0 // Add trigger to refresh permission state
 ) {
     val context = LocalContext.current
@@ -57,8 +60,8 @@ fun DashboardScreen(
         isMlEnabled = preferencesManager.isMlFilteringEnabled()
         
         // Check SMS guidance
-        showSmsGuidance = smsAppManager.isNotificationGuidanceNeeded()
-        smsGuidanceMessage = smsAppManager.getSmsGuidanceMessage()
+        showSmsGuidance = smsAppManager.isNotificationGuidanceNeeded(isDefaultSmsApp)
+        smsGuidanceMessage = smsAppManager.getSmsGuidanceMessage(isDefaultSmsApp)
         
         // Auto-enable categorized notifications if guidance is needed
         if (showSmsGuidance && !preferencesManager.shouldNotifyCategorizedMessages()) {
@@ -79,12 +82,12 @@ fun DashboardScreen(
                 verticalArrangement = Arrangement.spacedBy(DesignSpacing.XS)
             ) {
                 Text(
-                    text = "Junkboy SMS Filter",
+                    text = stringResource(R.string.dashboard_title),
                     style = MaterialTheme.typography.headlineMedium,
                     color = DesignColors.Primary
                 )
                 Text(
-                    text = "Privacy-first SMS filtering",
+                    text = stringResource(R.string.dashboard_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = DesignColors.Secondary
                 )
@@ -117,13 +120,13 @@ fun DashboardScreen(
                             )
                             Spacer(modifier = Modifier.width(DesignSpacing.SM))
                             Text(
-                                text = "Permissions Required",
+                                text = stringResource(R.string.dashboard_permissions_required),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = DesignColors.Primary
                             )
                         }
                         Text(
-                            text = "Junkboy needs SMS permissions to filter your messages. Your data stays on your device.",
+                            text = stringResource(R.string.dashboard_permissions_message),
                             style = MaterialTheme.typography.bodyMedium,
                             color = DesignColors.Secondary
                         )
@@ -139,7 +142,7 @@ fun DashboardScreen(
                             shape = RoundedCornerShape(DesignComponents.Button.BorderRadius)
                         ) {
                             Text(
-                                "Grant Permissions",
+                                stringResource(R.string.dashboard_grant_permissions),
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = DesignComponents.Button.FontWeight
                             )
@@ -171,13 +174,13 @@ fun DashboardScreen(
                             )
                             Spacer(modifier = Modifier.width(DesignSpacing.SM))
                             Text(
-                                text = "SMS Filtering Active",
+                                text = stringResource(R.string.dashboard_filtering_active),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = DesignColors.Primary
                             )
                         }
                         Text(
-                            text = "Your messages are being filtered automatically.",
+                            text = stringResource(R.string.dashboard_filtering_message),
                             style = MaterialTheme.typography.bodyMedium,
                             color = DesignColors.Secondary
                         )
@@ -212,7 +215,7 @@ fun DashboardScreen(
                             )
                             Spacer(modifier = Modifier.width(DesignSpacing.SM))
                             Text(
-                                text = "SMS Guidance",
+                                text = stringResource(R.string.dashboard_sms_guidance),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = DesignColors.Primary
                             )
@@ -255,7 +258,7 @@ private fun QuickActionsSection(
         verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)
     ) {
         Text(
-            text = "Quick Actions",
+            text = stringResource(R.string.dashboard_quick_actions),
             style = MaterialTheme.typography.titleMedium,
             color = DesignColors.Primary
         )
@@ -283,7 +286,7 @@ private fun QuickActionsSection(
                 )
                 Spacer(modifier = Modifier.width(DesignSpacing.XS))
                 Text(
-                    "Messages",
+                    stringResource(R.string.dashboard_messages),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = DesignComponents.Button.FontWeight
                 )
@@ -307,7 +310,7 @@ private fun QuickActionsSection(
                 )
                 Spacer(modifier = Modifier.width(DesignSpacing.XS))
                 Text(
-                    "Settings",
+                    stringResource(R.string.dashboard_settings),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = DesignComponents.Button.FontWeight
                 )
@@ -333,12 +336,12 @@ private fun QuickActionsSection(
                 ) {
                     Column {
                         Text(
-                            text = "Under Attack Mode",
+                            text = stringResource(R.string.dashboard_under_attack),
                             style = MaterialTheme.typography.titleSmall,
                             color = DesignColors.Primary
                         )
                         Text(
-                            text = "Enhanced protection",
+                            text = stringResource(R.string.dashboard_under_attack_subtitle),
                             style = MaterialTheme.typography.bodySmall,
                             color = DesignColors.Secondary
                         )
@@ -367,12 +370,12 @@ private fun QuickActionsSection(
                 ) {
                     Column {
                         Text(
-                            text = "AI Classification",
+                            text = stringResource(R.string.dashboard_ai_classification),
                             style = MaterialTheme.typography.titleSmall,
                             color = DesignColors.Primary
                         )
                         Text(
-                            text = if (isMlEnabled) "Enabled" else "Disabled",
+                            text = if (isMlEnabled) stringResource(R.string.dashboard_ai_enabled) else stringResource(R.string.dashboard_ai_disabled),
                             style = MaterialTheme.typography.bodySmall,
                             color = DesignColors.Secondary
                         )

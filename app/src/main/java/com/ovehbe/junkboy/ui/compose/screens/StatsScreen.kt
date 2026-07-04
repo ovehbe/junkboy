@@ -13,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.database.AppDatabase
 import com.ovehbe.junkboy.database.MessageCategory
 import com.ovehbe.junkboy.ui.theme.*
@@ -54,7 +56,7 @@ fun StatsScreen() {
         item {
             // Header
             Text(
-                text = "Statistics",
+                text = stringResource(R.string.stats_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = DesignColors.Primary
             )
@@ -126,7 +128,7 @@ private fun OverallStatsCard(
                     modifier = Modifier.size(DesignLayout.IconSize)
                 )
                 Text(
-                    text = "Total Statistics",
+                    text = stringResource(R.string.stats_total_statistics),
                     style = MaterialTheme.typography.titleMedium,
                     color = DesignColors.Primary
                 )
@@ -137,19 +139,19 @@ private fun OverallStatsCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatItem(
-                    label = "Messages Filtered",
+                    label = stringResource(R.string.stats_messages_filtered),
                     value = totalFiltered.toString(),
                     icon = Icons.Default.FilterList,
                     color = DesignColors.Primary
                 )
                 StatItem(
-                    label = "Junk Blocked",
+                    label = stringResource(R.string.stats_junk_blocked),
                     value = totalBlocked.toString(),
                     icon = Icons.Default.Block,
                     color = DesignColors.Accent
                 )
                 StatItem(
-                    label = "OTPs Copied",
+                    label = stringResource(R.string.stats_otp_copied),
                     value = otpCount.toString(),
                     icon = Icons.Default.ContentCopy,
                     color = DesignColors.Secondary
@@ -221,7 +223,7 @@ private fun TodayActivityCard(
                         modifier = Modifier.size(DesignLayout.IconSize)
                     )
                     Text(
-                        text = "Today's Activity",
+                        text = stringResource(R.string.stats_today_activity),
                         style = MaterialTheme.typography.titleMedium,
                         color = DesignColors.Primary
                     )
@@ -239,7 +241,7 @@ private fun TodayActivityCard(
             ) {
                 item {
                     CategoryStatCard(
-                        category = "Blocked",
+                        category = stringResource(R.string.stats_blocked),
                         count = dailyBlocked,
                         icon = Icons.Default.Block,
                         color = DesignColors.Accent
@@ -325,7 +327,7 @@ private fun CategoryBreakdownCard(dailyStats: Map<MessageCategory, Int>) {
                     modifier = Modifier.size(DesignLayout.IconSize)
                 )
                 Text(
-                    text = "Category Breakdown",
+                    text = stringResource(R.string.stats_category_breakdown),
                     style = MaterialTheme.typography.titleMedium,
                     color = DesignColors.Primary
                 )
@@ -344,7 +346,7 @@ private fun CategoryBreakdownCard(dailyStats: Map<MessageCategory, Int>) {
                 }
             } else {
                 Text(
-                    text = "No messages to analyze today",
+                    text = stringResource(R.string.stats_no_messages_today),
                     style = MaterialTheme.typography.bodyMedium,
                     color = DesignColors.Secondary,
                     modifier = Modifier.padding(vertical = DesignSpacing.MD)
@@ -444,7 +446,7 @@ private fun PerformanceMetricsCard(
                     modifier = Modifier.size(DesignLayout.IconSize)
                 )
                 Text(
-                    text = "Performance Metrics",
+                    text = stringResource(R.string.stats_performance_metrics),
                     style = MaterialTheme.typography.titleMedium,
                     color = DesignColors.Primary
                 )
@@ -455,12 +457,12 @@ private fun PerformanceMetricsCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 MetricItem(
-                    label = "Overall Block Rate",
+                    label = stringResource(R.string.stats_overall_block_rate),
                     value = "$blockRate%",
                     icon = Icons.Default.Security
                 )
                 MetricItem(
-                    label = "Today's Block Rate",
+                    label = stringResource(R.string.stats_today_block_rate),
                     value = "$todayBlockRate%",
                     icon = Icons.Default.Security
                 )
@@ -527,16 +529,16 @@ private fun FilterEffectivenessCard(preferencesManager: PreferencesManager) {
                     modifier = Modifier.size(DesignLayout.IconSize)
                 )
                 Text(
-                    text = "Filter Status",
+                    text = stringResource(R.string.stats_filter_status),
                     style = MaterialTheme.typography.titleMedium,
                     color = DesignColors.Primary
                 )
             }
             
-            FilterStatusRow("AI Classification", isMlEnabled)
-            FilterStatusRow("Keyword Filtering", isKeywordEnabled)
-            FilterStatusRow("Regex Filtering", isRegexEnabled)
-            FilterStatusRow("Under Attack Mode", isUnderAttackMode)
+            FilterStatusRow(stringResource(R.string.stats_filter_ai), isMlEnabled)
+            FilterStatusRow(stringResource(R.string.stats_filter_keyword), isKeywordEnabled)
+            FilterStatusRow(stringResource(R.string.stats_filter_regex), isRegexEnabled)
+            FilterStatusRow(stringResource(R.string.settings_under_attack_mode), isUnderAttackMode)
         }
     }
 }

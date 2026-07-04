@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import android.util.Log
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.database.AppDatabase
 import com.ovehbe.junkboy.database.ChatMessage
 import com.ovehbe.junkboy.database.FilteredMessage
@@ -58,7 +60,11 @@ enum class ViewMode {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HubScreen(permissionRefreshTrigger: Int = 0) {
+fun HubScreen(
+    permissionRefreshTrigger: Int = 0,
+    isDefaultSmsApp: Boolean = false,
+    onOpenSmsConversation: ((String) -> Unit)? = null
+) {
     val context = LocalContext.current
     val database = remember { AppDatabase.getDatabase(context) }
     val serviceScope = remember { CoroutineScope(Dispatchers.IO + SupervisorJob()) }
@@ -210,7 +216,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Hub",
+                text = stringResource(R.string.nav_hub),
                 style = MaterialTheme.typography.headlineMedium,
                 color = DesignColors.Primary
             )
@@ -222,7 +228,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                 }) {
                     Icon(
                         if (viewMode == ViewMode.CONVERSATIONS) Icons.Default.ViewList else Icons.Default.Forum,
-                        contentDescription = if (viewMode == ViewMode.CONVERSATIONS) "Show Messages" else "Show Conversations",
+                        contentDescription = if (viewMode == ViewMode.CONVERSATIONS) stringResource(R.string.hub_show_messages) else stringResource(R.string.hub_show_conversations),
                         tint = DesignColors.Primary,
                         modifier = Modifier.size(24.dp)
                     )
@@ -231,7 +237,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                 IconButton(onClick = { showInfoDialog = true }) {
                     Icon(
                         Icons.Default.Info,
-                        contentDescription = "Info",
+                        contentDescription = stringResource(R.string.hub_info),
                         tint = DesignColors.Primary,
                         modifier = Modifier.size(24.dp)
                     )
@@ -245,7 +251,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search messages...", color = DesignColors.Secondary) },
+            placeholder = { Text(stringResource(R.string.hub_search_hint), color = DesignColors.Secondary) },
             leadingIcon = {
                 Icon(Icons.Default.Search, contentDescription = null, tint = DesignColors.Secondary)
             },
@@ -254,7 +260,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                     IconButton(onClick = { searchQuery = "" }) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Clear",
+                            contentDescription = stringResource(R.string.hub_clear),
                             tint = DesignColors.Secondary,
                             modifier = Modifier.size(20.dp)
                         )
@@ -284,7 +290,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
             FilterChip(
                 selected = hubFilter == HubFilter.ALL,
                 onClick = { hubFilter = HubFilter.ALL },
-                label = { Text("All", style = MaterialTheme.typography.labelMedium) },
+                label = { Text(stringResource(R.string.hub_tab_all), style = MaterialTheme.typography.labelMedium) },
                 leadingIcon = if (hubFilter == HubFilter.ALL) {
                     { Icon(Icons.Default.Inbox, null, Modifier.size(16.dp)) }
                 } else null,
@@ -304,7 +310,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                 onClick = { hubFilter = HubFilter.SMS },
                 label = { 
                     val count = if (viewMode == ViewMode.CONVERSATIONS) smsConversations.size else smsMessages.size
-                    Text("SMS ($count)", style = MaterialTheme.typography.labelMedium) 
+                    Text(stringResource(R.string.hub_tab_sms, count), style = MaterialTheme.typography.labelMedium)
                 },
                 leadingIcon = if (hubFilter == HubFilter.SMS) {
                     { Icon(Icons.Default.Sms, null, Modifier.size(16.dp)) }
@@ -323,7 +329,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
             FilterChip(
                 selected = hubFilter == HubFilter.CHATS,
                 onClick = { hubFilter = HubFilter.CHATS },
-                label = { Text("Chats (${chatMessages.size})", style = MaterialTheme.typography.labelMedium) },
+                label = { Text(stringResource(R.string.hub_tab_chats, chatMessages.size), style = MaterialTheme.typography.labelMedium) },
                 leadingIcon = if (hubFilter == HubFilter.CHATS) {
                     { Icon(Icons.Default.Chat, null, Modifier.size(16.dp)) }
                 } else null,
@@ -385,15 +391,10 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                         SmsConversationCard(
                             conversation = conversation,
                             onClick = {
-                                // Open SMS conversation in default SMS app
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                                        data = Uri.parse("sms:${conversation.sender}")
-                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    }
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {
-                                    Log.e("HubScreen", "Error opening SMS app", e)
+                                if (isDefaultSmsApp && onOpenSmsConversation != null) {
+                                    onOpenSmsConversation(conversation.sender)
+                                } else {
+                                    openExternalSmsApp(context, conversation.sender)
                                 }
                             }
                         )
@@ -403,7 +404,7 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                     if (hubFilter == HubFilter.ALL && chatMessages.isNotEmpty()) {
                         item {
                             Text(
-                                text = "Chat Notifications",
+                                text = stringResource(R.string.hub_chat_notifications),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = DesignColors.Secondary,
                                 modifier = Modifier.padding(vertical = DesignSpacing.SM)
@@ -437,15 +438,10 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
                                 SmsMessageCard(
                                     message = item.message,
                                     onClick = {
-                                        // Open SMS conversation in default SMS app
-                                        try {
-                                            val intent = Intent(Intent.ACTION_VIEW).apply {
-                                                data = Uri.parse("sms:${item.message.sender}")
-                                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                            }
-                                            context.startActivity(intent)
-                                        } catch (e: Exception) {
-                                            Log.e("HubScreen", "Error opening SMS app", e)
+                                        if (isDefaultSmsApp && onOpenSmsConversation != null) {
+                                            onOpenSmsConversation(item.message.sender)
+                                        } else {
+                                            openExternalSmsApp(context, item.message.sender)
                                         }
                                     }
                                 )
@@ -474,19 +470,13 @@ fun HubScreen(permissionRefreshTrigger: Int = 0) {
         AlertDialog(
             onDismissRequest = { showInfoDialog = false },
             icon = { Icon(Icons.Default.Info, contentDescription = null, tint = DesignColors.Accent) },
-            title = { Text("About Hub") },
-            text = { 
-                Text(
-                    "The Hub shows all your messages in one place:\n\n" +
-                    "• SMS: Filtered messages that passed through Junkboy (non-blocked)\n\n" +
-                    "• Chats: Notifications from messaging apps (requires notification access permission)\n\n" +
-                    "💡 Tap any message to open it in the original app!\n\n" +
-                    "Use the toggle (📋/💬) to switch between conversation and message views."
-                )
+            title = { Text(stringResource(R.string.hub_about_title)) },
+            text = {
+                Text(stringResource(R.string.hub_about_message))
             },
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
-                    Text("Got it")
+                    Text(stringResource(R.string.hub_got_it))
                 }
             }
         )
@@ -498,6 +488,7 @@ private fun SmsConversationCard(
     conversation: SmsConversationSummary,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -546,7 +537,7 @@ private fun SmsConversationCard(
                     )
                     
                     Text(
-                        text = formatTimestamp(conversation.lastMessageDate.time),
+                        text = formatTimestamp(context, conversation.lastMessageDate.time),
                         style = MaterialTheme.typography.bodySmall,
                         color = if (conversation.unreadCount > 0) DesignColors.Accent else DesignColors.Secondary
                     )
@@ -603,7 +594,7 @@ private fun SmsConversationCard(
                         // Open indicator
                         Icon(
                             Icons.Default.ChevronRight,
-                            contentDescription = "Open",
+                            contentDescription = stringResource(R.string.hub_open),
                             tint = DesignColors.Secondary,
                             modifier = Modifier.size(20.dp)
                         )
@@ -619,6 +610,7 @@ private fun SmsMessageCard(
     message: FilteredMessage,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -646,7 +638,7 @@ private fun SmsMessageCard(
                     ) {
                         Icon(
                             Icons.Default.Sms,
-                            contentDescription = "SMS",
+                            contentDescription = stringResource(R.string.hub_sms),
                             tint = DesignColors.Accent,
                             modifier = Modifier
                                 .padding(6.dp)
@@ -683,7 +675,7 @@ private fun SmsMessageCard(
                     // Open indicator
                     Icon(
                         Icons.Default.OpenInNew,
-                        contentDescription = "Open in SMS app",
+                        contentDescription = stringResource(R.string.hub_open_in_sms_app),
                         tint = DesignColors.Secondary,
                         modifier = Modifier.size(16.dp)
                     )
@@ -699,7 +691,7 @@ private fun SmsMessageCard(
             )
             
             Text(
-                text = formatTimestamp(message.receivedAt.time),
+                text = formatTimestamp(context, message.receivedAt.time),
                 style = MaterialTheme.typography.bodySmall,
                 color = DesignColors.Secondary
             )
@@ -712,6 +704,7 @@ private fun ChatMessageCard(
     message: ChatMessage,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -739,7 +732,7 @@ private fun ChatMessageCard(
                     ) {
                         Icon(
                             Icons.Default.Chat,
-                            contentDescription = "Chat",
+                            contentDescription = stringResource(R.string.hub_chat),
                             tint = DesignColors.Primary,
                             modifier = Modifier
                                 .padding(6.dp)
@@ -759,14 +752,14 @@ private fun ChatMessageCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = formatTimestamp(message.receivedAt.time),
+                        text = formatTimestamp(context, message.receivedAt.time),
                         style = MaterialTheme.typography.bodySmall,
                         color = DesignColors.Secondary
                     )
-                    
+
                     Icon(
                         Icons.Default.OpenInNew,
-                        contentDescription = "Open app",
+                        contentDescription = stringResource(R.string.hub_open_app),
                         tint = DesignColors.Secondary,
                         modifier = Modifier.size(16.dp)
                     )
@@ -807,19 +800,19 @@ private fun PermissionCard(onRequestPermission: () -> Unit) {
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Notification Access Required",
+                    text = stringResource(R.string.hub_notification_access_title),
                     style = MaterialTheme.typography.titleSmall,
                     color = DesignColors.Primary
                 )
                 Text(
-                    text = "Grant permission to see chat notifications from other apps",
+                    text = stringResource(R.string.hub_notification_access_message),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary
                 )
             }
-            
+
             TextButton(onClick = onRequestPermission) {
-                Text("Grant")
+                Text(stringResource(R.string.hub_grant))
             }
         }
     }
@@ -837,7 +830,7 @@ private fun LoadingState() {
         ) {
             CircularProgressIndicator(color = DesignColors.Accent)
             Text(
-                text = "Loading messages...",
+                text = stringResource(R.string.hub_loading),
                 style = MaterialTheme.typography.bodyMedium,
                 color = DesignColors.Secondary
             )
@@ -867,7 +860,7 @@ private fun ErrorState(error: String, onRetry: () -> Unit) {
                 color = DesignColors.Secondary
             )
             Button(onClick = onRetry) {
-                Text("Retry")
+                Text(stringResource(R.string.hub_retry))
             }
         }
     }
@@ -895,18 +888,18 @@ private fun EmptyState(filter: HubFilter) {
             )
             Text(
                 text = when (filter) {
-                    HubFilter.ALL -> "No messages yet"
-                    HubFilter.SMS -> "No SMS messages filtered yet"
-                    HubFilter.CHATS -> "No chat notifications captured yet"
+                    HubFilter.ALL -> stringResource(R.string.hub_empty_all)
+                    HubFilter.SMS -> stringResource(R.string.hub_empty_sms)
+                    HubFilter.CHATS -> stringResource(R.string.hub_empty_chats)
                 },
                 style = MaterialTheme.typography.titleMedium,
                 color = DesignColors.Secondary
             )
             Text(
                 text = when (filter) {
-                    HubFilter.ALL -> "Messages will appear here once Junkboy processes incoming SMS"
-                    HubFilter.SMS -> "Received SMS that pass through the filter will appear here"
-                    HubFilter.CHATS -> "Enable notification access to capture chat app notifications"
+                    HubFilter.ALL -> stringResource(R.string.hub_empty_hint_all)
+                    HubFilter.SMS -> stringResource(R.string.hub_empty_hint_sms)
+                    HubFilter.CHATS -> stringResource(R.string.hub_empty_hint_chats)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = DesignColors.Secondary.copy(alpha = 0.7f)
@@ -926,14 +919,31 @@ private fun getCategoryColor(category: MessageCategory): androidx.compose.ui.gra
     }
 }
 
-private fun formatTimestamp(timestamp: Long): String {
+/**
+ * Open SMS conversation in the external default SMS app.
+ * Only safe to call when this app is NOT the default SMS app,
+ * otherwise it causes an infinite navigation loop.
+ */
+private fun openExternalSmsApp(context: android.content.Context, sender: String) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("sms:$sender")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        Log.e("HubScreen", "Error opening SMS app", e)
+    }
+}
+
+private fun formatTimestamp(context: android.content.Context, timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
-    
+
     return when {
-        diff < 60_000 -> "Just now"
-        diff < 3600_000 -> "${diff / 60_000}m ago"
-        diff < 86400_000 -> "${diff / 3600_000}h ago"
+        diff < 60_000 -> context.getString(R.string.time_just_now)
+        diff < 3600_000 -> context.getString(R.string.time_minutes_ago, diff / 60_000)
+        diff < 86400_000 -> context.getString(R.string.time_hours_ago, diff / 3600_000)
         diff < 604800_000 -> SimpleDateFormat("EEE", Locale.getDefault()).format(Date(timestamp))
         else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(timestamp))
     }

@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Junkboy</string>
-    
+
     <!-- Categories -->
     <string name="category_general">General</string>
     <string name="category_promotion">Promotion</string>
     <string name="category_notification">Notification</string>
     <string name="category_transaction">Transaction</string>
     <string name="category_junk">Junk</string>
-    
+
     <!-- UI Strings -->
     <string name="filtered_messages">Filtered Messages</string>
     <string name="under_attack_mode">Under Attack Mode</string>
     <string name="filter_settings">Filter Settings</string>
     <string name="message_log">Message Log</string>
     <string name="no_messages">No filtered messages yet</string>
-    
+
     <!-- Notifications -->
     <string name="notification_channel_name">SMS Filter</string>
     <string name="notification_channel_description">Notifications for filtered SMS messages</string>
     <string name="notification_title_filtered">Message Filtered</string>
     <string name="notification_junk_blocked">Junk message blocked from %1$s</string>
-    
+
     <!-- Permissions -->
     <string name="permission_sms_title">SMS Permission Required</string>
     <string name="permission_sms_message">Junkboy needs SMS permission to filter your messages</string>
     <string name="permission_notification_title">Notification Permission</string>
     <string name="permission_notification_message">Allow notifications to see filtered messages</string>
-    
+
     <!-- Settings -->
     <string name="enable_ml_filtering">Enable ML Filtering</string>
     <string name="enable_keyword_filtering">Enable Keyword Filtering</string>
     <string name="enable_regex_filtering">Enable Regex Filtering</string>
     <string name="custom_keywords">Custom Keywords</string>
     <string name="custom_regex">Custom Regex Patterns</string>
-    
+
     <!-- Actions -->
     <string name="allow">Allow</string>
     <string name="block">Block</string>
@@ -42,4 +42,389 @@
     <string name="restore">Restore</string>
     <string name="mark_as_junk">Mark as Junk</string>
     <string name="mark_as_safe">Mark as Safe</string>
-</resources> 
+
+    <!-- Navigation -->
+    <string name="nav_hub">Hub</string>
+    <string name="nav_sms">SMS</string>
+    <string name="nav_filtered">Filtered</string>
+    <string name="nav_menu">Menu</string>
+
+    <!-- Hub Screen -->
+    <string name="hub_search_hint">Search messages...</string>
+    <string name="hub_tab_all">All</string>
+    <string name="hub_tab_sms">SMS (%d)</string>
+    <string name="hub_tab_chats">Chats (%d)</string>
+    <string name="hub_chat_notifications">Chat Notifications</string>
+    <string name="hub_about_title">About Hub</string>
+    <string name="hub_about_message">The Hub shows all your messages in one place:\n\n• SMS: Filtered messages that passed through Junkboy (non-blocked)\n\n• Chats: Notifications from messaging apps (requires notification access permission)\n\n💡 Tap any message to open it in the original app!\n\nUse the toggle (📋/💬) to switch between conversation and message views.</string>
+    <string name="hub_got_it">Got it</string>
+    <string name="hub_notification_access_title">Notification Access Required</string>
+    <string name="hub_notification_access_message">Grant permission to see chat notifications from other apps</string>
+    <string name="hub_grant">Grant</string>
+    <string name="hub_loading">Loading messages...</string>
+    <string name="hub_retry">Retry</string>
+    <string name="hub_empty_all">No messages yet</string>
+    <string name="hub_empty_sms">No SMS messages filtered yet</string>
+    <string name="hub_empty_chats">No chat notifications captured yet</string>
+    <string name="hub_empty_hint_all">Messages will appear here once Junkboy processes incoming SMS</string>
+    <string name="hub_empty_hint_sms">Received SMS that pass through the filter will appear here</string>
+    <string name="hub_empty_hint_chats">Enable notification access to capture chat app notifications</string>
+    <string name="hub_show_messages">Show Messages</string>
+    <string name="hub_show_conversations">Show Conversations</string>
+    <string name="hub_info">Info</string>
+    <string name="hub_clear">Clear</string>
+    <string name="hub_open">Open</string>
+    <string name="hub_sms">SMS</string>
+    <string name="hub_open_in_sms_app">Open in SMS app</string>
+    <string name="hub_chat">Chat</string>
+    <string name="hub_open_app">Open app</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Junkboy SMS Filter</string>
+    <string name="dashboard_subtitle">Privacy-first SMS filtering</string>
+    <string name="dashboard_permissions_required">Permissions Required</string>
+    <string name="dashboard_permissions_message">Junkboy needs SMS permissions to filter your messages. Your data stays on your device.</string>
+    <string name="dashboard_grant_permissions">Grant Permissions</string>
+    <string name="dashboard_filtering_active">SMS Filtering Active</string>
+    <string name="dashboard_filtering_message">Your messages are being filtered automatically.</string>
+    <string name="dashboard_sms_guidance">SMS Guidance</string>
+    <string name="dashboard_quick_actions">Quick Actions</string>
+    <string name="dashboard_messages">Messages</string>
+    <string name="dashboard_settings">Settings</string>
+    <string name="dashboard_under_attack">Under Attack Mode</string>
+    <string name="dashboard_under_attack_subtitle">Enhanced protection</string>
+    <string name="dashboard_ai_classification">AI Classification</string>
+    <string name="dashboard_ai_enabled">Enabled</string>
+    <string name="dashboard_ai_disabled">Disabled</string>
+
+    <!-- Messages Screen -->
+    <string name="messages_title">Filtered Messages</string>
+    <string name="messages_search_hint">Search messages...</string>
+    <string name="messages_tab_all">All</string>
+    <string name="messages_tab_blocked">Blocked (%d)</string>
+    <string name="messages_open_in_sms_app">Open in SMS app</string>
+    <string name="messages_allow_sender">Allow sender</string>
+    <string name="messages_more_options">More options</string>
+    <string name="messages_tap_to_open">Tap to open</string>
+    <string name="messages_loading">Loading messages...</string>
+    <string name="messages_retry">Retry</string>
+    <string name="messages_empty_search">No results found</string>
+    <string name="messages_empty_blocked">No blocked messages</string>
+    <string name="messages_empty_category">No %s messages</string>
+    <string name="messages_empty_none">No filtered messages yet</string>
+    <string name="messages_empty_hint_search">Try a different search term</string>
+    <string name="messages_empty_hint_blocked">All messages have passed the filter</string>
+    <string name="messages_empty_hint_none">Messages will appear here as they are processed</string>
+    <string name="messages_blocked">Blocked</string>
+    <string name="messages_show_messages">Show Messages</string>
+    <string name="messages_show_conversations">Show Conversations</string>
+    <string name="messages_clear">Clear</string>
+
+    <!-- Menu Screen -->
+    <string name="menu_title">Menu</string>
+    <string name="menu_quick_stats">Quick Stats</string>
+    <string name="menu_stat_filtered">Filtered</string>
+    <string name="menu_stat_blocked">Blocked</string>
+    <string name="menu_stat_otp_copied">OTPs Copied</string>
+    <string name="menu_section_main">Main</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_dashboard_subtitle">App overview and status</string>
+    <string name="menu_statistics">Statistics</string>
+    <string name="menu_statistics_subtitle">Detailed filtering statistics</string>
+    <string name="menu_section_tools">Tools &amp; Settings</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_settings_subtitle">Configure filtering and notifications</string>
+    <string name="menu_test_filter">Test Filter</string>
+    <string name="menu_test_filter_subtitle">Test how messages would be filtered</string>
+    <string name="menu_app_status">App Status</string>
+    <string name="menu_sms_permissions">SMS Permissions</string>
+    <string name="menu_sms_permissions_granted">All permissions granted</string>
+    <string name="menu_sms_permissions_missing">Some permissions missing</string>
+    <string name="menu_default_sms_app">Default SMS App</string>
+    <string name="menu_default_sms_app_set">Junkboy is your default SMS app</string>
+    <string name="menu_default_sms_app_not_set">Tap to set as default</string>
+    <string name="menu_notification_access">Notification Access</string>
+    <string name="menu_notification_access_on">Can read chat notifications</string>
+    <string name="menu_notification_access_off">Tap to enable for Hub</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_hub">Hub Settings</string>
+    <string name="settings_hub_description">The Hub provides a unified inbox view for all your messages</string>
+    <string name="settings_enable_hub">Enable Hub</string>
+    <string name="settings_enable_hub_subtitle">Show Hub in bottom navigation (requires app restart)</string>
+    <string name="settings_display_mode">Display Mode</string>
+    <string name="settings_display_mode_subtitle">What to show in the Hub</string>
+    <string name="settings_display_mode_all">All (SMS + Chats)</string>
+    <string name="settings_display_mode_sms">SMS Only</string>
+    <string name="settings_display_mode_chats">Chats Only</string>
+    <string name="settings_default_view">Default View</string>
+    <string name="settings_default_view_subtitle">How messages are displayed</string>
+    <string name="settings_default_view_conversations">Conversations</string>
+    <string name="settings_default_view_messages">Individual Messages</string>
+    <string name="settings_section_sms_app">SMS App Settings</string>
+    <string name="settings_sms_app_description">Settings for when Junkboy is set as default SMS app</string>
+    <string name="settings_hide_junk">Hide Junk Messages</string>
+    <string name="settings_hide_junk_subtitle">Hide blocked/junk messages from the SMS inbox</string>
+    <string name="settings_show_category_badges">Show Category Badges</string>
+    <string name="settings_show_category_badges_subtitle">Display Junkboy category on messages</string>
+    <string name="settings_display_categories">Display Categories</string>
+    <string name="settings_display_categories_subtitle">Choose which message categories to show in the SMS screen</string>
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_promotion">Promotion</string>
+    <string name="settings_category_notification">Notification</string>
+    <string name="settings_category_transaction">Transaction</string>
+    <string name="settings_category_junk">Junk</string>
+    <string name="settings_category_allowed">Allowed</string>
+    <string name="settings_auto_delete_junk">Auto-Delete Junk</string>
+    <string name="settings_test_auto_delete">Test Auto-Delete</string>
+    <string name="settings_test_auto_delete_subtitle">Simulate deleting a junk message</string>
+    <string name="settings_testing">Testing...</string>
+    <string name="settings_auto_delete_ready">✅ Auto-delete is ready! Junk messages will be removed.</string>
+    <string name="settings_auto_delete_cannot">❌ Cannot delete: Junkboy is not the default SMS app</string>
+    <string name="settings_section_accessibility">Accessibility</string>
+    <string name="settings_accessibility_description">Adjust settings for better compatibility with physical keyboards</string>
+    <string name="settings_keyboard_offset">Keyboard Bottom Offset</string>
+    <string name="settings_keyboard_offset_subtitle">Extra space when keyboard is shown (for devices like BlackBerry Key2)</string>
+    <string name="settings_section_filter_methods">Filter Methods</string>
+    <string name="settings_ai_classification">AI Classification</string>
+    <string name="settings_ai_classification_subtitle">Use machine learning to categorize messages</string>
+    <string name="settings_keyword_filtering">Keyword Filtering</string>
+    <string name="settings_keyword_filtering_subtitle">Filter messages based on keywords</string>
+    <string name="settings_regex_filtering">Regex Filtering</string>
+    <string name="settings_regex_filtering_subtitle">Advanced pattern-based filtering</string>
+    <string name="settings_under_attack_mode">Under Attack Mode</string>
+    <string name="settings_under_attack_mode_subtitle">Enhanced protection during spam waves</string>
+    <string name="settings_section_notifications">Notification Settings</string>
+    <string name="settings_notify_general">General Messages</string>
+    <string name="settings_notify_general_subtitle">Show notifications for general messages</string>
+    <string name="settings_notify_notification">Notification Messages</string>
+    <string name="settings_notify_notification_subtitle">Show notifications for system alerts</string>
+    <string name="settings_notify_transaction">Transaction Messages</string>
+    <string name="settings_notify_transaction_subtitle">Show notifications for banking/payment messages</string>
+    <string name="settings_notify_promotion">Promotion Messages</string>
+    <string name="settings_notify_promotion_subtitle">Show notifications for promotional messages</string>
+    <string name="settings_notify_allowed">Allowed Senders</string>
+    <string name="settings_notify_allowed_subtitle">Show notifications for allowed senders</string>
+    <string name="settings_notify_blocked">Blocked Messages</string>
+    <string name="settings_notify_blocked_subtitle">Show notifications for blocked messages</string>
+    <string name="settings_section_features">Features</string>
+    <string name="settings_otp_auto_copy">OTP Auto-Copy</string>
+    <string name="settings_otp_auto_copy_subtitle">Automatically copy OTP codes to clipboard</string>
+    <string name="settings_hub_notifications">Hub Notifications</string>
+    <string name="settings_hub_notifications_subtitle">Show notifications for chat messages</string>
+    <string name="settings_auto_delete_feature">Auto-Delete Junk</string>
+    <string name="settings_auto_delete_feature_subtitle">Automatically delete junk messages</string>
+    <string name="settings_section_sms_control">SMS App Control</string>
+    <string name="settings_sms_control_description">Control notifications from the default SMS app (%s)</string>
+    <string name="settings_enable_sms_control">Enable SMS App Control</string>
+    <string name="settings_enable_sms_control_subtitle">Allow Junkboy to manage SMS app notifications</string>
+    <string name="settings_dismiss_sms_notifications">Dismiss SMS Notifications</string>
+    <string name="settings_dismiss_sms_notifications_subtitle">Automatically dismiss notifications from SMS app</string>
+    <string name="settings_blocked_messages_only">Blocked Messages Only</string>
+    <string name="settings_blocked_messages_only_subtitle">Only dismiss notifications for blocked/junk messages</string>
+    <string name="settings_open_sms_notification_settings">Open SMS App Notification Settings</string>
+    <string name="settings_open_sms_notification_settings_subtitle">Manually configure SMS app notifications</string>
+    <string name="settings_notification_access_required">Notification Access Required</string>
+    <string name="settings_notification_access_message">Grant notification access to enable SMS app control</string>
+    <string name="settings_grant">Grant</string>
+    <string name="settings_section_custom_keywords">Custom Keywords</string>
+    <string name="settings_add_keyword">Add Keyword</string>
+    <string name="settings_add_keyword_subtitle">Add custom spam keywords</string>
+    <string name="settings_section_custom_regex">Custom Regex Patterns</string>
+    <string name="settings_add_pattern">Add Pattern</string>
+    <string name="settings_add_pattern_subtitle">Add custom regex patterns</string>
+    <string name="settings_section_allowed_senders">Allowed Senders</string>
+    <string name="settings_add_sender">Add Sender</string>
+    <string name="settings_add_sender_subtitle">Add trusted senders</string>
+    <string name="settings_section_data_management">Data Management</string>
+    <string name="settings_process_existing">Process Existing Messages</string>
+    <string name="settings_process_existing_subtitle">Apply current filters to existing messages</string>
+    <string name="settings_process_success">Successfully processed %d messages</string>
+    <string name="settings_process_error">Error: %s</string>
+    <string name="settings_export_data">Export Data</string>
+    <string name="settings_export_data_subtitle">Export filtered messages to CSV</string>
+    <string name="settings_export_success">Successfully exported %d messages</string>
+    <string name="settings_export_error">Error: %s</string>
+    <string name="settings_clear_all_data">Clear All Data</string>
+    <string name="settings_clear_all_data_subtitle">Remove all filtered messages</string>
+    <string name="settings_status">Status: %s</string>
+    <string name="settings_remove">Remove</string>
+    <string name="settings_add_keyword_title">Add Keyword</string>
+    <string name="settings_keyword_label">Keyword</string>
+    <string name="settings_add">Add</string>
+    <string name="settings_cancel">Cancel</string>
+    <string name="settings_add_regex_title">Add Regex Pattern</string>
+    <string name="settings_pattern_label">Pattern</string>
+    <string name="settings_add_sender_title">Add Allowed Sender</string>
+    <string name="settings_phone_number_label">Phone Number</string>
+    <string name="settings_clear_data_title">Clear All Data</string>
+    <string name="settings_clear_data_message">This will permanently delete all filtered messages. This action cannot be undone.</string>
+    <string name="settings_clear">Clear</string>
+
+    <!-- Stats Screen -->
+    <string name="stats_title">Statistics</string>
+    <string name="stats_total_statistics">Total Statistics</string>
+    <string name="stats_messages_filtered">Messages Filtered</string>
+    <string name="stats_junk_blocked">Junk Blocked</string>
+    <string name="stats_otp_copied">OTPs Copied</string>
+    <string name="stats_today_activity">Today\'s Activity</string>
+    <string name="stats_blocked">Blocked</string>
+    <string name="stats_category_breakdown">Category Breakdown</string>
+    <string name="stats_no_messages_today">No messages to analyze today</string>
+    <string name="stats_performance_metrics">Performance Metrics</string>
+    <string name="stats_overall_block_rate">Overall Block Rate</string>
+    <string name="stats_today_block_rate">Today\'s Block Rate</string>
+    <string name="stats_filter_status">Filter Status</string>
+    <string name="stats_filter_ai">AI Classification</string>
+    <string name="stats_filter_keyword">Keyword Filtering</string>
+    <string name="stats_filter_regex">Regex Filtering</string>
+
+    <!-- Test Filter Screen -->
+    <string name="test_filter_title">Test SMS Filter</string>
+    <string name="test_filter_message_details">Message Details</string>
+    <string name="test_filter_sender_label">Sender</string>
+    <string name="test_filter_sender_hint">e.g., +1234567890 or BANK</string>
+    <string name="test_filter_message_label">Message Content</string>
+    <string name="test_filter_message_hint">Enter the SMS message text to test...</string>
+    <string name="test_filter_unknown">Unknown</string>
+    <string name="test_filter_processing">Processing...</string>
+    <string name="test_filter_button">Test Filter</string>
+    <string name="test_filter_result">Filter Result</string>
+    <string name="test_filter_category_label">Category</string>
+    <string name="test_filter_confidence_label">Confidence</string>
+    <string name="test_filter_type_label">Filter Type</string>
+    <string name="test_filter_status_label">Status</string>
+    <string name="test_filter_blocked">Blocked</string>
+    <string name="test_filter_allowed">Allowed</string>
+    <string name="test_filter_details">Details</string>
+    <string name="test_filter_sample_messages">Sample Messages</string>
+    <string name="test_filter_sample_description">Try these sample messages to see how the filter works:</string>
+    <string name="test_filter_from">From: %s</string>
+    <string name="test_filter_reason_allowed">Sender \'%s\' is in allowed list</string>
+    <string name="test_filter_reason_keyword">Matched keyword filter</string>
+    <string name="test_filter_reason_regex">Matched regex pattern: %s</string>
+    <string name="test_filter_reason_ml">AI classified as %s</string>
+    <string name="test_filter_reason_default">No filter matched, classified as general</string>
+    <string name="test_filter_type_ai">AI Classification</string>
+    <string name="test_filter_type_keyword">Keyword Filter</string>
+    <string name="test_filter_type_regex">Regex Filter</string>
+    <string name="test_filter_type_user_rule">User Rule</string>
+    <string name="test_filter_type_under_attack">Under Attack Mode</string>
+    <string name="test_filter_type_allowed_sender">Allowed Sender</string>
+
+    <!-- SMS Screen -->
+    <string name="sms_messages">Messages</string>
+    <string name="sms_search">Search</string>
+    <string name="sms_new_message">New Message</string>
+    <string name="sms_search_conversations_hint">Search conversations...</string>
+    <string name="sms_close_search">Close search</string>
+    <string name="sms_clear">Clear</string>
+    <string name="sms_category_junk">Junk</string>
+    <string name="sms_category_promo">Promo</string>
+    <string name="sms_category_bank">Bank</string>
+    <string name="sms_category_alert">Alert</string>
+    <string name="sms_category_gen">Gen</string>
+    <string name="sms_category_allowed">Allowed</string>
+    <string name="sms_delete_conversation">Delete Conversation</string>
+    <string name="sms_delete_conversation_message">Are you sure you want to delete this entire conversation? This cannot be undone.</string>
+    <string name="sms_delete">Delete</string>
+    <string name="sms_cancel">Cancel</string>
+    <string name="sms_back">Back</string>
+    <string name="sms_more_options">More options</string>
+    <string name="sms_delete_conversation_action">Delete conversation</string>
+    <string name="sms_today">Today</string>
+    <string name="sms_yesterday">Yesterday</string>
+    <string name="sms_message_hint">Message</string>
+    <string name="sms_send">Send</string>
+    <string name="sms_contact_permission_required">Contact permission required</string>
+    <string name="sms_select_contact">Select Contact</string>
+    <string name="sms_search_contacts_hint">Search contacts...</string>
+    <string name="sms_new_message_title">New Message</string>
+    <string name="sms_to_label">To</string>
+    <string name="sms_phone_number_hint">Phone number</string>
+    <string name="sms_select_contact_icon">Select contact</string>
+    <string name="sms_enter_recipient_message">Please enter recipient and message</string>
+    <string name="sms_set_default">Set as Default SMS App</string>
+    <string name="sms_set_default_message">To use the full SMS functionality, set Junkboy as your default SMS app. This enables sending, receiving, and managing all your text messages.</string>
+    <string name="sms_no_messages">No messages yet</string>
+    <string name="sms_no_messages_message">Start a conversation by tapping the compose button</string>
+    <string name="sms_no_results">No results for \"%s\"</string>
+    <string name="sms_error_loading">Error loading messages</string>
+    <string name="sms_retry">Retry</string>
+
+    <!-- Time formatting -->
+    <string name="time_just_now">Just now</string>
+    <string name="time_minutes_ago">%dm ago</string>
+    <string name="time_hours_ago">%dh ago</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_search">Search</string>
+    <string name="cd_clear">Clear</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_open">Open</string>
+    <string name="cd_remove">Remove</string>
+    <string name="cd_info">Info</string>
+    <string name="cd_blocked">Blocked</string>
+    <string name="cd_sms">SMS</string>
+    <string name="cd_chat">Chat</string>
+    <string name="cd_open_app">Open app</string>
+    <string name="cd_open_in_sms">Open in SMS app</string>
+    <string name="cd_show_messages">Show Messages</string>
+    <string name="cd_show_conversations">Show Conversations</string>
+    <string name="cd_new_message">New Message</string>
+    <string name="cd_send">Send</string>
+    <string name="cd_select_contact">Select contact</string>
+    <string name="cd_close_search">Close search</string>
+
+    <!-- Notification channels -->
+    <string name="notification_channel_blocked">Blocked Messages</string>
+    <string name="notification_channel_blocked_desc">Junk messages that were blocked</string>
+    <string name="notification_channel_transaction">Transaction Messages</string>
+    <string name="notification_channel_transaction_desc">Banking and payment messages</string>
+    <string name="notification_channel_promotion">Promotion Messages</string>
+    <string name="notification_channel_promotion_desc">Marketing and promotional messages</string>
+    <string name="notification_channel_notification">Notification Messages</string>
+    <string name="notification_channel_notification_desc">System and app notifications via SMS</string>
+    <string name="notification_channel_general">General Messages</string>
+    <string name="notification_channel_general_desc">Personal and other SMS messages</string>
+    <string name="notification_channel_stats">Daily Statistics</string>
+    <string name="notification_channel_stats_desc">Daily filtering statistics and reports</string>
+
+    <!-- Notification content -->
+    <string name="notif_title_blocked">Blocked: Junk SMS</string>
+    <string name="notif_title_transaction">New Transaction Message</string>
+    <string name="notif_title_promotion">New Promotion</string>
+    <string name="notif_title_notification">New Notification</string>
+    <string name="notif_title_general">New Message</string>
+    <string name="notif_action_open">Open Junkboy</string>
+    <string name="notif_action_allow">Allow Sender</string>
+    <string name="notif_daily_report_title">Junkboy Daily Report</string>
+    <string name="notif_daily_report_text">Filtered %1$d messages, blocked %2$d junk</string>
+    <string name="notif_daily_report_big">📊 Today\'s SMS filtering summary:\n\n🛡️ Total filtered: %1$d\n🚫 Blocked (junk): %2$d\n</string>
+    <string name="notif_daily_report_summary">Daily filtering report</string>
+    <string name="notif_from">From: %s</string>
+
+    <!-- Service notification -->
+    <string name="service_notif_title">Junkboy SMS Filter</string>
+    <string name="service_notif_text">Filtering incoming SMS messages</string>
+
+    <!-- SMS guidance -->
+    <string name="unknown_sms_app">Unknown SMS App</string>
+    <string name="default_sms_app">Default SMS App</string>
+    <string name="sms_guidance_default">✅ Junkboy is your default SMS app. All SMS notifications are handled by Junkboy.</string>
+    <string name="sms_guidance_not_default">To avoid duplicate notifications, please mute notifications from \"%1$s\" and let Junkboy handle all SMS alerts.</string>
+
+    <!-- Manual default SMS instructions -->
+    <string name="manual_sms_instructions">Since the automatic method didn\'t work, please set Junkboy as default SMS app manually:\n\n📱 Method 1 - Android Settings:\n1. Open Android Settings\n2. Go to Apps → Default Apps → SMS app\n3. Select \"Junkboy SMS Filter\"\n\n📱 Method 2 - App Info:\n1. Open Android Settings\n2. Go to Apps → Junkboy SMS Filter\n3. Tap \"Set as default\" or \"Open by default\"\n4. Enable SMS handling\n\n📱 Method 3 - Search Settings:\n1. Open Android Settings\n2. Search for \"default SMS\" or \"messaging app\"\n3. Select Junkboy from the list\n\n💡 Note: The exact steps may vary by device manufacturer.</string>
+
+    <!-- Toast messages -->
+    <string name="toast_send_failed">Failed to send message: %s</string>
+    <string name="toast_category_general">💬 General</string>
+    <string name="toast_category_promotion">🏷️ Promotion</string>
+    <string name="toast_category_notification">🔔 Notification</string>
+    <string name="toast_category_transaction">💳 Transaction</string>
+    <string name="toast_category_junk">🗑️ Junk</string>
+    <string name="toast_category_allowed">✅ Allowed</string>
+</resources>

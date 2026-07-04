@@ -1,5 +1,6 @@
 package com.ovehbe.junkboy.ui.compose.screens
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.horizontalScroll
@@ -17,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import android.util.Log
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.database.AppDatabase
 import com.ovehbe.junkboy.database.FilteredMessage
 import com.ovehbe.junkboy.database.SmsConversationSummary
@@ -44,7 +47,10 @@ enum class FilteredViewMode {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessagesScreen() {
+fun MessagesScreen(
+    isDefaultSmsApp: Boolean = false,
+    onOpenSmsConversation: ((String) -> Unit)? = null
+) {
     val context = LocalContext.current
     val database = remember { AppDatabase.getDatabase(context) }
     val serviceScope = remember { CoroutineScope(Dispatchers.IO + SupervisorJob()) }
@@ -131,7 +137,7 @@ fun MessagesScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Filtered Messages",
+                text = stringResource(R.string.filtered_messages),
                 style = MaterialTheme.typography.headlineMedium,
                 color = DesignColors.Primary
             )
@@ -142,7 +148,7 @@ fun MessagesScreen() {
             }) {
                 Icon(
                     if (viewMode == FilteredViewMode.CONVERSATIONS) Icons.Default.ViewList else Icons.Default.Forum,
-                    contentDescription = if (viewMode == FilteredViewMode.CONVERSATIONS) "Show Messages" else "Show Conversations",
+                    contentDescription = if (viewMode == FilteredViewMode.CONVERSATIONS) stringResource(R.string.messages_show_messages) else stringResource(R.string.messages_show_conversations),
                     tint = DesignColors.Primary,
                     modifier = Modifier.size(24.dp)
                 )
@@ -155,7 +161,7 @@ fun MessagesScreen() {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search messages...", color = DesignColors.Secondary) },
+            placeholder = { Text(stringResource(R.string.messages_search_hint), color = DesignColors.Secondary) },
             leadingIcon = {
                 Icon(Icons.Default.Search, contentDescription = null, tint = DesignColors.Secondary)
             },
@@ -164,7 +170,7 @@ fun MessagesScreen() {
                     IconButton(onClick = { searchQuery = "" }) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Clear",
+                            contentDescription = stringResource(R.string.messages_clear),
                             tint = DesignColors.Secondary,
                             modifier = Modifier.size(20.dp)
                         )
@@ -199,7 +205,7 @@ fun MessagesScreen() {
                     selectedCategory = null
                     searchQuery = ""
                 },
-                label = { Text("All", style = MaterialTheme.typography.labelMedium) },
+                label = { Text(stringResource(R.string.messages_tab_all), style = MaterialTheme.typography.labelMedium) },
                 leadingIcon = if (selectedFilter == MessageFilter.ALL) {
                     { Icon(Icons.Default.AllInbox, null, Modifier.size(16.dp)) }
                 } else null,
@@ -228,7 +234,7 @@ fun MessagesScreen() {
                     } else {
                         blockedMessages.size
                     }
-                    Text("Blocked ($count)", style = MaterialTheme.typography.labelMedium) 
+                    Text(stringResource(R.string.messages_tab_blocked, count), style = MaterialTheme.typography.labelMedium)
                 },
                 leadingIcon = if (selectedFilter == MessageFilter.BLOCKED) {
                     { Icon(Icons.Default.Block, null, Modifier.size(16.dp)) }
@@ -310,16 +316,12 @@ fun MessagesScreen() {
                         val conversation = conversations[index]
                         ConversationCard(
                             conversation = conversation,
+                            context = context,
                             onClick = {
-                                // Open SMS conversation in default SMS app
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                                        data = Uri.parse("sms:${conversation.sender}")
-                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    }
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {
-                                    Log.e("MessagesScreen", "Error opening SMS app", e)
+                                if (isDefaultSmsApp && onOpenSmsConversation != null) {
+                                    onOpenSmsConversation(conversation.sender)
+                                } else {
+                                    openExternalSmsApp(context, conversation.sender)
                                 }
                             },
                             onAllowSender = {
@@ -357,16 +359,12 @@ fun MessagesScreen() {
                     items(messages, key = { it.id }) { message ->
                         MessageCard(
                             message = message,
+                            context = context,
                             onClick = {
-                                // Open SMS conversation in default SMS app
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                                        data = Uri.parse("sms:${message.sender}")
-                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    }
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {
-                                    Log.e("MessagesScreen", "Error opening SMS app", e)
+                                if (isDefaultSmsApp && onOpenSmsConversation != null) {
+                                    onOpenSmsConversation(message.sender)
+                                } else {
+                                    openExternalSmsApp(context, message.sender)
                                 }
                             },
                             onAllowSender = { 
@@ -402,6 +400,7 @@ fun MessagesScreen() {
 @Composable
 private fun ConversationCard(
     conversation: SmsConversationSummary,
+    context: Context,
     onClick: () -> Unit,
     onAllowSender: () -> Unit
 ) {
@@ -466,7 +465,7 @@ private fun ConversationCard(
                             ) {
                                 Icon(
                                     Icons.Default.Block,
-                                    contentDescription = "Blocked",
+                                    contentDescription = stringResource(R.string.messages_blocked),
                                     tint = DesignColors.JunkMessage,
                                     modifier = Modifier
                                         .padding(2.dp)
@@ -475,9 +474,9 @@ private fun ConversationCard(
                             }
                         }
                     }
-                    
+
                     Text(
-                        text = formatTimestamp(conversation.lastMessageDate.time),
+                        text = formatTimestamp(conversation.lastMessageDate.time, context),
                         style = MaterialTheme.typography.bodySmall,
                         color = if (conversation.unreadCount > 0) DesignColors.Accent else DesignColors.Secondary
                     )
@@ -531,18 +530,18 @@ private fun ConversationCard(
                             ) {
                                 Icon(
                                     Icons.Default.MoreVert,
-                                    contentDescription = "More options",
+                                    contentDescription = stringResource(R.string.messages_more_options),
                                     tint = DesignColors.Secondary,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
-                            
+
                             DropdownMenu(
                                 expanded = showMenu,
                                 onDismissRequest = { showMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Open in SMS app") },
+                                    text = { Text(stringResource(R.string.messages_open_in_sms_app)) },
                                     leadingIcon = { Icon(Icons.Default.OpenInNew, null) },
                                     onClick = {
                                         showMenu = false
@@ -551,7 +550,7 @@ private fun ConversationCard(
                                 )
                                 if (conversation.hasBlocked) {
                                     DropdownMenuItem(
-                                        text = { Text("Allow sender") },
+                                        text = { Text(stringResource(R.string.messages_allow_sender)) },
                                         leadingIcon = { Icon(Icons.Default.CheckCircle, null) },
                                         onClick = {
                                             showMenu = false
@@ -571,6 +570,7 @@ private fun ConversationCard(
 @Composable
 private fun MessageCard(
     message: FilteredMessage,
+    context: Context,
     onClick: () -> Unit,
     onAllowSender: () -> Unit
 ) {
@@ -625,7 +625,7 @@ private fun MessageCard(
                         ) {
                             Icon(
                                 Icons.Default.Block,
-                                contentDescription = "Blocked",
+                                contentDescription = stringResource(R.string.messages_blocked),
                                 tint = DesignColors.JunkMessage,
                                 modifier = Modifier
                                     .padding(2.dp)
@@ -634,7 +634,7 @@ private fun MessageCard(
                         }
                     }
                 }
-                
+
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(DesignSpacing.XS),
                     verticalAlignment = Alignment.CenterVertically
@@ -660,18 +660,18 @@ private fun MessageCard(
                         ) {
                             Icon(
                                 Icons.Default.MoreVert,
-                                contentDescription = "More options",
+                                contentDescription = stringResource(R.string.messages_more_options),
                                 tint = DesignColors.Secondary,
                                 modifier = Modifier.size(16.dp)
                             )
                         }
-                        
+
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Open in SMS app") },
+                                text = { Text(stringResource(R.string.messages_open_in_sms_app)) },
                                 leadingIcon = { Icon(Icons.Default.OpenInNew, null) },
                                 onClick = {
                                     showMenu = false
@@ -680,7 +680,7 @@ private fun MessageCard(
                             )
                             if (message.isBlocked) {
                                 DropdownMenuItem(
-                                    text = { Text("Allow sender") },
+                                    text = { Text(stringResource(R.string.messages_allow_sender)) },
                                     leadingIcon = { Icon(Icons.Default.CheckCircle, null) },
                                     onClick = {
                                         showMenu = false
@@ -709,7 +709,7 @@ private fun MessageCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = formatTimestamp(message.receivedAt.time),
+                    text = formatTimestamp(message.receivedAt.time, context),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary
                 )
@@ -720,13 +720,13 @@ private fun MessageCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Tap to open",
+                        text = stringResource(R.string.messages_tap_to_open),
                         style = MaterialTheme.typography.labelSmall,
                         color = DesignColors.Secondary.copy(alpha = 0.7f)
                     )
                     Icon(
                         Icons.Default.OpenInNew,
-                        contentDescription = "Open in SMS app",
+                        contentDescription = stringResource(R.string.messages_open_in_sms_app),
                         tint = DesignColors.Secondary.copy(alpha = 0.7f),
                         modifier = Modifier.size(12.dp)
                     )
@@ -748,7 +748,7 @@ private fun LoadingState() {
         ) {
             CircularProgressIndicator(color = DesignColors.Accent)
             Text(
-                text = "Loading messages...",
+                text = stringResource(R.string.messages_loading),
                 style = MaterialTheme.typography.bodyMedium,
                 color = DesignColors.Secondary
             )
@@ -778,7 +778,7 @@ private fun ErrorState(error: String, onRetry: () -> Unit) {
                 color = DesignColors.Secondary
             )
             Button(onClick = onRetry) {
-                Text("Retry")
+                Text(stringResource(R.string.messages_retry))
             }
         }
     }
@@ -811,19 +811,19 @@ private fun EmptyMessagesState(
             )
             Text(
                 text = when {
-                    isSearching -> "No results found"
-                    filter == MessageFilter.BLOCKED -> "No blocked messages"
-                    category != null -> "No ${category.name.lowercase()} messages"
-                    else -> "No filtered messages yet"
+                    isSearching -> stringResource(R.string.messages_empty_search)
+                    filter == MessageFilter.BLOCKED -> stringResource(R.string.messages_empty_blocked)
+                    category != null -> stringResource(R.string.messages_empty_category, category.name.lowercase())
+                    else -> stringResource(R.string.messages_empty_none)
                 },
                 style = MaterialTheme.typography.titleMedium,
                 color = DesignColors.Secondary
             )
             Text(
                 text = when {
-                    isSearching -> "Try a different search term"
-                    filter == MessageFilter.BLOCKED -> "All messages have passed the filter"
-                    else -> "Messages will appear here as they are processed"
+                    isSearching -> stringResource(R.string.messages_empty_hint_search)
+                    filter == MessageFilter.BLOCKED -> stringResource(R.string.messages_empty_hint_blocked)
+                    else -> stringResource(R.string.messages_empty_hint_none)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = DesignColors.Secondary.copy(alpha = 0.7f)
@@ -854,15 +854,32 @@ private fun getCategoryIcon(category: MessageCategory): androidx.compose.ui.grap
     }
 }
 
-private fun formatTimestamp(timestamp: Long): String {
+private fun formatTimestamp(timestamp: Long, context: Context): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
-    
+
     return when {
-        diff < 60_000 -> "Just now"
-        diff < 3600_000 -> "${diff / 60_000}m ago"
-        diff < 86400_000 -> "${diff / 3600_000}h ago"
+        diff < 60_000 -> context.getString(R.string.time_just_now)
+        diff < 3600_000 -> context.getString(R.string.time_minutes_ago, diff / 60_000)
+        diff < 86400_000 -> context.getString(R.string.time_hours_ago, diff / 3600_000)
         diff < 604800_000 -> SimpleDateFormat("EEE", Locale.getDefault()).format(Date(timestamp))
         else -> SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(timestamp))
+    }
+}
+
+/**
+ * Open SMS conversation in the external default SMS app.
+ * Only safe to call when this app is NOT the default SMS app,
+ * otherwise it causes an infinite navigation loop.
+ */
+private fun openExternalSmsApp(context: Context, sender: String) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("sms:$sender")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        Log.e("MessagesScreen", "Error opening SMS app", e)
     }
 }

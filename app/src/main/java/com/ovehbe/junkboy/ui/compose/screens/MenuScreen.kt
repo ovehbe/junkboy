@@ -11,7 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.ui.theme.*
 import com.ovehbe.junkboy.utils.PreferencesManager
 import com.ovehbe.junkboy.utils.SmsAppManager
@@ -27,6 +29,7 @@ fun MenuScreen(
     onNavigateToStats: () -> Unit,
     onNavigateToTest: () -> Unit,
     onNavigateToDashboard: () -> Unit,
+    isDefaultSmsApp: Boolean,
     refreshTrigger: Int = 0,
     checkPermissions: () -> Boolean = { true }
 ) {
@@ -73,7 +76,7 @@ fun MenuScreen(
         item {
             // Header
             Text(
-                text = "Menu",
+                text = stringResource(R.string.menu_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = DesignColors.Primary
             )
@@ -91,7 +94,7 @@ fun MenuScreen(
                     verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)
                 ) {
                     Text(
-                        text = "Quick Stats",
+                        text = stringResource(R.string.menu_quick_stats),
                         style = MaterialTheme.typography.titleMedium,
                         color = DesignColors.Primary
                     )
@@ -101,17 +104,17 @@ fun MenuScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         StatsItem(
-                            title = "Filtered",
+                            title = stringResource(R.string.menu_stat_filtered),
                             value = totalFiltered.toString(),
                             icon = Icons.Default.FilterList
                         )
                         StatsItem(
-                            title = "Blocked",
+                            title = stringResource(R.string.menu_stat_blocked),
                             value = totalBlocked.toString(),
                             icon = Icons.Default.Block
                         )
                         StatsItem(
-                            title = "OTPs Copied",
+                            title = stringResource(R.string.menu_stat_otp_copied),
                             value = otpCount.toString(),
                             icon = Icons.Default.ContentCopy
                         )
@@ -122,17 +125,17 @@ fun MenuScreen(
         
         item {
             // Main Actions
-            MenuSection(title = "Main") {
+            MenuSection(title = stringResource(R.string.menu_section_main)) {
                 MenuItem(
-                    title = "Dashboard",
-                    subtitle = "App overview and status",
+                    title = stringResource(R.string.menu_dashboard),
+                    subtitle = stringResource(R.string.menu_dashboard_subtitle),
                     icon = Icons.Default.Home,
                     onClick = onNavigateToDashboard
                 )
                 
                 MenuItem(
-                    title = "Statistics",
-                    subtitle = "Detailed filtering statistics",
+                    title = stringResource(R.string.menu_statistics),
+                    subtitle = stringResource(R.string.menu_statistics_subtitle),
                     icon = Icons.Default.Assessment,
                     onClick = onNavigateToStats
                 )
@@ -141,17 +144,17 @@ fun MenuScreen(
         
         item {
             // Tools & Settings
-            MenuSection(title = "Tools & Settings") {
+            MenuSection(title = stringResource(R.string.menu_section_tools)) {
                 MenuItem(
-                    title = "Settings",
-                    subtitle = "Configure filtering and notifications",
+                    title = stringResource(R.string.menu_settings),
+                    subtitle = stringResource(R.string.menu_settings_subtitle),
                     icon = Icons.Default.Settings,
                     onClick = onNavigateToSettings
                 )
                 
                 MenuItem(
-                    title = "Test Filter",
-                    subtitle = "Test how messages would be filtered",
+                    title = stringResource(R.string.menu_test_filter),
+                    subtitle = stringResource(R.string.menu_test_filter_subtitle),
                     icon = Icons.Default.Science,
                     onClick = onNavigateToTest
                 )
@@ -161,9 +164,10 @@ fun MenuScreen(
         item {
             // App Status
             AppStatusCard(
-                smsAppManager = smsAppManager,
+                isDefaultSmsApp = isDefaultSmsApp,
                 hasPermissions = hasPermissions,
                 hasNotificationAccess = hasNotificationAccess,
+                onRequestDefaultSmsApp = { smsAppManager.requestDefaultSmsApp() },
                 onRequestPermissions = onRequestPermissions
             )
         }
@@ -282,13 +286,13 @@ private fun StatsItem(
 
 @Composable
 private fun AppStatusCard(
-    smsAppManager: SmsAppManager,
+    isDefaultSmsApp: Boolean,
     hasPermissions: Boolean,
     hasNotificationAccess: Boolean,
+    onRequestDefaultSmsApp: () -> Unit,
     onRequestPermissions: () -> Unit
 ) {
     val context = LocalContext.current
-    val isDefaultSmsApp = smsAppManager.isJunkboyDefaultSmsApp()
     
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -300,15 +304,15 @@ private fun AppStatusCard(
             verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)
         ) {
             Text(
-                text = "App Status",
+                text = stringResource(R.string.menu_app_status),
                 style = MaterialTheme.typography.titleMedium,
                 color = DesignColors.Primary
             )
             
             // Permissions Status
             StatusRow(
-                title = "SMS Permissions",
-                subtitle = if (hasPermissions) "All permissions granted" else "Some permissions missing",
+                title = stringResource(R.string.menu_sms_permissions),
+                subtitle = if (hasPermissions) stringResource(R.string.menu_sms_permissions_granted) else stringResource(R.string.menu_sms_permissions_missing),
                 icon = Icons.Default.Security,
                 isEnabled = hasPermissions,
                 onClick = if (!hasPermissions) onRequestPermissions else null
@@ -318,12 +322,12 @@ private fun AppStatusCard(
             
             // Default SMS App Status
             StatusRow(
-                title = "Default SMS App",
-                subtitle = if (isDefaultSmsApp) "Junkboy is your default SMS app" else "Tap to set as default",
+                title = stringResource(R.string.menu_default_sms_app),
+                subtitle = if (isDefaultSmsApp) stringResource(R.string.menu_default_sms_app_set) else stringResource(R.string.menu_default_sms_app_not_set),
                 icon = Icons.Default.Message,
                 isEnabled = isDefaultSmsApp,
                 onClick = if (!isDefaultSmsApp) {
-                    { smsAppManager.requestDefaultSmsApp() }
+                    onRequestDefaultSmsApp
                 } else null
             )
             
@@ -331,8 +335,8 @@ private fun AppStatusCard(
             
             // Notification Access Status
             StatusRow(
-                title = "Notification Access",
-                subtitle = if (hasNotificationAccess) "Can read chat notifications" else "Tap to enable for Hub",
+                title = stringResource(R.string.menu_notification_access),
+                subtitle = if (hasNotificationAccess) stringResource(R.string.menu_notification_access_on) else stringResource(R.string.menu_notification_access_off),
                 icon = Icons.Default.Notifications,
                 isEnabled = hasNotificationAccess,
                 onClick = if (!hasNotificationAccess) {

@@ -52,6 +52,16 @@ interface FilteredMessageDao {
     
     @Query("SELECT * FROM filtered_messages WHERE receivedAt >= :since ORDER BY receivedAt DESC")
     fun getMessagesAfter(since: Date): Flow<List<FilteredMessage>>
+
+    @Query("""
+        SELECT * FROM filtered_messages
+        WHERE sender = :sender
+            AND messageBody = :messageBody
+            AND receivedAt BETWEEN :start AND :end
+        ORDER BY receivedAt DESC
+        LIMIT 1
+    """)
+    suspend fun getRecentDuplicate(sender: String, messageBody: String, start: Date, end: Date): FilteredMessage?
     
     @Query("SELECT COUNT(*) FROM filtered_messages WHERE category = :category")
     suspend fun getCountByCategory(category: MessageCategory): Int
@@ -98,6 +108,9 @@ interface FilteredMessageDao {
     
     @Query("UPDATE filtered_messages SET isRead = 1 WHERE category = :category")
     suspend fun markCategoryAsRead(category: MessageCategory)
+
+    @Query("UPDATE filtered_messages SET isRead = 1 WHERE sender = :sender")
+    suspend fun markSenderAsRead(sender: String)
     
     // Conversation grouping queries
     

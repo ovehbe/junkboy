@@ -12,6 +12,7 @@ import com.ovehbe.junkboy.database.AppDatabase
 import com.ovehbe.junkboy.database.FilteredMessage
 import com.ovehbe.junkboy.database.MessageCategory
 import com.ovehbe.junkboy.filters.CustomFilter
+import com.ovehbe.junkboy.smsreceiver.IncomingSmsPersistence
 import com.ovehbe.junkboy.utils.PreferencesManager
 import com.ovehbe.junkboy.utils.NotificationHelper
 import com.ovehbe.junkboy.utils.SmsDeleter
@@ -28,6 +29,7 @@ class SmsFilterService : Service() {
         private const val TAG = "SmsFilterService"
         private const val NOTIFICATION_ID = 1001
         private const val CHANNEL_ID = "sms_filter_service"
+        private const val DUPLICATE_WINDOW_MS = 5 * 60 * 1000L
     }
     
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -79,10 +81,32 @@ class SmsFilterService : Service() {
         val message = intent.getStringExtra("message") ?: return
         val timestamp = intent.getLongExtra("timestamp", System.currentTimeMillis())
         val isObviousJunk = intent.getBooleanExtra("is_obvious_junk", false)
+        val broadcastAction = intent.getStringExtra("broadcast_action")
         
         serviceScope.launch {
             try {
                 Log.d(TAG, "Processing SMS from $sender")
+
+                val duplicateMessage = database.filteredMessageDao().getRecentDuplicate(
+                    sender = sender,
+                    messageBody = message,
+                    start = Date(timestamp - DUPLICATE_WINDOW_MS),
+                    end = Date(timestamp + DUPLICATE_WINDOW_MS)
+                )
+                if (duplicateMessage != null) {
+                    Log.d(TAG, "Skipping duplicate SMS from $sender")
+                    IncomingSmsPersistence.persistToSystemInboxIfNeeded(
+                        contentResolver = contentResolver,
+                        action = broadcastAction,
+                        sender = sender,
+                        message = message,
+                        timestamp = timestamp,
+                        isBlocked = duplicateMessage.isBlocked,
+                        autoDeleteBlockedMessages = preferencesManager.isAutoDeleteJunkEnabled()
+                    )
+                    stopSelf()
+                    return@launch
+                }
                 
                 // Check if sender is in allowed list - if so, don't filter
                 // Use flexible matching: case-insensitive for text senders, and normalized for phone numbers
@@ -105,6 +129,16 @@ class SmsFilterService : Service() {
                     
                     // Save to database and get message ID
                     val messageId = database.filteredMessageDao().insertMessage(filteredMessage)
+
+                    IncomingSmsPersistence.persistToSystemInboxIfNeeded(
+                        contentResolver = contentResolver,
+                        action = broadcastAction,
+                        sender = sender,
+                        message = message,
+                        timestamp = timestamp,
+                        isBlocked = false,
+                        autoDeleteBlockedMessages = preferencesManager.isAutoDeleteJunkEnabled()
+                    )
                     
                     // IMPORTANT: Show notification for allow-listed senders
                     // They should bypass filtering but still show notifications
@@ -254,6 +288,16 @@ class SmsFilterService : Service() {
                 
                 // Save to database
                 val messageId = database.filteredMessageDao().insertMessage(filteredMessage)
+
+                IncomingSmsPersistence.persistToSystemInboxIfNeeded(
+                    contentResolver = contentResolver,
+                    action = broadcastAction,
+                    sender = sender,
+                    message = message,
+                    timestamp = timestamp,
+                    isBlocked = filterResult.isBlocked,
+                    autoDeleteBlockedMessages = preferencesManager.isAutoDeleteJunkEnabled()
+                )
                 
                 Log.d(TAG, "Message classified as ${filterResult.category} (blocked: ${filterResult.isBlocked}, confidence: ${filterResult.confidence})")
                 
@@ -389,8 +433,8 @@ class SmsFilterService : Service() {
     
     private fun createServiceNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Junkboy SMS Filter")
-            .setContentText("Filtering incoming SMS messages")
+            .setContentTitle(getString(R.string.service_notif_title))
+            .setContentText(getString(R.string.service_notif_text))
             .setSmallIcon(R.drawable.ic_filter_list)
             .setOngoing(true)
             .setCategory(Notification.CATEGORY_SERVICE)

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Junkboy</string>
+
+    <!-- Categories -->
+    <string name="category_general">普通</string>
+    <string name="category_promotion">推广</string>
+    <string name="category_notification">通知</string>
+    <string name="category_transaction">交易</string>
+    <string name="category_junk">垃圾信息</string>
+
+    <!-- UI Strings -->
+    <string name="filtered_messages">已过滤消息</string>
+    <string name="under_attack_mode">受攻击模式</string>
+    <string name="filter_settings">过滤设置</string>
+    <string name="message_log">消息日志</string>
+    <string name="no_messages">暂无已过滤消息</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">短信过滤</string>
+    <string name="notification_channel_description">已过滤短信消息的通知</string>
+    <string name="notification_title_filtered">消息已过滤</string>
+    <string name="notification_junk_blocked">已拦截来自 %1$s 的垃圾信息</string>
+
+    <!-- Permissions -->
+    <string name="permission_sms_title">需要短信权限</string>
+    <string name="permission_sms_message">Junkboy 需要短信权限来过滤您的消息</string>
+    <string name="permission_notification_title">通知权限</string>
+    <string name="permission_notification_message">允许通知以查看已过滤的消息</string>
+
+    <!-- Settings -->
+    <string name="enable_ml_filtering">启用机器学习过滤</string>
+    <string name="enable_keyword_filtering">启用关键词过滤</string>
+    <string name="enable_regex_filtering">启用正则表达式过滤</string>
+    <string name="custom_keywords">自定义关键词</string>
+    <string name="custom_regex">自定义正则表达式</string>
+
+    <!-- Actions -->
+    <string name="allow">允许</string>
+    <string name="block">拦截</string>
+    <string name="delete">删除</string>
+    <string name="restore">恢复</string>
+    <string name="mark_as_junk">标记为垃圾信息</string>
+    <string name="mark_as_safe">标记为安全</string>
+
+    <!-- Navigation -->
+    <string name="nav_hub">中心</string>
+    <string name="nav_sms">短信</string>
+    <string name="nav_filtered">已过滤</string>
+    <string name="nav_menu">菜单</string>
+
+    <!-- Hub Screen -->
+    <string name="hub_search_hint">搜索消息...</string>
+    <string name="hub_tab_all">全部</string>
+    <string name="hub_tab_sms">短信 (%d)</string>
+    <string name="hub_tab_chats">聊天 (%d)</string>
+    <string name="hub_chat_notifications">聊天通知</string>
+    <string name="hub_about_title">关于中心</string>
+    <string name="hub_about_message">中心在一个地方显示您的所有消息：\n\n• 短信：通过 Junkboy 过滤的消息（未被拦截的）\n\n• 聊天：来自聊天应用的通知（需要通知访问权限）\n\n💡 点击任意消息可在原应用中打开！\n\n使用切换按钮（📋/💬）在会话和消息视图之间切换。</string>
+    <string name="hub_got_it">知道了</string>
+    <string name="hub_notification_access_title">需要通知访问权限</string>
+    <string name="hub_notification_access_message">授予权限以查看其他应用的聊天通知</string>
+    <string name="hub_grant">授权</string>
+    <string name="hub_loading">正在加载消息...</string>
+    <string name="hub_retry">重试</string>
+    <string name="hub_empty_all">暂无消息</string>
+    <string name="hub_empty_sms">暂无已过滤的短信</string>
+    <string name="hub_empty_chats">暂无捕获的聊天通知</string>
+    <string name="hub_empty_hint_all">Junkboy 处理收到的短信后，消息将显示在此处</string>
+    <string name="hub_empty_hint_sms">通过过滤器的收到短信将显示在此处</string>
+    <string name="hub_empty_hint_chats">启用通知访问权限以捕获聊天应用通知</string>
+    <string name="hub_show_messages">显示消息</string>
+    <string name="hub_show_conversations">显示会话</string>
+    <string name="hub_info">信息</string>
+    <string name="hub_clear">清除</string>
+    <string name="hub_open">打开</string>
+    <string name="hub_sms">短信</string>
+    <string name="hub_open_in_sms_app">在短信应用中打开</string>
+    <string name="hub_chat">聊天</string>
+    <string name="hub_open_app">打开应用</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Junkboy 短信过滤</string>
+    <string name="dashboard_subtitle">隐私优先的短信过滤</string>
+    <string name="dashboard_permissions_required">需要权限</string>
+    <string name="dashboard_permissions_message">Junkboy 需要短信权限来过滤您的消息。您的数据保留在您的设备上。</string>
+    <string name="dashboard_grant_permissions">授权</string>
+    <string name="dashboard_filtering_active">短信过滤已激活</string>
+    <string name="dashboard_filtering_message">您的消息正在被自动过滤。</string>
+    <string name="dashboard_sms_guidance">短信指南</string>
+    <string name="dashboard_quick_actions">快捷操作</string>
+    <string name="dashboard_messages">消息</string>
+    <string name="dashboard_settings">设置</string>
+    <string name="dashboard_under_attack">受攻击模式</string>
+    <string name="dashboard_under_attack_subtitle">增强保护</string>
+    <string name="dashboard_ai_classification">AI 分类</string>
+    <string name="dashboard_ai_enabled">已启用</string>
+    <string name="dashboard_ai_disabled">已禁用</string>
+
+    <!-- Messages Screen -->
+    <string name="messages_title">已过滤消息</string>
+    <string name="messages_search_hint">搜索消息...</string>
+    <string name="messages_tab_all">全部</string>
+    <string name="messages_tab_blocked">已拦截 (%d)</string>
+    <string name="messages_open_in_sms_app">在短信应用中打开</string>
+    <string name="messages_allow_sender">允许发件人</string>
+    <string name="messages_more_options">更多选项</string>
+    <string name="messages_tap_to_open">点击打开</string>
+    <string name="messages_loading">正在加载消息...</string>
+    <string name="messages_retry">重试</string>
+    <string name="messages_empty_search">未找到结果</string>
+    <string name="messages_empty_blocked">暂无被拦截的消息</string>
+    <string name="messages_empty_category">暂无 %s 消息</string>
+    <string name="messages_empty_none">暂无已过滤消息</string>
+    <string name="messages_empty_hint_search">尝试其他搜索词</string>
+    <string name="messages_empty_hint_blocked">所有消息都已通过过滤器</string>
+    <string name="messages_empty_hint_none">消息处理后将会显示在此处</string>
+    <string name="messages_blocked">已拦截</string>
+    <string name="messages_show_messages">显示消息</string>
+    <string name="messages_show_conversations">显示会话</string>
+    <string name="messages_clear">清除</string>
+
+    <!-- Menu Screen -->
+    <string name="menu_title">菜单</string>
+    <string name="menu_quick_stats">快速统计</string>
+    <string name="menu_stat_filtered">已过滤</string>
+    <string name="menu_stat_blocked">已拦截</string>
+    <string name="menu_stat_otp_copied">OTP 已复制</string>
+    <string name="menu_section_main">主要</string>
+    <string name="menu_dashboard">仪表板</string>
+    <string name="menu_dashboard_subtitle">应用概览和状态</string>
+    <string name="menu_statistics">统计</string>
+    <string name="menu_statistics_subtitle">详细过滤统计</string>
+    <string name="menu_section_tools">工具和设置</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_settings_subtitle">配置过滤和通知</string>
+    <string name="menu_test_filter">测试过滤器</string>
+    <string name="menu_test_filter_subtitle">测试消息如何被过滤</string>
+    <string name="menu_app_status">应用状态</string>
+    <string name="menu_sms_permissions">短信权限</string>
+    <string name="menu_sms_permissions_granted">所有权限已授予</string>
+    <string name="menu_sms_permissions_missing">缺少部分权限</string>
+    <string name="menu_default_sms_app">默认短信应用</string>
+    <string name="menu_default_sms_app_set">Junkboy 是您的默认短信应用</string>
+    <string name="menu_default_sms_app_not_set">点击设为默认</string>
+    <string name="menu_notification_access">通知访问</string>
+    <string name="menu_notification_access_on">可读取聊天通知</string>
+    <string name="menu_notification_access_off">点击启用以使用中心功能</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="settings_section_hub">中心设置</string>
+    <string name="settings_hub_description">中心为所有消息提供统一的收件箱视图</string>
+    <string name="settings_enable_hub">启用中心</string>
+    <string name="settings_enable_hub_subtitle">在底部导航中显示中心（需要重启应用）</string>
+    <string name="settings_display_mode">显示模式</string>
+    <string name="settings_display_mode_subtitle">中心显示内容</string>
+    <string name="settings_display_mode_all">全部（短信 + 聊天）</string>
+    <string name="settings_display_mode_sms">仅短信</string>
+    <string name="settings_display_mode_chats">仅聊天</string>
+    <string name="settings_default_view">默认视图</string>
+    <string name="settings_default_view_subtitle">消息显示方式</string>
+    <string name="settings_default_view_conversations">会话</string>
+    <string name="settings_default_view_messages">单条消息</string>
+    <string name="settings_section_sms_app">短信应用设置</string>
+    <string name="settings_sms_app_description">Junkboy 设为默认短信应用时的设置</string>
+    <string name="settings_hide_junk">隐藏垃圾消息</string>
+    <string name="settings_hide_junk_subtitle">从短信收件箱中隐藏被拦截/垃圾消息</string>
+    <string name="settings_show_category_badges">显示分类标记</string>
+    <string name="settings_show_category_badges_subtitle">在消息上显示 Junkboy 分类</string>
+    <string name="settings_display_categories">显示分类</string>
+    <string name="settings_display_categories_subtitle">选择要在短信屏幕中显示的消息分类</string>
+    <string name="settings_category_general">普通</string>
+    <string name="settings_category_promotion">推广</string>
+    <string name="settings_category_notification">通知</string>
+    <string name="settings_category_transaction">交易</string>
+    <string name="settings_category_junk">垃圾信息</string>
+    <string name="settings_category_allowed">已允许</string>
+    <string name="settings_auto_delete_junk">自动删除垃圾信息</string>
+    <string name="settings_test_auto_delete">测试自动删除</string>
+    <string name="settings_test_auto_delete_subtitle">模拟删除垃圾消息</string>
+    <string name="settings_testing">测试中...</string>
+    <string name="settings_auto_delete_ready">✅ 自动删除已就绪！垃圾消息将被自动移除。</string>
+    <string name="settings_auto_delete_cannot">❌ 无法删除：Junkboy 不是默认短信应用</string>
+    <string name="settings_section_accessibility">无障碍</string>
+    <string name="settings_accessibility_description">调整设置以更好地兼容物理键盘</string>
+    <string name="settings_keyboard_offset">键盘底部偏移</string>
+    <string name="settings_keyboard_offset_subtitle">显示键盘时的额外空间（适用于 BlackBerry Key2 等设备）</string>
+    <string name="settings_section_filter_methods">过滤方式</string>
+    <string name="settings_ai_classification">AI 分类</string>
+    <string name="settings_ai_classification_subtitle">使用机器学习对消息分类</string>
+    <string name="settings_keyword_filtering">关键词过滤</string>
+    <string name="settings_keyword_filtering_subtitle">基于关键词过滤消息</string>
+    <string name="settings_regex_filtering">正则表达式过滤</string>
+    <string name="settings_regex_filtering_subtitle">高级模式匹配过滤</string>
+    <string name="settings_under_attack_mode">受攻击模式</string>
+    <string name="settings_under_attack_mode_subtitle">在垃圾信息高峰期增强保护</string>
+    <string name="settings_section_notifications">通知设置</string>
+    <string name="settings_notify_general">普通消息</string>
+    <string name="settings_notify_general_subtitle">显示普通消息的通知</string>
+    <string name="settings_notify_notification">通知类消息</string>
+    <string name="settings_notify_notification_subtitle">显示系统提醒的通知</string>
+    <string name="settings_notify_transaction">交易消息</string>
+    <string name="settings_notify_transaction_subtitle">显示银行/支付消息的通知</string>
+    <string name="settings_notify_promotion">推广消息</string>
+    <string name="settings_notify_promotion_subtitle">显示推广消息的通知</string>
+    <string name="settings_notify_allowed">允许的发件人</string>
+    <string name="settings_notify_allowed_subtitle">显示允许发件人的通知</string>
+    <string name="settings_notify_blocked">被拦截的消息</string>
+    <string name="settings_notify_blocked_subtitle">显示被拦截消息的通知</string>
+    <string name="settings_section_features">功能</string>
+    <string name="settings_otp_auto_copy">OTP 自动复制</string>
+    <string name="settings_otp_auto_copy_subtitle">自动将 OTP 验证码复制到剪贴板</string>
+    <string name="settings_hub_notifications">中心通知</string>
+    <string name="settings_hub_notifications_subtitle">显示聊天消息的通知</string>
+    <string name="settings_auto_delete_feature">自动删除垃圾信息</string>
+    <string name="settings_auto_delete_feature_subtitle">自动删除垃圾消息</string>
+    <string name="settings_section_sms_control">短信应用控制</string>
+    <string name="settings_sms_control_description">控制来自默认短信应用（%s）的通知</string>
+    <string name="settings_enable_sms_control">启用短信应用控制</string>
+    <string name="settings_enable_sms_control_subtitle">允许 Junkboy 管理短信应用通知</string>
+    <string name="settings_dismiss_sms_notifications">消除短信通知</string>
+    <string name="settings_dismiss_sms_notifications_subtitle">自动消除来自短信应用的通知</string>
+    <string name="settings_blocked_messages_only">仅被拦截的消息</string>
+    <string name="settings_blocked_messages_only_subtitle">仅消除被拦截/垃圾消息的通知</string>
+    <string name="settings_open_sms_notification_settings">打开短信应用通知设置</string>
+    <string name="settings_open_sms_notification_settings_subtitle">手动配置短信应用通知</string>
+    <string name="settings_notification_access_required">需要通知访问权限</string>
+    <string name="settings_notification_access_message">授予通知访问权限以启用短信应用控制</string>
+    <string name="settings_grant">授权</string>
+    <string name="settings_section_custom_keywords">自定义关键词</string>
+    <string name="settings_add_keyword">添加关键词</string>
+    <string name="settings_add_keyword_subtitle">添加自定义垃圾信息关键词</string>
+    <string name="settings_section_custom_regex">自定义正则表达式</string>
+    <string name="settings_add_pattern">添加模式</string>
+    <string name="settings_add_pattern_subtitle">添加自定义正则表达式模式</string>
+    <string name="settings_section_allowed_senders">允许的发件人</string>
+    <string name="settings_add_sender">添加发件人</string>
+    <string name="settings_add_sender_subtitle">添加信任的发件人</string>
+    <string name="settings_section_data_management">数据管理</string>
+    <string name="settings_process_existing">处理现有消息</string>
+    <string name="settings_process_existing_subtitle">将当前过滤器应用于现有消息</string>
+    <string name="settings_process_success">成功处理 %d 条消息</string>
+    <string name="settings_process_error">错误：%s</string>
+    <string name="settings_export_data">导出数据</string>
+    <string name="settings_export_data_subtitle">将已过滤消息导出为 CSV</string>
+    <string name="settings_export_success">成功导出 %d 条消息</string>
+    <string name="settings_export_error">错误：%s</string>
+    <string name="settings_clear_all_data">清除所有数据</string>
+    <string name="settings_clear_all_data_subtitle">删除所有已过滤的消息</string>
+    <string name="settings_status">状态：%s</string>
+    <string name="settings_remove">移除</string>
+    <string name="settings_add_keyword_title">添加关键词</string>
+    <string name="settings_keyword_label">关键词</string>
+    <string name="settings_add">添加</string>
+    <string name="settings_cancel">取消</string>
+    <string name="settings_add_regex_title">添加正则表达式模式</string>
+    <string name="settings_pattern_label">模式</string>
+    <string name="settings_add_sender_title">添加允许的发件人</string>
+    <string name="settings_phone_number_label">电话号码</string>
+    <string name="settings_clear_data_title">清除所有数据</string>
+    <string name="settings_clear_data_message">这将永久删除所有已过滤的消息。此操作无法撤销。</string>
+    <string name="settings_clear">清除</string>
+
+    <!-- Stats Screen -->
+    <string name="stats_title">统计</string>
+    <string name="stats_total_statistics">总统计</string>
+    <string name="stats_messages_filtered">已过滤消息</string>
+    <string name="stats_junk_blocked">已拦截垃圾信息</string>
+    <string name="stats_otp_copied">OTP 已复制</string>
+    <string name="stats_today_activity">今日活动</string>
+    <string name="stats_blocked">已拦截</string>
+    <string name="stats_category_breakdown">分类统计</string>
+    <string name="stats_no_messages_today">今日暂无消息分析</string>
+    <string name="stats_performance_metrics">性能指标</string>
+    <string name="stats_overall_block_rate">总体拦截率</string>
+    <string name="stats_today_block_rate">今日拦截率</string>
+    <string name="stats_filter_status">过滤状态</string>
+    <string name="stats_filter_ai">AI 分类</string>
+    <string name="stats_filter_keyword">关键词过滤</string>
+    <string name="stats_filter_regex">正则表达式过滤</string>
+
+    <!-- Test Filter Screen -->
+    <string name="test_filter_title">测试短信过滤器</string>
+    <string name="test_filter_message_details">消息详情</string>
+    <string name="test_filter_sender_label">发件人</string>
+    <string name="test_filter_sender_hint">例如：+1234567890 或 BANK</string>
+    <string name="test_filter_message_label">消息内容</string>
+    <string name="test_filter_message_hint">输入要测试的短信内容...</string>
+    <string name="test_filter_unknown">未知</string>
+    <string name="test_filter_processing">处理中...</string>
+    <string name="test_filter_button">测试过滤器</string>
+    <string name="test_filter_result">过滤结果</string>
+    <string name="test_filter_category_label">分类</string>
+    <string name="test_filter_confidence_label">置信度</string>
+    <string name="test_filter_type_label">过滤类型</string>
+    <string name="test_filter_status_label">状态</string>
+    <string name="test_filter_blocked">已拦截</string>
+    <string name="test_filter_allowed">已允许</string>
+    <string name="test_filter_details">详情</string>
+    <string name="test_filter_sample_messages">示例消息</string>
+    <string name="test_filter_sample_description">尝试这些示例消息，看看过滤器如何工作：</string>
+    <string name="test_filter_from">发件人：%s</string>
+    <string name="test_filter_reason_allowed">发件人 \'%s\' 在允许列表中</string>
+    <string name="test_filter_reason_keyword">匹配关键词过滤器</string>
+    <string name="test_filter_reason_regex">匹配正则表达式模式：%s</string>
+    <string name="test_filter_reason_ml">AI 分类为 %s</string>
+    <string name="test_filter_reason_default">没有匹配的过滤器，分类为普通</string>
+    <string name="test_filter_type_ai">AI 分类</string>
+    <string name="test_filter_type_keyword">关键词过滤</string>
+    <string name="test_filter_type_regex">正则表达式过滤</string>
+    <string name="test_filter_type_user_rule">用户规则</string>
+    <string name="test_filter_type_under_attack">受攻击模式</string>
+    <string name="test_filter_type_allowed_sender">允许的发件人</string>
+
+    <!-- SMS Screen -->
+    <string name="sms_messages">消息</string>
+    <string name="sms_search">搜索</string>
+    <string name="sms_new_message">新消息</string>
+    <string name="sms_search_conversations_hint">搜索会话...</string>
+    <string name="sms_close_search">关闭搜索</string>
+    <string name="sms_clear">清除</string>
+    <string name="sms_category_junk">垃圾</string>
+    <string name="sms_category_promo">推广</string>
+    <string name="sms_category_bank">银行</string>
+    <string name="sms_category_alert">提醒</string>
+    <string name="sms_category_gen">普通</string>
+    <string name="sms_category_allowed">已允许</string>
+    <string name="sms_delete_conversation">删除会话</string>
+    <string name="sms_delete_conversation_message">您确定要删除整个会话吗？此操作无法撤销。</string>
+    <string name="sms_delete">删除</string>
+    <string name="sms_cancel">取消</string>
+    <string name="sms_back">返回</string>
+    <string name="sms_more_options">更多选项</string>
+    <string name="sms_delete_conversation_action">删除会话</string>
+    <string name="sms_today">今天</string>
+    <string name="sms_yesterday">昨天</string>
+    <string name="sms_message_hint">消息</string>
+    <string name="sms_send">发送</string>
+    <string name="sms_contact_permission_required">需要联系人权限</string>
+    <string name="sms_select_contact">选择联系人</string>
+    <string name="sms_search_contacts_hint">搜索联系人...</string>
+    <string name="sms_new_message_title">新消息</string>
+    <string name="sms_to_label">收件人</string>
+    <string name="sms_phone_number_hint">电话号码</string>
+    <string name="sms_select_contact_icon">选择联系人</string>
+    <string name="sms_enter_recipient_message">请输入收件人和消息</string>
+    <string name="sms_set_default">设为默认短信应用</string>
+    <string name="sms_set_default_message">要使用完整的短信功能，请将 Junkboy 设为默认短信应用。这将启用发送、接收和管理所有文本消息的功能。</string>
+    <string name="sms_no_messages">暂无消息</string>
+    <string name="sms_no_messages_message">点击撰写按钮开始会话</string>
+    <string name="sms_no_results">无结果 \"%s\"</string>
+    <string name="sms_error_loading">加载消息时出错</string>
+    <string name="sms_retry">重试</string>
+
+    <!-- Time formatting -->
+    <string name="time_just_now">刚刚</string>
+    <string name="time_minutes_ago">%d分钟前</string>
+    <string name="time_hours_ago">%d小时前</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_search">搜索</string>
+    <string name="cd_clear">清除</string>
+    <string name="cd_back">返回</string>
+    <string name="cd_more_options">更多选项</string>
+    <string name="cd_open">打开</string>
+    <string name="cd_remove">移除</string>
+    <string name="cd_info">信息</string>
+    <string name="cd_blocked">已拦截</string>
+    <string name="cd_sms">短信</string>
+    <string name="cd_chat">聊天</string>
+    <string name="cd_open_app">打开应用</string>
+    <string name="cd_open_in_sms">在短信应用中打开</string>
+    <string name="cd_show_messages">显示消息</string>
+    <string name="cd_show_conversations">显示会话</string>
+    <string name="cd_new_message">新消息</string>
+    <string name="cd_send">发送</string>
+    <string name="cd_select_contact">选择联系人</string>
+    <string name="cd_close_search">关闭搜索</string>
+
+    <!-- Notification channels -->
+    <string name="notification_channel_blocked">被拦截的消息</string>
+    <string name="notification_channel_blocked_desc">被拦截的垃圾短信</string>
+    <string name="notification_channel_transaction">交易消息</string>
+    <string name="notification_channel_transaction_desc">银行和支付消息</string>
+    <string name="notification_channel_promotion">推广消息</string>
+    <string name="notification_channel_promotion_desc">营销和推广消息</string>
+    <string name="notification_channel_notification">通知消息</string>
+    <string name="notification_channel_notification_desc">系统和应用通过短信发送的通知</string>
+    <string name="notification_channel_general">普通消息</string>
+    <string name="notification_channel_general_desc">个人和其他短信</string>
+    <string name="notification_channel_stats">每日统计</string>
+    <string name="notification_channel_stats_desc">每日过滤统计和报告</string>
+
+    <!-- Notification content -->
+    <string name="notif_title_blocked">已拦截：垃圾短信</string>
+    <string name="notif_title_transaction">新交易消息</string>
+    <string name="notif_title_promotion">新推广</string>
+    <string name="notif_title_notification">新通知</string>
+    <string name="notif_title_general">新消息</string>
+    <string name="notif_action_open">打开 Junkboy</string>
+    <string name="notif_action_allow">允许发件人</string>
+    <string name="notif_daily_report_title">Junkboy 每日报告</string>
+    <string name="notif_daily_report_text">已过滤 %1$d 条消息，拦截 %2$d 条垃圾信息</string>
+    <string name="notif_daily_report_big">📊 今日短信过滤摘要：\n\n🛡️ 总计过滤：%1$d\n🚫 已拦截（垃圾）：%2$d\n</string>
+    <string name="notif_daily_report_summary">每日过滤报告</string>
+    <string name="notif_from">来自：%s</string>
+
+    <!-- Service notification -->
+    <string name="service_notif_title">Junkboy 短信过滤</string>
+    <string name="service_notif_text">正在过滤收到的短信</string>
+
+    <!-- SMS guidance -->
+    <string name="unknown_sms_app">未知短信应用</string>
+    <string name="default_sms_app">默认短信应用</string>
+    <string name="sms_guidance_default">✅ Junkboy 是您的默认短信应用。所有短信通知均由 Junkboy 处理。</string>
+    <string name="sms_guidance_not_default">为避免重复通知，请关闭"%1$s"的通知，让 Junkboy 处理所有短信提醒。</string>
+
+    <!-- Manual default SMS instructions -->
+    <string name="manual_sms_instructions">由于自动设置未成功，请手动将 Junkboy 设为默认短信应用：\n\n📱 方法 1 - 安卓设置：\n1. 打开安卓设置\n2. 进入 应用 → 默认应用 → 短信应用\n3. 选择"Junkboy SMS Filter"\n\n📱 方法 2 - 应用信息：\n1. 打开安卓设置\n2. 进入 应用 → Junkboy SMS Filter\n3. 点击"设为默认"或"默认打开"\n4. 启用短信处理\n\n📱 方法 3 - 搜索设置：\n1. 打开安卓设置\n2. 搜索"默认短信"或"信息应用"\n3. 从列表中选择 Junkboy\n\n💡 注意：具体步骤可能因设备制造商而异。</string>
+
+    <!-- Toast messages -->
+    <string name="toast_send_failed">发送失败：%s</string>
+    <string name="toast_category_general">💬 普通</string>
+    <string name="toast_category_promotion">🏷️ 推广</string>
+    <string name="toast_category_notification">🔔 通知</string>
+    <string name="toast_category_transaction">💳 交易</string>
+    <string name="toast_category_junk">🗑️ 垃圾</string>
+    <string name="toast_category_allowed">✅ 已允许</string>
+</resources>

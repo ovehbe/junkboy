@@ -18,7 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import com.ovehbe.junkboy.ui.theme.*
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.utils.PreferencesManager
 import com.ovehbe.junkboy.utils.SmsAppManager
 import com.ovehbe.junkboy.utils.SmsDeleter
@@ -154,7 +156,7 @@ fun SettingsScreen() {
         item {
             // Header
             Text(
-                text = "Settings",
+                text = stringResource(R.string.settings_title),
                 style = MaterialTheme.typography.headlineMedium,
                 color = DesignColors.Primary
             )
@@ -163,19 +165,19 @@ fun SettingsScreen() {
         // Hub Settings Section
         item {
             SettingsSection(
-                title = "Hub Settings",
+                title = stringResource(R.string.settings_section_hub),
                 icon = Icons.Default.Inbox
             ) {
                 Text(
-                    text = "The Hub provides a unified inbox view for all your messages",
+                    text = stringResource(R.string.settings_hub_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary,
                     modifier = Modifier.padding(bottom = DesignSpacing.SM)
                 )
-                
+
                 ToggleSettingItem(
-                    title = "Enable Hub",
-                    subtitle = "Show Hub in bottom navigation (requires app restart)",
+                    title = stringResource(R.string.settings_enable_hub),
+                    subtitle = stringResource(R.string.settings_enable_hub_subtitle),
                     checked = hubEnabled,
                     onCheckedChange = { enabled ->
                         hubEnabled = enabled
@@ -187,15 +189,15 @@ fun SettingsScreen() {
                     // Display mode dropdown
                     var displayModeExpanded by remember { mutableStateOf(false) }
                     val displayModeOptions = listOf(
-                        "all" to "All (SMS + Chats)",
-                        "sms_only" to "SMS Only",
-                        "chats_only" to "Chats Only"
+                        "all" to stringResource(R.string.settings_display_mode_all),
+                        "sms_only" to stringResource(R.string.settings_display_mode_sms),
+                        "chats_only" to stringResource(R.string.settings_display_mode_chats)
                     )
-                    val currentDisplayLabel = displayModeOptions.find { it.first == hubDisplayMode }?.second ?: "SMS Only"
-                    
+                    val currentDisplayLabel = displayModeOptions.find { it.first == hubDisplayMode }?.second ?: stringResource(R.string.settings_display_mode_sms)
+
                     DropdownSettingItem(
-                        title = "Display Mode",
-                        subtitle = "What to show in the Hub",
+                        title = stringResource(R.string.settings_display_mode),
+                        subtitle = stringResource(R.string.settings_display_mode_subtitle),
                         currentValue = currentDisplayLabel,
                         expanded = displayModeExpanded,
                         onExpandedChange = { displayModeExpanded = it },
@@ -211,14 +213,14 @@ fun SettingsScreen() {
                     // Default view dropdown
                     var defaultViewExpanded by remember { mutableStateOf(false) }
                     val defaultViewOptions = listOf(
-                        "conversations" to "Conversations",
-                        "messages" to "Individual Messages"
+                        "conversations" to stringResource(R.string.settings_default_view_conversations),
+                        "messages" to stringResource(R.string.settings_default_view_messages)
                     )
-                    val currentViewLabel = defaultViewOptions.find { it.first == hubDefaultView }?.second ?: "Conversations"
-                    
+                    val currentViewLabel = defaultViewOptions.find { it.first == hubDefaultView }?.second ?: stringResource(R.string.settings_default_view_conversations)
+
                     DropdownSettingItem(
-                        title = "Default View",
-                        subtitle = "How messages are displayed",
+                        title = stringResource(R.string.settings_default_view),
+                        subtitle = stringResource(R.string.settings_default_view_subtitle),
                         currentValue = currentViewLabel,
                         expanded = defaultViewExpanded,
                         onExpandedChange = { defaultViewExpanded = it },
@@ -237,19 +239,19 @@ fun SettingsScreen() {
         // SMS Screen Settings Section (only when Junkboy is default SMS app)
         item {
             SettingsSection(
-                title = "SMS App Settings",
+                title = stringResource(R.string.settings_section_sms_app),
                 icon = Icons.Default.Message
             ) {
                 Text(
-                    text = "Settings for when Junkboy is set as default SMS app",
+                    text = stringResource(R.string.settings_sms_app_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary,
                     modifier = Modifier.padding(bottom = DesignSpacing.SM)
                 )
-                
+
                 ToggleSettingItem(
-                    title = "Hide Junk Messages",
-                    subtitle = "Hide blocked/junk messages from the SMS inbox",
+                    title = stringResource(R.string.settings_hide_junk),
+                    subtitle = stringResource(R.string.settings_hide_junk_subtitle),
                     checked = hideJunkInSms,
                     onCheckedChange = { enabled ->
                         hideJunkInSms = enabled
@@ -258,8 +260,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Show Category Badges",
-                    subtitle = "Display Junkboy category on messages",
+                    title = stringResource(R.string.settings_show_category_badges),
+                    subtitle = stringResource(R.string.settings_show_category_badges_subtitle),
                     checked = showCategoryBadges,
                     onCheckedChange = { enabled ->
                         showCategoryBadges = enabled
@@ -272,25 +274,25 @@ fun SettingsScreen() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Display Categories",
+                        text = stringResource(R.string.settings_display_categories),
                         style = MaterialTheme.typography.titleSmall,
                         color = DesignColors.Primary
                     )
                     Text(
-                        text = "Choose which message categories to show in the SMS screen",
+                        text = stringResource(R.string.settings_display_categories_subtitle),
                         style = MaterialTheme.typography.bodySmall,
                         color = DesignColors.Secondary,
                         modifier = Modifier.padding(bottom = DesignSpacing.SM)
                     )
-                    
+
                     // Category toggles
                     val allCategories = listOf(
-                        com.ovehbe.junkboy.database.MessageCategory.GENERAL to "General",
-                        com.ovehbe.junkboy.database.MessageCategory.PROMOTION to "Promotion",
-                        com.ovehbe.junkboy.database.MessageCategory.NOTIFICATION to "Notification",
-                        com.ovehbe.junkboy.database.MessageCategory.TRANSACTION to "Transaction",
-                        com.ovehbe.junkboy.database.MessageCategory.JUNK to "Junk",
-                        com.ovehbe.junkboy.database.MessageCategory.ALLOWED to "Allowed"
+                        com.ovehbe.junkboy.database.MessageCategory.GENERAL to stringResource(R.string.settings_category_general),
+                        com.ovehbe.junkboy.database.MessageCategory.PROMOTION to stringResource(R.string.settings_category_promotion),
+                        com.ovehbe.junkboy.database.MessageCategory.NOTIFICATION to stringResource(R.string.settings_category_notification),
+                        com.ovehbe.junkboy.database.MessageCategory.TRANSACTION to stringResource(R.string.settings_category_transaction),
+                        com.ovehbe.junkboy.database.MessageCategory.JUNK to stringResource(R.string.settings_category_junk),
+                        com.ovehbe.junkboy.database.MessageCategory.ALLOWED to stringResource(R.string.settings_category_allowed)
                     )
                     
                     allCategories.forEach { (category, displayName) ->
@@ -342,7 +344,7 @@ fun SettingsScreen() {
                 Spacer(modifier = Modifier.height(DesignSpacing.SM))
                 
                 ToggleSettingItem(
-                    title = "Auto-Delete Junk",
+                    title = stringResource(R.string.settings_auto_delete_junk),
                     subtitle = autoDeleteStatus,
                     checked = autoDeleteJunk,
                     onCheckedChange = { enabled ->
@@ -350,30 +352,30 @@ fun SettingsScreen() {
                         preferencesManager.setAutoDeleteJunk(enabled)
                     }
                 )
-                
+
                 // Test Auto-Delete Button
                 if (autoDeleteJunk) {
                     ActionSettingItem(
-                        title = "Test Auto-Delete",
-                        subtitle = autoDeleteTestResult ?: "Simulate deleting a junk message",
+                        title = stringResource(R.string.settings_test_auto_delete),
+                        subtitle = autoDeleteTestResult ?: stringResource(R.string.settings_test_auto_delete_subtitle),
                         icon = Icons.Default.Science,
                         onClick = {
                             isTestingAutoDelete = true
-                            autoDeleteTestResult = "Testing..."
+                            autoDeleteTestResult = context.getString(R.string.settings_testing)
                             serviceScope.launch {
                                 try {
                                     val canDelete = smsDeleter.canEnableAutoDelete()
                                     kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                                         autoDeleteTestResult = if (canDelete) {
-                                            "✅ Auto-delete is ready! Junk messages will be removed."
+                                            context.getString(R.string.settings_auto_delete_ready)
                                         } else {
-                                            "❌ Cannot delete: Junkboy is not the default SMS app"
+                                            context.getString(R.string.settings_auto_delete_cannot)
                                         }
                                         isTestingAutoDelete = false
                                     }
                                 } catch (e: Exception) {
                                     kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                                        autoDeleteTestResult = "❌ Error: ${e.message}"
+                                        autoDeleteTestResult = context.getString(R.string.settings_process_error, e.message ?: "")
                                         isTestingAutoDelete = false
                                     }
                                 }
@@ -388,16 +390,16 @@ fun SettingsScreen() {
         // Accessibility Settings Section
         item {
             SettingsSection(
-                title = "Accessibility",
+                title = stringResource(R.string.settings_section_accessibility),
                 icon = Icons.Default.Accessibility
             ) {
                 Text(
-                    text = "Adjust settings for better compatibility with physical keyboards",
+                    text = stringResource(R.string.settings_accessibility_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary,
                     modifier = Modifier.padding(bottom = DesignSpacing.SM)
                 )
-                
+
                 // Keyboard offset slider
                 Column(
                     modifier = Modifier.fillMaxWidth()
@@ -409,12 +411,12 @@ fun SettingsScreen() {
                     ) {
                         Column {
                             Text(
-                                text = "Keyboard Bottom Offset",
+                                text = stringResource(R.string.settings_keyboard_offset),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = DesignColors.Primary
                             )
                             Text(
-                                text = "Extra space when keyboard is shown (for devices like BlackBerry Key2)",
+                                text = stringResource(R.string.settings_keyboard_offset_subtitle),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = DesignColors.Secondary
                             )
@@ -462,12 +464,12 @@ fun SettingsScreen() {
         // Filter Methods Section
         item {
             SettingsSection(
-                title = "Filter Methods",
+                title = stringResource(R.string.settings_section_filter_methods),
                 icon = Icons.Default.FilterList
             ) {
                 ToggleSettingItem(
-                    title = "AI Classification",
-                    subtitle = "Use machine learning to categorize messages",
+                    title = stringResource(R.string.settings_ai_classification),
+                    subtitle = stringResource(R.string.settings_ai_classification_subtitle),
                     checked = isMlEnabled,
                     onCheckedChange = { enabled ->
                         isMlEnabled = enabled
@@ -476,8 +478,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Keyword Filtering",
-                    subtitle = "Filter messages based on keywords",
+                    title = stringResource(R.string.settings_keyword_filtering),
+                    subtitle = stringResource(R.string.settings_keyword_filtering_subtitle),
                     checked = isKeywordEnabled,
                     onCheckedChange = { enabled ->
                         isKeywordEnabled = enabled
@@ -486,8 +488,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Regex Filtering",
-                    subtitle = "Advanced pattern-based filtering",
+                    title = stringResource(R.string.settings_regex_filtering),
+                    subtitle = stringResource(R.string.settings_regex_filtering_subtitle),
                     checked = isRegexEnabled,
                     onCheckedChange = { enabled ->
                         isRegexEnabled = enabled
@@ -496,8 +498,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Under Attack Mode",
-                    subtitle = "Enhanced protection during spam waves",
+                    title = stringResource(R.string.settings_under_attack_mode),
+                    subtitle = stringResource(R.string.settings_under_attack_mode_subtitle),
                     checked = isUnderAttackMode,
                     onCheckedChange = { enabled ->
                         isUnderAttackMode = enabled
@@ -510,12 +512,12 @@ fun SettingsScreen() {
         // Notification Settings Section
         item {
             SettingsSection(
-                title = "Notification Settings",
+                title = stringResource(R.string.settings_section_notifications),
                 icon = Icons.Default.Notifications
             ) {
                 ToggleSettingItem(
-                    title = "General Messages",
-                    subtitle = "Show notifications for general messages",
+                    title = stringResource(R.string.settings_notify_general),
+                    subtitle = stringResource(R.string.settings_notify_general_subtitle),
                     checked = notifyGeneral,
                     onCheckedChange = { enabled ->
                         notifyGeneral = enabled
@@ -524,8 +526,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Notification Messages",
-                    subtitle = "Show notifications for system alerts",
+                    title = stringResource(R.string.settings_notify_notification),
+                    subtitle = stringResource(R.string.settings_notify_notification_subtitle),
                     checked = notifyNotification,
                     onCheckedChange = { enabled ->
                         notifyNotification = enabled
@@ -534,8 +536,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Transaction Messages",
-                    subtitle = "Show notifications for banking/payment messages",
+                    title = stringResource(R.string.settings_notify_transaction),
+                    subtitle = stringResource(R.string.settings_notify_transaction_subtitle),
                     checked = notifyTransaction,
                     onCheckedChange = { enabled ->
                         notifyTransaction = enabled
@@ -544,8 +546,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Promotion Messages",
-                    subtitle = "Show notifications for promotional messages",
+                    title = stringResource(R.string.settings_notify_promotion),
+                    subtitle = stringResource(R.string.settings_notify_promotion_subtitle),
                     checked = notifyPromotion,
                     onCheckedChange = { enabled ->
                         notifyPromotion = enabled
@@ -554,8 +556,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Allowed Senders",
-                    subtitle = "Show notifications for allowed senders",
+                    title = stringResource(R.string.settings_notify_allowed),
+                    subtitle = stringResource(R.string.settings_notify_allowed_subtitle),
                     checked = notifyAllowed,
                     onCheckedChange = { enabled ->
                         notifyAllowed = enabled
@@ -564,8 +566,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Blocked Messages",
-                    subtitle = "Show notifications for blocked messages",
+                    title = stringResource(R.string.settings_notify_blocked),
+                    subtitle = stringResource(R.string.settings_notify_blocked_subtitle),
                     checked = notifyBlockedMessages,
                     onCheckedChange = { enabled ->
                         notifyBlockedMessages = enabled
@@ -578,12 +580,12 @@ fun SettingsScreen() {
         // Features Section
         item {
             SettingsSection(
-                title = "Features",
+                title = stringResource(R.string.settings_section_features),
                 icon = Icons.Default.Settings
             ) {
                 ToggleSettingItem(
-                    title = "OTP Auto-Copy",
-                    subtitle = "Automatically copy OTP codes to clipboard",
+                    title = stringResource(R.string.settings_otp_auto_copy),
+                    subtitle = stringResource(R.string.settings_otp_auto_copy_subtitle),
                     checked = otpAutoCopy,
                     onCheckedChange = { enabled ->
                         otpAutoCopy = enabled
@@ -592,8 +594,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Hub Notifications",
-                    subtitle = "Show notifications for chat messages",
+                    title = stringResource(R.string.settings_hub_notifications),
+                    subtitle = stringResource(R.string.settings_hub_notifications_subtitle),
                     checked = hubNotifications,
                     onCheckedChange = { enabled ->
                         hubNotifications = enabled
@@ -602,8 +604,8 @@ fun SettingsScreen() {
                 )
                 
                 ToggleSettingItem(
-                    title = "Auto-Delete Junk",
-                    subtitle = "Automatically delete junk messages",
+                    title = stringResource(R.string.settings_auto_delete_feature),
+                    subtitle = stringResource(R.string.settings_auto_delete_feature_subtitle),
                     checked = autoDeleteJunk,
                     onCheckedChange = { enabled ->
                         autoDeleteJunk = enabled
@@ -611,10 +613,10 @@ fun SettingsScreen() {
                         autoDeleteStatus = smsDeleter.getAutoDeleteStatus()
                     }
                 )
-                
+
                 if (autoDeleteStatus.isNotEmpty()) {
                     Text(
-                        text = "Status: $autoDeleteStatus",
+                        text = stringResource(R.string.settings_status, autoDeleteStatus),
                         style = MaterialTheme.typography.bodySmall,
                         color = DesignColors.Secondary,
                         modifier = Modifier.padding(horizontal = DesignSpacing.MD)
@@ -626,19 +628,19 @@ fun SettingsScreen() {
         // SMS App Notification Control Section (Buzzkill-like feature)
         item {
             SettingsSection(
-                title = "SMS App Control",
+                title = stringResource(R.string.settings_section_sms_control),
                 icon = Icons.Default.NotificationsOff
             ) {
                 Text(
-                    text = "Control notifications from the default SMS app (${smsAppManager.getDefaultSmsAppName()})",
+                    text = stringResource(R.string.settings_sms_control_description, smsAppManager.getDefaultSmsAppName()),
                     style = MaterialTheme.typography.bodySmall,
                     color = DesignColors.Secondary,
                     modifier = Modifier.padding(bottom = DesignSpacing.SM)
                 )
-                
+
                 ToggleSettingItem(
-                    title = "Enable SMS App Control",
-                    subtitle = "Allow Junkboy to manage SMS app notifications",
+                    title = stringResource(R.string.settings_enable_sms_control),
+                    subtitle = stringResource(R.string.settings_enable_sms_control_subtitle),
                     checked = smsAppControlEnabled,
                     onCheckedChange = { enabled ->
                         smsAppControlEnabled = enabled
@@ -648,8 +650,8 @@ fun SettingsScreen() {
                 
                 if (smsAppControlEnabled) {
                     ToggleSettingItem(
-                        title = "Dismiss SMS Notifications",
-                        subtitle = "Automatically dismiss notifications from SMS app",
+                        title = stringResource(R.string.settings_dismiss_sms_notifications),
+                        subtitle = stringResource(R.string.settings_dismiss_sms_notifications_subtitle),
                         checked = dismissSmsAppNotifications,
                         onCheckedChange = { enabled ->
                             dismissSmsAppNotifications = enabled
@@ -659,8 +661,8 @@ fun SettingsScreen() {
                     
                     if (dismissSmsAppNotifications) {
                         ToggleSettingItem(
-                            title = "Blocked Messages Only",
-                            subtitle = "Only dismiss notifications for blocked/junk messages",
+                            title = stringResource(R.string.settings_blocked_messages_only),
+                            subtitle = stringResource(R.string.settings_blocked_messages_only_subtitle),
                             checked = dismissBlockedOnly,
                             onCheckedChange = { enabled ->
                                 dismissBlockedOnly = enabled
@@ -670,8 +672,8 @@ fun SettingsScreen() {
                     }
                     
                     ActionSettingItem(
-                        title = "Open SMS App Notification Settings",
-                        subtitle = "Manually configure SMS app notifications",
+                        title = stringResource(R.string.settings_open_sms_notification_settings),
+                        subtitle = stringResource(R.string.settings_open_sms_notification_settings_subtitle),
                         icon = Icons.Default.OpenInNew,
                         onClick = {
                             smsAppManager.openDefaultSmsAppNotificationSettings()
@@ -715,12 +717,12 @@ fun SettingsScreen() {
                             )
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Notification Access Required",
+                                    text = stringResource(R.string.settings_notification_access_required),
                                     style = MaterialTheme.typography.titleSmall,
                                     color = DesignColors.Primary
                                 )
                                 Text(
-                                    text = "Grant notification access to enable SMS app control",
+                                    text = stringResource(R.string.settings_notification_access_message),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = DesignColors.Secondary
                                 )
@@ -736,7 +738,7 @@ fun SettingsScreen() {
                                     }
                                 }
                             ) {
-                                Text("Grant")
+                                Text(stringResource(R.string.settings_grant))
                             }
                         }
                     }
@@ -747,12 +749,12 @@ fun SettingsScreen() {
         // Custom Keywords Section
         item {
             SettingsSection(
-                title = "Custom Keywords",
+                title = stringResource(R.string.settings_section_custom_keywords),
                 icon = Icons.Default.TextFields
             ) {
                 ActionSettingItem(
-                    title = "Add Keyword",
-                    subtitle = "Add custom spam keywords",
+                    title = stringResource(R.string.settings_add_keyword),
+                    subtitle = stringResource(R.string.settings_add_keyword_subtitle),
                     icon = Icons.Default.Add,
                     onClick = { showAddKeywordDialog = true }
                 )
@@ -774,12 +776,12 @@ fun SettingsScreen() {
         // Custom Regex Patterns Section  
         item {
             SettingsSection(
-                title = "Custom Regex Patterns",
+                title = stringResource(R.string.settings_section_custom_regex),
                 icon = Icons.Default.Code
             ) {
                 ActionSettingItem(
-                    title = "Add Pattern",
-                    subtitle = "Add custom regex patterns",
+                    title = stringResource(R.string.settings_add_pattern),
+                    subtitle = stringResource(R.string.settings_add_pattern_subtitle),
                     icon = Icons.Default.Add,
                     onClick = { showAddRegexDialog = true }
                 )
@@ -801,12 +803,12 @@ fun SettingsScreen() {
         // Allowed Senders Section
         item {
             SettingsSection(
-                title = "Allowed Senders",
+                title = stringResource(R.string.settings_section_allowed_senders),
                 icon = Icons.Default.People
             ) {
                 ActionSettingItem(
-                    title = "Add Sender",
-                    subtitle = "Add trusted senders",
+                    title = stringResource(R.string.settings_add_sender),
+                    subtitle = stringResource(R.string.settings_add_sender_subtitle),
                     icon = Icons.Default.Add,
                     onClick = { showAddAllowedSenderDialog = true }
                 )
@@ -827,12 +829,12 @@ fun SettingsScreen() {
         // Data Management Section
         item {
             SettingsSection(
-                title = "Data Management",
+                title = stringResource(R.string.settings_section_data_management),
                 icon = Icons.Default.Storage
             ) {
                 ActionSettingItem(
-                    title = "Process Existing Messages",
-                    subtitle = "Apply current filters to existing messages",
+                    title = stringResource(R.string.settings_process_existing),
+                    subtitle = stringResource(R.string.settings_process_existing_subtitle),
                     icon = Icons.Default.Refresh,
                     onClick = {
                         isProcessingExistingMessages = true
@@ -841,12 +843,12 @@ fun SettingsScreen() {
                                 val existingProcessor = com.ovehbe.junkboy.utils.ExistingMessagesProcessor(context)
                                 val result = existingProcessor.processAllExistingMessages()
                                 processingResult = when (result.isSuccess) {
-                                    true -> "Successfully processed ${result.getOrNull()} messages"
-                                    false -> "Error: ${result.exceptionOrNull()?.message}"
+                                    true -> context.getString(R.string.settings_process_success, result.getOrNull() ?: 0)
+                                    false -> context.getString(R.string.settings_process_error, result.exceptionOrNull()?.message ?: "")
                                 }
                                 isProcessingExistingMessages = false
                             } catch (e: Exception) {
-                                processingResult = "Error: ${e.message}"
+                                processingResult = context.getString(R.string.settings_process_error, e.message ?: "")
                                 isProcessingExistingMessages = false
                             }
                         }
@@ -864,8 +866,8 @@ fun SettingsScreen() {
                 }
                 
                 ActionSettingItem(
-                    title = "Export Data",
-                    subtitle = "Export filtered messages to CSV",
+                    title = stringResource(R.string.settings_export_data),
+                    subtitle = stringResource(R.string.settings_export_data_subtitle),
                     icon = Icons.Default.FileDownload,
                     onClick = {
                         isExporting = true
@@ -876,12 +878,12 @@ fun SettingsScreen() {
                                 val messagesList = allMessages.first()
                                 val result = csvExporter.exportAndShare(messagesList)
                                 exportResult = when (result.isSuccess) {
-                                    true -> "Successfully exported ${messagesList.size} messages"
-                                    false -> "Error: ${result.exceptionOrNull()?.message}"
+                                    true -> context.getString(R.string.settings_export_success, messagesList.size)
+                                    false -> context.getString(R.string.settings_process_error, result.exceptionOrNull()?.message ?: "")
                                 }
                                 isExporting = false
                             } catch (e: Exception) {
-                                exportResult = "Error: ${e.message}"
+                                exportResult = context.getString(R.string.settings_process_error, e.message ?: "")
                                 isExporting = false
                             }
                         }
@@ -899,8 +901,8 @@ fun SettingsScreen() {
                 }
                 
                 ActionSettingItem(
-                    title = "Clear All Data",
-                    subtitle = "Remove all filtered messages",
+                    title = stringResource(R.string.settings_clear_all_data),
+                    subtitle = stringResource(R.string.settings_clear_all_data_subtitle),
                     icon = Icons.Default.Delete,
                     onClick = { showClearDataDialog = true },
                     isDestructive = true
@@ -1222,7 +1224,7 @@ private fun KeywordItem(
             ) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Remove",
+                    contentDescription = stringResource(R.string.settings_remove),
                     tint = DesignColors.Accent,
                     modifier = Modifier.size(16.dp)
                 )
@@ -1261,7 +1263,7 @@ private fun RegexPatternItem(
             ) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Remove",
+                    contentDescription = stringResource(R.string.settings_remove),
                     tint = DesignColors.Accent,
                     modifier = Modifier.size(16.dp)
                 )
@@ -1308,7 +1310,7 @@ private fun AllowedSenderItem(
             ) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Remove",
+                    contentDescription = stringResource(R.string.settings_remove),
                     tint = DesignColors.Accent,
                     modifier = Modifier.size(16.dp)
                 )
@@ -1327,12 +1329,12 @@ private fun AddKeywordDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add Keyword") },
+        title = { Text(stringResource(R.string.settings_add_keyword_title)) },
         text = {
             OutlinedTextField(
                 value = keyword,
                 onValueChange = { keyword = it },
-                label = { Text("Keyword") },
+                label = { Text(stringResource(R.string.settings_keyword_label)) },
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -1340,12 +1342,12 @@ private fun AddKeywordDialog(
             TextButton(
                 onClick = { if (keyword.isNotBlank()) onAdd(keyword) }
             ) {
-                Text("Add")
+                Text(stringResource(R.string.settings_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.settings_cancel))
             }
         }
     )
@@ -1360,12 +1362,12 @@ private fun AddRegexDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add Regex Pattern") },
+        title = { Text(stringResource(R.string.settings_add_regex_title)) },
         text = {
             OutlinedTextField(
                 value = pattern,
                 onValueChange = { pattern = it },
-                label = { Text("Pattern") },
+                label = { Text(stringResource(R.string.settings_pattern_label)) },
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -1373,12 +1375,12 @@ private fun AddRegexDialog(
             TextButton(
                 onClick = { if (pattern.isNotBlank()) onAdd(pattern) }
             ) {
-                Text("Add")
+                Text(stringResource(R.string.settings_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.settings_cancel))
             }
         }
     )
@@ -1393,12 +1395,12 @@ private fun AddAllowedSenderDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add Allowed Sender") },
+        title = { Text(stringResource(R.string.settings_add_sender_title)) },
         text = {
             OutlinedTextField(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
-                label = { Text("Phone Number") },
+                label = { Text(stringResource(R.string.settings_phone_number_label)) },
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -1406,12 +1408,12 @@ private fun AddAllowedSenderDialog(
             TextButton(
                 onClick = { if (phoneNumber.isNotBlank()) onAdd(phoneNumber) }
             ) {
-                Text("Add")
+                Text(stringResource(R.string.settings_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.settings_cancel))
             }
         }
     )
@@ -1424,8 +1426,8 @@ private fun ClearDataDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Clear All Data") },
-        text = { Text("This will permanently delete all filtered messages. This action cannot be undone.") },
+        title = { Text(stringResource(R.string.settings_clear_data_title)) },
+        text = { Text(stringResource(R.string.settings_clear_data_message)) },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
@@ -1433,12 +1435,12 @@ private fun ClearDataDialog(
                     contentColor = DesignColors.Accent
                 )
             ) {
-                Text("Clear")
+                Text(stringResource(R.string.settings_clear))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.settings_cancel))
             }
         }
     )

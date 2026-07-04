@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.ovehbe.junkboy.R
 import com.ovehbe.junkboy.database.MessageCategory
 import com.ovehbe.junkboy.database.FilterType
 import com.ovehbe.junkboy.filters.CustomFilter
@@ -55,7 +57,7 @@ fun TestFilterScreen() {
     ) {
         // Header
         Text(
-            text = "Test SMS Filter",
+            text = stringResource(R.string.test_filter_title),
             style = MaterialTheme.typography.headlineMedium,
             color = DesignColors.Primary
         )
@@ -83,7 +85,7 @@ fun TestFilterScreen() {
                         modifier = Modifier.size(DesignLayout.IconSize)
                     )
                     Text(
-                        text = "Message Details",
+                        text = stringResource(R.string.test_filter_message_details),
                         style = MaterialTheme.typography.titleMedium,
                         color = DesignColors.Primary
                     )
@@ -93,8 +95,8 @@ fun TestFilterScreen() {
                 OutlinedTextField(
                     value = senderText,
                     onValueChange = { senderText = it },
-                    label = { Text("Sender") },
-                    placeholder = { Text("e.g., +1234567890 or BANK") },
+                    label = { Text(stringResource(R.string.test_filter_sender_label)) },
+                    placeholder = { Text(stringResource(R.string.test_filter_sender_hint)) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Person, 
@@ -121,8 +123,8 @@ fun TestFilterScreen() {
                 OutlinedTextField(
                     value = messageText,
                     onValueChange = { messageText = it },
-                    label = { Text("Message Content") },
-                    placeholder = { Text("Enter the SMS message text to test...") },
+                    label = { Text(stringResource(R.string.test_filter_message_label)) },
+                    placeholder = { Text(stringResource(R.string.test_filter_message_hint)) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Message, 
@@ -153,7 +155,7 @@ fun TestFilterScreen() {
                             isProcessing = true
                             result = testFilterMessage(
                                 context,
-                                senderText.ifBlank { "Unknown" },
+                                senderText.ifBlank { context.getString(R.string.test_filter_unknown) },
                                 messageText,
                                 false, // isUnderAttackMode
                                 emptyList(), // customKeywords
@@ -181,7 +183,7 @@ fun TestFilterScreen() {
                         )
                         Spacer(modifier = Modifier.width(DesignSpacing.SM))
                         Text(
-                            "Processing...",
+                            text = stringResource(R.string.test_filter_processing),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = DesignComponents.Button.FontWeight
                         )
@@ -193,7 +195,7 @@ fun TestFilterScreen() {
                         )
                         Spacer(modifier = Modifier.width(DesignSpacing.SM))
                         Text(
-                            "Test Filter",
+                            text = stringResource(R.string.test_filter_button),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = DesignComponents.Button.FontWeight
                         )
@@ -204,7 +206,7 @@ fun TestFilterScreen() {
         
         // Result display
         result?.let { filterResult ->
-            TestFilterResultCard(filterResult)
+            TestFilterResultCard(filterResult, context)
         }
         
         // Sample Messages Section
@@ -218,7 +220,7 @@ fun TestFilterScreen() {
 }
 
 @Composable
-private fun TestFilterResultCard(result: TestFilterResult) {
+private fun TestFilterResultCard(result: TestFilterResult, context: android.content.Context) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -251,7 +253,7 @@ private fun TestFilterResultCard(result: TestFilterResult) {
                         modifier = Modifier.size(DesignLayout.IconSize)
                     )
                     Text(
-                        text = "Filter Result",
+                        text = stringResource(R.string.test_filter_result),
                         style = MaterialTheme.typography.titleMedium,
                         color = DesignColors.Primary
                     )
@@ -266,7 +268,7 @@ private fun TestFilterResultCard(result: TestFilterResult) {
             // Category
             ResultDetailRow(
                 icon = getCategoryIcon(result.category),
-                label = "Category",
+                label = stringResource(R.string.test_filter_category_label),
                                         value = result.category.name,
                 color = getCategoryColor(result.category)
             )
@@ -274,7 +276,7 @@ private fun TestFilterResultCard(result: TestFilterResult) {
             // Confidence
             ResultDetailRow(
                 icon = Icons.Default.TrendingUp,
-                label = "Confidence",
+                label = stringResource(R.string.test_filter_confidence_label),
                 value = "${(result.confidence * 100).toInt()}%",
                 color = DesignColors.Secondary
             )
@@ -282,16 +284,16 @@ private fun TestFilterResultCard(result: TestFilterResult) {
             // Filter Type
             ResultDetailRow(
                 icon = getFilterTypeIcon(result.filterType),
-                label = "Filter Type",
-                value = result.filterType.displayName,
+                label = stringResource(R.string.test_filter_type_label),
+                value = result.filterType.getDisplayName(context),
                 color = DesignColors.Secondary
             )
             
             // Blocked Status
             ResultDetailRow(
                 icon = if (result.isBlocked) Icons.Default.Block else Icons.Default.CheckCircle,
-                label = "Status",
-                value = if (result.isBlocked) "Blocked" else "Allowed",
+                label = stringResource(R.string.test_filter_status_label),
+                value = if (result.isBlocked) stringResource(R.string.test_filter_blocked) else stringResource(R.string.test_filter_allowed),
                 color = if (result.isBlocked) DesignColors.Accent else DesignColors.Primary
             )
             
@@ -303,7 +305,7 @@ private fun TestFilterResultCard(result: TestFilterResult) {
                 )
                 
                 Text(
-                    text = "Details",
+                    text = stringResource(R.string.test_filter_details),
                     style = MaterialTheme.typography.titleSmall,
                     color = DesignColors.Primary
                 )
@@ -419,14 +421,14 @@ private fun SampleMessagesCard(
                     modifier = Modifier.size(DesignLayout.IconSize)
                 )
                 Text(
-                    text = "Sample Messages",
+                    text = stringResource(R.string.test_filter_sample_messages),
                     style = MaterialTheme.typography.titleMedium,
                     color = DesignColors.Primary
                 )
             }
             
             Text(
-                text = "Try these sample messages to see how the filter works:",
+                text = stringResource(R.string.test_filter_sample_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = DesignColors.Secondary
             )
@@ -460,7 +462,7 @@ private fun SampleMessageItem(
             verticalArrangement = Arrangement.spacedBy(DesignSpacing.XS)
         ) {
             Text(
-                text = "From: $sender",
+                text = stringResource(R.string.test_filter_from, sender),
                 style = MaterialTheme.typography.labelMedium,
                 color = DesignColors.Primary,
                 fontWeight = FontWeight.Medium
@@ -494,7 +496,7 @@ private suspend fun testFilterMessage(
                 filterType = com.ovehbe.junkboy.database.FilterType.ALLOWED_SENDER,
                 confidence = 1.0f,
                 isBlocked = false,
-                details = "Sender '$sender' is in allowed list"
+                details = context.getString(R.string.test_filter_reason_allowed, sender)
             )
         }
     } catch (e: Exception) {
@@ -508,7 +510,7 @@ private suspend fun testFilterMessage(
             filterType = com.ovehbe.junkboy.database.FilterType.KEYWORD_FILTER,
             confidence = 0.9f,
             isBlocked = true,
-            details = "Matched keyword filter"
+            details = context.getString(R.string.test_filter_reason_keyword)
         )
     }
     
@@ -521,7 +523,7 @@ private suspend fun testFilterMessage(
                     filterType = com.ovehbe.junkboy.database.FilterType.REGEX_FILTER,
                     confidence = 0.95f,
                     isBlocked = true,
-                    details = "Matched regex pattern: $pattern"
+                    details = context.getString(R.string.test_filter_reason_regex, pattern)
                 )
             }
         } catch (e: Exception) {
@@ -538,7 +540,7 @@ private suspend fun testFilterMessage(
                 filterType = com.ovehbe.junkboy.database.FilterType.ML_CLASSIFICATION,
                 confidence = mlResult.confidence,
                 isBlocked = mlResult.category == com.ovehbe.junkboy.database.MessageCategory.JUNK,
-                details = "AI classified as ${mlResult.category.name}"
+                details = context.getString(R.string.test_filter_reason_ml, mlResult.category.name)
             )
         }
     } catch (e: Exception) {
@@ -551,7 +553,7 @@ private suspend fun testFilterMessage(
         filterType = com.ovehbe.junkboy.database.FilterType.ML_CLASSIFICATION,
         confidence = 0.5f,
         isBlocked = false,
-        details = "No filter matched, classified as general"
+        details = context.getString(R.string.test_filter_reason_default)
     )
 }
 
@@ -649,13 +651,12 @@ private fun getFilterTypeIcon(filterType: FilterType): androidx.compose.ui.graph
     }
 }
 
-// Extension property for display names
-private val FilterType.displayName: String
-    get() = when (this) {
-        FilterType.ML_CLASSIFICATION -> "AI Classification"
-        FilterType.KEYWORD_FILTER -> "Keyword Filter"
-        FilterType.REGEX_FILTER -> "Regex Filter"
-        FilterType.USER_RULE -> "User Rule"
-        FilterType.UNDER_ATTACK_MODE -> "Under Attack Mode"
-        FilterType.ALLOWED_SENDER -> "Allowed Sender"
-    } 
+// Extension function for display names
+private fun FilterType.getDisplayName(context: android.content.Context): String = when (this) {
+    FilterType.ML_CLASSIFICATION -> context.getString(R.string.test_filter_type_ai)
+    FilterType.KEYWORD_FILTER -> context.getString(R.string.test_filter_type_keyword)
+    FilterType.REGEX_FILTER -> context.getString(R.string.test_filter_type_regex)
+    FilterType.USER_RULE -> context.getString(R.string.test_filter_type_user_rule)
+    FilterType.UNDER_ATTACK_MODE -> context.getString(R.string.test_filter_type_under_attack)
+    FilterType.ALLOWED_SENDER -> context.getString(R.string.test_filter_type_allowed_sender)
+} 

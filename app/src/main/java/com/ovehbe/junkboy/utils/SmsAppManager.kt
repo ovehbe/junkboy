@@ -1,9 +1,13 @@
 package com.ovehbe.junkboy.utils
 
+import android.app.role.RoleManager
+import android.content.ContentValues
 import android.content.Context
+import com.ovehbe.junkboy.R
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.provider.Telephony
 import android.util.Log
@@ -45,12 +49,12 @@ class SmsAppManager(private val context: Context) {
     fun getDefaultSmsAppName(): String {
         val packageName = getDefaultSmsPackage()
         if (packageName == null) {
-            return "Unknown SMS App"
+            return context.getString(R.string.unknown_sms_app)
         }
-        
+
         // Check if it's a known app
         KNOWN_SMS_APPS[packageName]?.let { return it }
-        
+
         // Try to get the app name from package manager
         return try {
             val packageManager = context.packageManager
@@ -58,16 +62,62 @@ class SmsAppManager(private val context: Context) {
             packageManager.getApplicationLabel(applicationInfo).toString()
         } catch (e: Exception) {
             Log.w(TAG, "Could not get app name for package: $packageName", e)
-            "Default SMS App"
+            context.getString(R.string.default_sms_app)
         }
     }
     
     /**
-     * Check if Junkboy is the default SMS app
+     * Fast UI-safe check that avoids probing SMS provider writes during composition.
+     */
+    fun isJunkboyDefaultSmsAppFast(): Boolean {
+        return SmsDefaultAppStatus.isDefinitelyDefaultSmsApp(
+            currentPackage = context.packageName,
+            defaultSmsPackage = getDefaultSmsPackage(),
+            roleHeld = isSmsRoleHeld()
+        )
+    }
+
+    private fun isSmsRoleHeld(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                val roleManager = context.getSystemService(RoleManager::class.java)
+                if (roleManager.isRoleHeld(android.app.role.RoleManager.ROLE_SMS)) {
+                    return true
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "RoleManager check failed", e)
+            }
+        }
+        return false
+    }
+
+    /**
+     * Strong default-SMS check for service or background flows where provider write access matters.
      */
     fun isJunkboyDefaultSmsApp(): Boolean {
-        val defaultPackage = getDefaultSmsPackage()
-        return defaultPackage == context.packageName
+        if (isJunkboyDefaultSmsAppFast()) {
+            return true
+        }
+
+        // Method 3: Check if our app can write to SMS provider (only default SMS app can on API 19+)
+        try {
+            context.contentResolver.update(
+                Telephony.Sms.CONTENT_URI,
+                ContentValues().apply { put(Telephony.Sms.READ, 1) },
+                "${Telephony.Sms._ID} = 0",
+                null
+            )
+            // Even if no row updated, the fact we didn't get SecurityException means we have write access
+            return true
+        } catch (e: SecurityException) {
+            Log.d(TAG, "Cannot write to SMS provider - not default SMS app")
+            return false
+        } catch (e: Exception) {
+            // Other errors - inconclusive
+            Log.w(TAG, "SMS write check error", e)
+        }
+
+        return false
     }
     
     /**
@@ -285,40 +335,20 @@ class SmsAppManager(private val context: Context) {
      * Get manual instructions for setting default SMS app
      */
     fun getManualDefaultSmsInstructions(): String {
-        return """
-            Since the automatic method didn't work, please set Junkboy as default SMS app manually:
-            
-            📱 Method 1 - Android Settings:
-            1. Open Android Settings
-            2. Go to Apps → Default Apps → SMS app
-            3. Select "Junkboy SMS Filter"
-            
-            📱 Method 2 - App Info:
-            1. Open Android Settings
-            2. Go to Apps → Junkboy SMS Filter
-            3. Tap "Set as default" or "Open by default"
-            4. Enable SMS handling
-            
-            📱 Method 3 - Search Settings:
-            1. Open Android Settings
-            2. Search for "default SMS" or "messaging app"
-            3. Select Junkboy from the list
-            
-            💡 Note: The exact steps may vary by device manufacturer.
-        """.trimIndent()
+        return context.getString(R.string.manual_sms_instructions)
     }
     
     /**
      * Get SMS guidance message for the user
      */
-    fun getSmsGuidanceMessage(): String {
+    fun getSmsGuidanceMessage(isDefaultSmsApp: Boolean = isJunkboyDefaultSmsApp()): String {
         val defaultAppName = getDefaultSmsAppName()
         return when {
-            isJunkboyDefaultSmsApp() -> {
-                "✅ Junkboy is your default SMS app. All SMS notifications are handled by Junkboy."
+            isDefaultSmsApp -> {
+                context.getString(R.string.sms_guidance_default)
             }
             else -> {
-                "To avoid duplicate notifications, please mute notifications from \"$defaultAppName\" and let Junkboy handle all SMS alerts."
+                context.getString(R.string.sms_guidance_not_default, defaultAppName)
             }
         }
     }
@@ -326,8 +356,8 @@ class SmsAppManager(private val context: Context) {
     /**
      * Check if notification guidance is needed
      */
-    fun isNotificationGuidanceNeeded(): Boolean {
-        return !isJunkboyDefaultSmsApp()
+    fun isNotificationGuidanceNeeded(isDefaultSmsApp: Boolean = isJunkboyDefaultSmsApp()): Boolean {
+        return !isDefaultSmsApp
     }
     
     /**

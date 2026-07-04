@@ -8,20 +8,28 @@ import android.telephony.SmsMessage
 import android.util.Log
 import com.ovehbe.junkboy.service.SmsFilterService
 import com.ovehbe.junkboy.utils.PreferencesManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.ovehbe.junkboy.utils.SmsAppManager
 
 class SmsReceiver : BroadcastReceiver() {
     
     companion object {
         private const val TAG = "SmsReceiver"
+
+        fun shouldProcessAction(action: String?, isDefaultSmsApp: Boolean): Boolean {
+            return when (action) {
+                Telephony.Sms.Intents.SMS_DELIVER_ACTION -> isDefaultSmsApp
+                Telephony.Sms.Intents.SMS_RECEIVED_ACTION -> true
+                else -> false
+            }
+        }
     }
     
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "SMS received, action: ${intent.action}")
         
-        if (intent.action != Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
+        val action = intent.action
+        val isDefaultSmsApp = SmsAppManager(context).isJunkboyDefaultSmsApp()
+        if (!shouldProcessAction(action, isDefaultSmsApp)) {
             return
         }
         
@@ -57,13 +65,14 @@ class SmsReceiver : BroadcastReceiver() {
                     putExtra("message", fullMessageBody)
                     putExtra("timestamp", timestamp)
                     putExtra("is_obvious_junk", shouldBlockBroadcast)
+                    putExtra("broadcast_action", action)
                 }
                 
                 // Start as foreground service for reliable processing
                 context.startForegroundService(serviceIntent)
                 
                 // Block the broadcast to prevent other apps from receiving obvious junk
-                if (shouldBlockBroadcast) {
+                if (shouldBlockBroadcast && action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
                     Log.d(TAG, "Aborting SMS broadcast to prevent notification from other apps")
                     abortBroadcast()
                 }

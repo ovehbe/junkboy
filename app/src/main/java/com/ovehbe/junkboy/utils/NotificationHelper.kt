@@ -115,7 +115,7 @@ class NotificationHelper(private val context: Context) {
             .setContentText("${message.sender}: $shortContent")
             .setStyle(NotificationCompat.BigTextStyle()
                 .bigText(message.messageBody)
-                .setSummaryText("From: ${message.sender}"))
+                .setSummaryText(context.getString(R.string.notif_from, message.sender)))
             .setPriority(categoryInfo.priority)
             .setContentIntent(smsPendingIntent) // Main action: open SMS app
             .setAutoCancel(true)
@@ -125,8 +125,8 @@ class NotificationHelper(private val context: Context) {
             .apply {
                 // Add action to open Junkboy app
                 addAction(
-                    R.drawable.ic_filter_list, 
-                    "Open Junkboy", 
+                    R.drawable.ic_filter_list,
+                    context.getString(R.string.notif_action_open),
                     appPendingIntent
                 )
                 
@@ -144,12 +144,12 @@ class NotificationHelper(private val context: Context) {
                         allowIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
-                    addAction(R.drawable.ic_check, "Allow Sender", allowPendingIntent)
+                    addAction(R.drawable.ic_check, context.getString(R.string.notif_action_allow), allowPendingIntent)
                 }
                 
                 // Add confidence info for debugging
                 if (message.confidence > 0) {
-                    setSubText("${(message.confidence * 100).toInt()}% confidence")
+                    setSubText("${(message.confidence * 100).toInt()}%")
                 }
             }
             .build()
@@ -187,25 +187,21 @@ class NotificationHelper(private val context: Context) {
         
         val bigTextStyle = NotificationCompat.BigTextStyle()
             .bigText(buildString {
-                appendLine("📊 Today's SMS filtering summary:")
-                appendLine()
-                appendLine("🛡️ Total filtered: $totalFiltered")
-                appendLine("🚫 Blocked (junk): $totalBlocked")
-                appendLine()
+                append(context.getString(R.string.notif_daily_report_big, totalFiltered, totalBlocked))
+                append("\n")
                 categoryBreakdown.forEach { (category, count) ->
                     if (count > 0) {
-                        val emoji = getCategoryEmoji(category)
                         val name = getCategoryDisplayName(category)
-                        appendLine("$emoji $name: $count")
+                        appendLine("$name: $count")
                     }
                 }
             })
-            .setSummaryText("Daily filtering report")
-        
+            .setSummaryText(context.getString(R.string.notif_daily_report_summary))
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID_STATS)
             .setSmallIcon(R.drawable.ic_analytics)
-            .setContentTitle("Junkboy Daily Report")
-            .setContentText("Filtered $totalFiltered messages, blocked $totalBlocked junk")
+            .setContentTitle(context.getString(R.string.notif_daily_report_title))
+            .setContentText(context.getString(R.string.notif_daily_report_text, totalFiltered, totalBlocked))
             .setStyle(bigTextStyle)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(pendingIntent)
@@ -226,66 +222,66 @@ class NotificationHelper(private val context: Context) {
         // Blocked messages channel (minimal priority)
         val blockedChannel = NotificationChannel(
             CHANNEL_ID_BLOCKED,
-            "Blocked Messages",
+            context.getString(R.string.notification_channel_blocked),
             NotificationManager.IMPORTANCE_MIN
         ).apply {
-            description = "Junk messages that were blocked"
+            description = context.getString(R.string.notification_channel_blocked_desc)
             enableVibration(false)
             setShowBadge(false)
             setSound(null, null)
         }
-        
+
         // Transaction messages channel (high priority)
         val transactionChannel = NotificationChannel(
             CHANNEL_ID_TRANSACTION,
-            "Transaction Messages",
+            context.getString(R.string.notification_channel_transaction),
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Banking and payment messages"
+            description = context.getString(R.string.notification_channel_transaction_desc)
             enableVibration(true)
             setShowBadge(true)
         }
-        
+
         // Promotion messages channel (low priority)
         val promotionChannel = NotificationChannel(
             CHANNEL_ID_PROMOTION,
-            "Promotion Messages",
+            context.getString(R.string.notification_channel_promotion),
             NotificationManager.IMPORTANCE_LOW
         ).apply {
-            description = "Marketing and promotional messages"
+            description = context.getString(R.string.notification_channel_promotion_desc)
             enableVibration(false)
             setShowBadge(false)
         }
-        
+
         // Notification messages channel (default priority)
         val notificationChannel = NotificationChannel(
             CHANNEL_ID_NOTIFICATION,
-            "Notification Messages",
+            context.getString(R.string.notification_channel_notification),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "System and app notifications via SMS"
+            description = context.getString(R.string.notification_channel_notification_desc)
             enableVibration(true)
             setShowBadge(true)
         }
-        
+
         // General messages channel (default priority)
         val generalChannel = NotificationChannel(
             CHANNEL_ID_GENERAL,
-            "General Messages",
+            context.getString(R.string.notification_channel_general),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "Personal and other SMS messages"
+            description = context.getString(R.string.notification_channel_general_desc)
             enableVibration(true)
             setShowBadge(true)
         }
-        
+
         // Daily stats channel
         val statsChannel = NotificationChannel(
             CHANNEL_ID_STATS,
-            "Daily Statistics",
+            context.getString(R.string.notification_channel_stats),
             NotificationManager.IMPORTANCE_MIN
         ).apply {
-            description = "Daily filtering statistics and reports"
+            description = context.getString(R.string.notification_channel_stats_desc)
             enableVibration(false)
             setShowBadge(false)
             setSound(null, null)
@@ -305,31 +301,31 @@ class NotificationHelper(private val context: Context) {
         return when {
             isBlocked -> CategoryInfo(
                 channelId = CHANNEL_ID_BLOCKED,
-                title = "Blocked: Junk SMS",
+                title = context.getString(R.string.notif_title_blocked),
                 icon = R.drawable.ic_block,
                 priority = NotificationCompat.PRIORITY_MIN
             )
             category == MessageCategory.TRANSACTION -> CategoryInfo(
                 channelId = CHANNEL_ID_TRANSACTION,
-                title = "New Transaction Message",
+                title = context.getString(R.string.notif_title_transaction),
                 icon = R.drawable.ic_account_balance,
                 priority = NotificationCompat.PRIORITY_HIGH
             )
             category == MessageCategory.PROMOTION -> CategoryInfo(
                 channelId = CHANNEL_ID_PROMOTION,
-                title = "New Promotion",
+                title = context.getString(R.string.notif_title_promotion),
                 icon = R.drawable.ic_local_offer,
                 priority = NotificationCompat.PRIORITY_LOW
             )
             category == MessageCategory.NOTIFICATION -> CategoryInfo(
                 channelId = CHANNEL_ID_NOTIFICATION,
-                title = "New Notification",
+                title = context.getString(R.string.notif_title_notification),
                 icon = R.drawable.ic_notifications,
                 priority = NotificationCompat.PRIORITY_DEFAULT
             )
             else -> CategoryInfo(
                 channelId = CHANNEL_ID_GENERAL,
-                title = "New Message",
+                title = context.getString(R.string.notif_title_general),
                 icon = R.drawable.ic_message,
                 priority = NotificationCompat.PRIORITY_DEFAULT
             )
@@ -338,23 +334,12 @@ class NotificationHelper(private val context: Context) {
 
     private fun getCategoryDisplayName(category: MessageCategory): String {
         return when (category) {
-            MessageCategory.GENERAL -> "General"
-            MessageCategory.PROMOTION -> "Promotion"
-            MessageCategory.NOTIFICATION -> "Notification"
-            MessageCategory.TRANSACTION -> "Transaction"
-            MessageCategory.JUNK -> "Junk"
-            MessageCategory.ALLOWED -> "Allowed"
-        }
-    }
-    
-    private fun getCategoryEmoji(category: MessageCategory): String {
-        return when (category) {
-            MessageCategory.GENERAL -> "💬"
-            MessageCategory.PROMOTION -> "🏷️"
-            MessageCategory.NOTIFICATION -> "🔔"
-            MessageCategory.TRANSACTION -> "💳"
-            MessageCategory.JUNK -> "🗑️"
-            MessageCategory.ALLOWED -> "✅"
+            MessageCategory.GENERAL -> context.getString(R.string.toast_category_general)
+            MessageCategory.PROMOTION -> context.getString(R.string.toast_category_promotion)
+            MessageCategory.NOTIFICATION -> context.getString(R.string.toast_category_notification)
+            MessageCategory.TRANSACTION -> context.getString(R.string.toast_category_transaction)
+            MessageCategory.JUNK -> context.getString(R.string.toast_category_junk)
+            MessageCategory.ALLOWED -> context.getString(R.string.toast_category_allowed)
         }
     }
     
