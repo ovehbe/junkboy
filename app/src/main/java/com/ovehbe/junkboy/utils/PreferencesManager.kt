@@ -52,6 +52,11 @@ class PreferencesManager(context: Context) {
         private const val KEY_OTP_AUTO_COPY_ENABLED = "otp_auto_copy_enabled"
         private const val KEY_OTP_COPY_COUNT = "otp_copy_count"
         
+        // Stop2End auto-responder
+        private const val KEY_AUTO_REPLY_STOP_ENABLED = "auto_reply_stop_enabled"
+        // "_v2": the first version defaulted to off, which was unsafe; ignore any value stored under it
+        private const val KEY_AUTO_REPLY_REQUIRE_SPAM = "auto_reply_require_spam_v2"
+        
         // Hub configuration
         private const val KEY_HUB_ENABLED = "hub_enabled"
         private const val KEY_HUB_DISPLAY_MODE = "hub_display_mode" // "all", "sms_only", "chats_only"
@@ -247,6 +252,15 @@ class PreferencesManager(context: Context) {
     
     fun arePermissionsGranted(): Boolean = prefs.getBoolean(KEY_PERMISSIONS_GRANTED, false)
     fun setPermissionsGranted(granted: Boolean) = prefs.edit().putBoolean(KEY_PERMISSIONS_GRANTED, granted).apply()
+    
+    // Stop2End auto-responder (off by default: sends SMS on the user's plan)
+    fun isAutoReplyStopEnabled(): Boolean = prefs.getBoolean(KEY_AUTO_REPLY_STOP_ENABLED, false)
+    fun setAutoReplyStopEnabled(enabled: Boolean) = prefs.edit().putBoolean(KEY_AUTO_REPLY_STOP_ENABLED, enabled).apply()
+    
+    // When true, the classifier must also flag the message as promotional/junk before replying.
+    // On by default: pharmacies, banks and clinics also end real messages with "STOP2END".
+    fun isAutoReplyRequireSpam(): Boolean = prefs.getBoolean(KEY_AUTO_REPLY_REQUIRE_SPAM, true)
+    fun setAutoReplyRequireSpam(enabled: Boolean) = prefs.edit().putBoolean(KEY_AUTO_REPLY_REQUIRE_SPAM, enabled).apply()
     
     // OTP Auto-Copy
     fun isOtpAutoCopyEnabled(): Boolean = prefs.getBoolean(KEY_OTP_AUTO_COPY_ENABLED, true)
