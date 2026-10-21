@@ -69,6 +69,10 @@ android {
     }
     
     packagingOptions {
+        jniLibs {
+            // Compressed native libs avoid the 16 KB zip-alignment requirement on older AGP
+            useLegacyPackaging = true
+        }
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
@@ -105,9 +109,8 @@ dependencies {
     ksp 'androidx.room:room-compiler:2.6.1'
     
     // TensorFlow Lite
-    implementation 'org.tensorflow:tensorflow-lite:2.14.0'
-    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
-    implementation 'org.tensorflow:tensorflow-lite-metadata:0.4.4'
+    // LiteRT (renamed TensorFlow Lite): ships 16 KB page-aligned native libraries
+    implementation 'com.google.ai.edge.litert:litert:1.4.0'
     
     // WorkManager for background tasks
     implementation 'androidx.work:work-runtime-ktx:2.9.0'

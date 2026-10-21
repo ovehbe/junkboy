@@ -108,7 +108,7 @@ fun SmsScreen() {
     // Category lookup cache
     var categoryCache by remember { mutableStateOf<Map<String, MessageCategory>>(emptyMap()) }
     
-    val isDefaultSmsApp = smsAppManager.isJunkboyDefaultSmsApp()
+    val isDefaultSmsApp = com.ovehbe.junkboy.ui.compose.rememberIsDefaultSmsApp(smsAppManager)
     
     // Load category cache from database
     LaunchedEffect(Unit) {

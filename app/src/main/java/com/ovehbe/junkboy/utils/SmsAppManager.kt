@@ -1,9 +1,11 @@
 package com.ovehbe.junkboy.utils
 
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.provider.Telephony
 import android.util.Log
@@ -66,8 +68,15 @@ class SmsAppManager(private val context: Context) {
      * Check if Junkboy is the default SMS app
      */
     fun isJunkboyDefaultSmsApp(): Boolean {
-        val defaultPackage = getDefaultSmsPackage()
-        return defaultPackage == context.packageName
+        // Telephony.Sms.getDefaultSmsPackage() is deprecated and unreliable on recent Android;
+        // the SMS role is the source of truth from API 29.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val roleManager = context.getSystemService(RoleManager::class.java)
+            if (roleManager != null && roleManager.isRoleAvailable(RoleManager.ROLE_SMS)) {
+                return roleManager.isRoleHeld(RoleManager.ROLE_SMS)
+            }
+        }
+        return getDefaultSmsPackage() == context.packageName
     }
     
     /**

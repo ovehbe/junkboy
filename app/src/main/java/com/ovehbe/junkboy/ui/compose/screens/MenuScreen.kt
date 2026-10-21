@@ -288,7 +288,7 @@ private fun AppStatusCard(
     onRequestPermissions: () -> Unit
 ) {
     val context = LocalContext.current
-    val isDefaultSmsApp = smsAppManager.isJunkboyDefaultSmsApp()
+    val isDefaultSmsApp = com.ovehbe.junkboy.ui.compose.rememberIsDefaultSmsApp(smsAppManager)
     
     Card(
         modifier = Modifier.fillMaxWidth(),
