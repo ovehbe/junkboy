@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Used to skip Stop2End auto-replies for known contacts -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     
     <!-- MMS Permissions -->
     <uses-permission android:name="android.permission.RECEIVE_MMS" />
@@ -21,6 +23,9 @@
     
     <!-- Wake Lock for background processing -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Only used by the optional OpenRouter second opinion, and only when the user enters an API key -->
+    <uses-permission android:name="android.permission.INTERNET" />
     
     <!-- Notification listener permission for chat notifications -->
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />

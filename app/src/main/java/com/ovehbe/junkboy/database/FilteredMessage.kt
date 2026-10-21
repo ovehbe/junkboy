@@ -35,5 +35,6 @@ enum class FilterType {
     REGEX_FILTER,
     USER_RULE,
     UNDER_ATTACK_MODE,
-    ALLOWED_SENDER  // Sender is in allowed list
+    ALLOWED_SENDER,  // Sender is in allowed list
+    ALLOWED_CONTENT  // Message matched a word/regex allow rule
 } 

@@ -1,6 +1,13 @@
 package com.ovehbe.junkboy.ui.compose.screens
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import java.text.DateFormat
+import java.util.Date
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,6 +58,17 @@ fun SettingsScreen() {
     var autoDeleteJunk by remember { mutableStateOf(false) }
     var autoDeleteStatus by remember { mutableStateOf("") }
     var otpAutoCopy by remember { mutableStateOf(true) }
+    var autoReplyStop by remember { mutableStateOf(false) }
+    var autoReplyRequireSpam by remember { mutableStateOf(true) }
+    val autoReplyLog by remember { database.autoReplyLogDao().getRecent() }.collectAsState(initial = emptyList())
+    val stopPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { granted ->
+        // READ_CONTACTS is required so known contacts are never auto-replied to
+        val ok = granted[Manifest.permission.SEND_SMS] == true && granted[Manifest.permission.READ_CONTACTS] == true
+        autoReplyStop = ok
+        preferencesManager.setAutoReplyStopEnabled(ok)
+    }
     var hubNotifications by remember { mutableStateOf(true) }
     var enabledHubApps by remember { mutableStateOf<Set<String>>(emptySet()) }
     
@@ -85,6 +103,8 @@ fun SettingsScreen() {
     
     var customKeywords by remember { mutableStateOf<List<String>>(emptyList()) }
     var customRegexPatterns by remember { mutableStateOf<List<String>>(emptyList()) }
+    var allowRules by remember { mutableStateOf<List<com.ovehbe.junkboy.filters.AllowRule>>(emptyList()) }
+    var showAddAllowRuleDialog by remember { mutableStateOf(false) }
     var allowedSenders by remember { mutableStateOf<List<com.ovehbe.junkboy.database.AllowedSender>>(emptyList()) }
     
     var showAddKeywordDialog by remember { mutableStateOf(false) }
@@ -108,6 +128,8 @@ fun SettingsScreen() {
         autoDeleteJunk = preferencesManager.isAutoDeleteJunkEnabled()
         autoDeleteStatus = smsDeleter.getAutoDeleteStatus()
         otpAutoCopy = preferencesManager.isOtpAutoCopyEnabled()
+        autoReplyStop = preferencesManager.isAutoReplyStopEnabled()
+        autoReplyRequireSpam = preferencesManager.isAutoReplyRequireSpam()
         hubNotifications = preferencesManager.isHubNotificationsEnabled()
         enabledHubApps = preferencesManager.getEnabledHubApps()
         
@@ -138,6 +160,7 @@ fun SettingsScreen() {
         
         customKeywords = preferencesManager.getCustomKeywords()
         customRegexPatterns = preferencesManager.getCustomRegexPatterns()
+        allowRules = preferencesManager.getAllowRules()
         
         // Load allowed senders
         database.allowedSenderDao().getAllowedSenders().collect { senders ->
@@ -623,6 +646,116 @@ fun SettingsScreen() {
             }
         }
         
+        // Stop2End Auto-Responder Section
+        item {
+            SettingsSection(
+                title = "Stop2End Auto-Responder",
+                icon = Icons.Default.Send
+            ) {
+                ToggleSettingItem(
+                    title = "Auto-reply STOP to Marketing SMS",
+                    subtitle = "Reply \"STOP\" to promotional messages that ask you to",
+                    checked = autoReplyStop,
+                    onCheckedChange = { enabled ->
+                        if (!enabled) {
+                            autoReplyStop = false
+                            preferencesManager.setAutoReplyStopEnabled(false)
+                        } else {
+                            val missing = listOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS).filter {
+                                ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
+                            }
+                            if (missing.isEmpty()) {
+                                autoReplyStop = true
+                                preferencesManager.setAutoReplyStopEnabled(true)
+                            } else {
+                                stopPermissionLauncher.launch(missing.toTypedArray())
+                            }
+                        }
+                    }
+                )
+                
+                ToggleSettingItem(
+                    title = "Also require spam classification",
+                    subtitle = "Recommended. Pharmacies, banks and clinics also add opt-out text to real messages",
+                    checked = autoReplyRequireSpam,
+                    onCheckedChange = { enabled ->
+                        autoReplyRequireSpam = enabled
+                        preferencesManager.setAutoReplyRequireSpam(enabled)
+                    }
+                )
+                
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = DesignColors.InputBackground)
+                ) {
+                    Text(
+                        text = "Enabling this sends an outbound SMS from your carrier plan, which may incur charges. " +
+                            "Replies are only sent to messages that end with an explicit \"Reply STOP\" (or similar) " +
+                            "directive, from numbers that are not in your contacts and that you have never texted. " +
+                            "At most one reply per number every 24 hours.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = DesignColors.Secondary,
+                        modifier = Modifier.padding(DesignSpacing.SM)
+                    )
+                }
+                
+                OpenRouterJudgeItem(preferencesManager)
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Auto-reply log",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = DesignColors.Primary
+                    )
+                    if (autoReplyLog.isNotEmpty()) {
+                        TextButton(onClick = { serviceScope.launch { database.autoReplyLogDao().clear() } }) {
+                            Text("Clear")
+                        }
+                    }
+                }
+                
+                if (autoReplyLog.isEmpty()) {
+                    Text(
+                        text = "No auto-replies sent yet",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = DesignColors.Secondary
+                    )
+                } else {
+                    autoReplyLog.take(20).forEach { entry ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column {
+                                Text(
+                                    text = entry.senderNumber,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = DesignColors.Primary
+                                )
+                                if (entry.reason.isNotEmpty()) {
+                                    Text(
+                                        text = entry.reason,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = DesignColors.Secondary
+                                    )
+                                }
+                            }
+                            Text(
+                                text = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                                    .format(Date(entry.repliedAt)),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DesignColors.Secondary
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        
         // SMS App Notification Control Section (Buzzkill-like feature)
         item {
             SettingsSection(
@@ -798,6 +931,39 @@ fun SettingsScreen() {
             }
         }
         
+        // Allowed Content Section
+        item {
+            SettingsSection(
+                title = "Allowed Content",
+                icon = Icons.Default.CheckCircle
+            ) {
+                Text(
+                    text = "Messages containing these words or matching these patterns skip all filtering, " +
+                        "including Stop2End. Useful for senders that look like spam but aren't.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DesignColors.Secondary
+                )
+                
+                ActionSettingItem(
+                    title = "Add Rule",
+                    subtitle = "Allow a word, phrase or regex",
+                    icon = Icons.Default.Add,
+                    onClick = { showAddAllowRuleDialog = true }
+                )
+                
+                allowRules.forEach { rule ->
+                    RegexPatternItem(
+                        pattern = if (rule.isRegex) "/${rule.pattern}/" else rule.pattern,
+                        onRemove = {
+                            val newRules = allowRules - rule
+                            allowRules = newRules
+                            preferencesManager.setAllowRules(newRules)
+                        }
+                    )
+                }
+            }
+        }
+        
         // Allowed Senders Section
         item {
             SettingsSection(
@@ -923,6 +1089,20 @@ fun SettingsScreen() {
         )
     }
     
+    if (showAddAllowRuleDialog) {
+        AddAllowRuleDialog(
+            onDismiss = { showAddAllowRuleDialog = false },
+            onAdd = { rule ->
+                if (rule !in allowRules) {
+                    val newRules = allowRules + rule
+                    allowRules = newRules
+                    preferencesManager.setAllowRules(newRules)
+                }
+                showAddAllowRuleDialog = false
+            }
+        )
+    }
+    
     if (showAddRegexDialog) {
         AddRegexDialog(
             onDismiss = { showAddRegexDialog = false },
@@ -974,6 +1154,174 @@ fun SettingsScreen() {
                 preferencesManager.clearAllData()
                 showClearDataDialog = false
             }
+        )
+    }
+}
+
+@Composable
+private fun OpenRouterJudgeItem(preferencesManager: PreferencesManager) {
+    val scope = rememberCoroutineScope()
+    var apiKey by remember { mutableStateOf(preferencesManager.getOpenRouterApiKey()) }
+    var model by remember { mutableStateOf(preferencesManager.getOpenRouterModel()) }
+    var kind by remember { mutableStateOf(preferencesManager.getOpenRouterModelKind()) }
+    var cut by remember { mutableFloatStateOf(preferencesManager.getDecisionCut()) }
+    var testResult by remember { mutableStateOf<String?>(null) }
+    var testing by remember { mutableStateOf(false) }
+    
+    Column(verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)) {
+        Text(
+            text = "Second opinion (OpenRouter)",
+            style = MaterialTheme.typography.titleSmall,
+            color = DesignColors.Primary
+        )
+        Text(
+            text = "Optional. With an API key, messages that carry an opt-out directive, come from senders you " +
+                "have never texted and weren't already flagged as spam are sent to OpenRouter and the model " +
+                "provider to decide whether they are spam. Links, email addresses and long numbers are removed " +
+                "first; names are not. Leave the key empty to keep everything on this phone.",
+            style = MaterialTheme.typography.bodySmall,
+            color = DesignColors.Secondary
+        )
+        OutlinedTextField(
+            value = apiKey,
+            onValueChange = {
+                apiKey = it
+                preferencesManager.setOpenRouterApiKey(it)
+                testResult = null
+            },
+            label = { Text("OpenRouter API key") },
+            singleLine = true,
+            visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
+        OpenRouterModelPicker(model, kind) { picked ->
+            model = picked.id
+            kind = picked.kind
+            preferencesManager.setOpenRouterModel(picked.id, picked.kind)
+            testResult = null
+        }
+        if (kind == com.ovehbe.junkboy.llm.ModelKind.DECISION) {
+            Text(
+                text = "Spam cut-off: ${String.format(java.util.Locale.US, "%.2f", cut)}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = DesignColors.Primary
+            )
+            Slider(
+                value = cut,
+                onValueChange = { cut = it; testResult = null },
+                onValueChangeFinished = { preferencesManager.setDecisionCut(cut) },
+                valueRange = 0.3f..0.95f
+            )
+            Text(
+                text = "Decision models score each message. A text counts as spam when its spam score beats its " +
+                    "wanted score by at least this much. Higher is more cautious: fewer wanted texts are blocked, " +
+                    "but more spam gets through. 0.70 worked well in testing.",
+                style = MaterialTheme.typography.bodySmall,
+                color = DesignColors.Secondary
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(DesignSpacing.SM),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(
+                enabled = apiKey.isNotBlank() && !testing,
+                onClick = {
+                    testing = true
+                    scope.launch {
+                        val start = System.currentTimeMillis()
+                        testResult = try {
+                            // Hard-coded sample, so no real message is sent by the test
+                            val result = com.ovehbe.junkboy.llm.OpenRouterJudges
+                                .create(apiKey.trim(), model, kind, cut.toDouble())
+                                .judgeOrThrow("12345", "Chip in $5 to help us flip the Senate before midnight! STOP2END")
+                            val detail = if (result.detail.isNotEmpty()) " (${result.detail})" else ""
+                            "Works: sample fundraising text judged ${result.verdict}$detail in ${System.currentTimeMillis() - start} ms"
+                        } catch (e: Exception) {
+                            "Failed: ${e.message}"
+                        }
+                        testing = false
+                    }
+                }
+            ) { Text("Test") }
+            if (testing) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+        }
+        Text(
+            text = testResult ?: if (apiKey.isBlank()) "Off: no API key" else "On",
+            style = MaterialTheme.typography.bodySmall,
+            color = DesignColors.Secondary
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun OpenRouterModelPicker(
+    model: String,
+    kind: com.ovehbe.junkboy.llm.ModelKind,
+    onPick: (com.ovehbe.junkboy.llm.OpenRouterModel) -> Unit
+) {
+    var models by remember { mutableStateOf<List<com.ovehbe.junkboy.llm.OpenRouterModel>>(emptyList()) }
+    var loadError by remember { mutableStateOf<String?>(null) }
+    var expanded by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(Unit) {
+        try {
+            // Decision models first (a short list), then chat models, each sorted by id
+            models = com.ovehbe.junkboy.llm.OpenRouterModels.load()
+                .sortedWith(compareBy({ it.kind != com.ovehbe.junkboy.llm.ModelKind.DECISION }, { it.id }))
+        } catch (e: Exception) {
+            loadError = "Couldn't load the model list (${e.message})"
+        }
+    }
+    
+    val selected = models.firstOrNull { it.id == model }
+    
+    Column(verticalArrangement = Arrangement.spacedBy(DesignSpacing.XS)) {
+        ExposedDropdownMenuBox(
+            expanded = expanded && models.isNotEmpty(),
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = model,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("Model (${kind.label.lowercase()})") },
+                singleLine = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor().fillMaxWidth()
+            )
+            ExposedDropdownMenu(
+                expanded = expanded && models.isNotEmpty(),
+                onDismissRequest = { expanded = false }
+            ) {
+                models.forEach { m ->
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(m.name, style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    "${m.kind.label} · ${m.id} · ${m.priceLabel}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = DesignColors.Secondary
+                                )
+                            }
+                        },
+                        onClick = {
+                            expanded = false
+                            onPick(m)
+                        }
+                    )
+                }
+            }
+        }
+        Text(
+            text = selected?.let {
+                "${it.kind.label} model · ${it.priceLabel} · about ${com.ovehbe.junkboy.llm.formatMoney(it.costPer1000Messages)} per 1,000 messages"
+            } ?: loadError ?: (if (models.isEmpty()) "Loading models…"
+            else "${models.size} models, decision and chat. Tap the field to choose one"),
+            style = MaterialTheme.typography.bodySmall,
+            color = DesignColors.Secondary
         )
     }
 }
@@ -1339,6 +1687,57 @@ private fun AddKeywordDialog(
         confirmButton = {
             TextButton(
                 onClick = { if (keyword.isNotBlank()) onAdd(keyword) }
+            ) {
+                Text("Add")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun AddAllowRuleDialog(
+    onDismiss: () -> Unit,
+    onAdd: (com.ovehbe.junkboy.filters.AllowRule) -> Unit
+) {
+    var pattern by remember { mutableStateOf("") }
+    var isRegex by remember { mutableStateOf(false) }
+    val rule = com.ovehbe.junkboy.filters.AllowRule(pattern.trim(), isRegex)
+    val error = if (pattern.isBlank()) null else com.ovehbe.junkboy.filters.ContentAllowlist.validate(rule)
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Add Allow Rule") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)) {
+                OutlinedTextField(
+                    value = pattern,
+                    onValueChange = { pattern = it },
+                    label = { Text(if (isRegex) "Regex" else "Word or phrase") },
+                    isError = error != null,
+                    supportingText = { if (error != null) Text(error) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = isRegex, onCheckedChange = { isRegex = it })
+                    Text("Regular expression")
+                }
+                Text(
+                    text = if (isRegex) "Matched anywhere in the message, ignoring case."
+                    else "Matched as a whole word or phrase, ignoring case.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DesignColors.Secondary
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                enabled = pattern.isNotBlank() && error == null,
+                onClick = { onAdd(rule) }
             ) {
                 Text("Add")
             }
