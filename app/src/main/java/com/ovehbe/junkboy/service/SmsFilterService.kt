@@ -11,7 +11,12 @@ import com.ovehbe.junkboy.classifier.SmsClassifier
 import com.ovehbe.junkboy.database.AppDatabase
 import com.ovehbe.junkboy.database.FilteredMessage
 import com.ovehbe.junkboy.database.MessageCategory
+import com.ovehbe.junkboy.filters.ContentAllowlist
 import com.ovehbe.junkboy.filters.CustomFilter
+import com.ovehbe.junkboy.filters.FilterResult
+import com.ovehbe.junkboy.filters.Stop2EndDetector
+import com.ovehbe.junkboy.utils.AutoReplyEngine
+import com.ovehbe.junkboy.utils.SenderHistoryChecker
 import com.ovehbe.junkboy.utils.PreferencesManager
 import com.ovehbe.junkboy.utils.NotificationHelper
 import com.ovehbe.junkboy.utils.SmsDeleter
@@ -37,6 +42,8 @@ class SmsFilterService : Service() {
     private lateinit var smsClassifier: SmsClassifier
     private lateinit var smsDeleter: SmsDeleter
     private lateinit var otpHelper: OtpHelper
+    private lateinit var autoReplyEngine: AutoReplyEngine
+    private lateinit var senderHistoryChecker: SenderHistoryChecker
     
     override fun onCreate() {
         super.onCreate()
@@ -49,6 +56,8 @@ class SmsFilterService : Service() {
         smsClassifier = SmsClassifier.getInstance()
         smsDeleter = SmsDeleter(this)
         otpHelper = OtpHelper(this)
+        autoReplyEngine = AutoReplyEngine.create(this)
+        senderHistoryChecker = SenderHistoryChecker(this)
         
         // Initialize ML classifier
         serviceScope.launch {
@@ -86,9 +95,11 @@ class SmsFilterService : Service() {
                 
                 // Check if sender is in allowed list - if so, don't filter
                 // Use flexible matching: case-insensitive for text senders, and normalized for phone numbers
-                val isAllowed = isAllowedSenderFlexible(sender)
-                if (isAllowed) {
-                    Log.d(TAG, "Sender $sender is in allowed list, skipping filtering")
+                val allowedBySender = isAllowedSenderFlexible(sender)
+                val allowRule = if (allowedBySender) null else ContentAllowlist.firstMatch(preferencesManager.getAllowRules(), message)
+                if (allowedBySender || allowRule != null) {
+                    Log.d(TAG, if (allowedBySender) "Sender $sender is in allowed list, skipping filtering"
+                        else "Message from $sender matches allow rule '${allowRule?.pattern}', skipping filtering")
                     
                     // Create record but don't block - use ALLOWED category
                     val filteredMessage = FilteredMessage(
@@ -97,7 +108,8 @@ class SmsFilterService : Service() {
                         receivedAt = Date(timestamp),
                         category = MessageCategory.ALLOWED,
                         confidence = 1.0f,
-                        filterType = com.ovehbe.junkboy.database.FilterType.ALLOWED_SENDER,
+                        filterType = if (allowedBySender) com.ovehbe.junkboy.database.FilterType.ALLOWED_SENDER
+                            else com.ovehbe.junkboy.database.FilterType.ALLOWED_CONTENT,
                         isBlocked = false,
                         isUserOverride = true, // Mark as user override since it's manually allowed
                         isRead = false
@@ -110,7 +122,7 @@ class SmsFilterService : Service() {
                     // They should bypass filtering but still show notifications
                     notificationHelper.showSmsNotification(
                         filteredMessage.copy(id = messageId),
-                        "allowed_sender"
+                        if (allowedBySender) "allowed_sender" else "allowed_content"
                     )
                     
                     // Detect and copy OTP if present (works for allow-listed senders too)
@@ -239,6 +251,17 @@ class SmsFilterService : Service() {
                     }
                 }
                 
+                // Stop2End: a closing "Reply STOP" directive marks marketing spam (stored silently);
+                // a "STOP2END" elsewhere only triggers the reply if the message is independently spam
+                val stop2End = evaluateStop2End(sender, message, filterResult)
+                val isStop2End = stop2End == Stop2EndAction.SUPPRESS_AND_REPLY
+                if (isStop2End) {
+                    filterResult = filterResult.copy(
+                        isBlocked = true,
+                        category = if (filterResult.category == MessageCategory.JUNK) MessageCategory.JUNK else MessageCategory.PROMOTION
+                    )
+                }
+                
                 // Create filtered message record
                 val filteredMessage = FilteredMessage(
                     sender = sender,
@@ -257,14 +280,23 @@ class SmsFilterService : Service() {
                 
                 Log.d(TAG, "Message classified as ${filterResult.category} (blocked: ${filterResult.isBlocked}, confidence: ${filterResult.confidence})")
                 
-                // Show notification - NotificationHelper now handles all category-specific logic
-                notificationHelper.showSmsNotification(
-                    filteredMessage.copy(id = messageId),
-                    filterResult.matchedRule
-                )
-                
-                // Detect and copy OTP if present (works regardless of category)
-                otpHelper.detectAndCopyOtp(message, "SMS")
+                if (isStop2End) {
+                    Log.i(TAG, "Stop2End spam from $sender stored silently")
+                    autoReplyEngine.sendStopReply(sender)
+                } else {
+                    // Show notification - NotificationHelper now handles all category-specific logic
+                    notificationHelper.showSmsNotification(
+                        filteredMessage.copy(id = messageId),
+                        filterResult.matchedRule
+                    )
+                    
+                    // Detect and copy OTP if present (works regardless of category)
+                    otpHelper.detectAndCopyOtp(message, "SMS")
+                    
+                    if (stop2End == Stop2EndAction.REPLY_ONLY) {
+                        autoReplyEngine.sendStopReply(sender)
+                    }
+                }
                 
                 // Auto-delete junk if enabled and app is default SMS app
                 if (filterResult.isBlocked && preferencesManager.isAutoDeleteJunkEnabled()) {
@@ -294,6 +326,52 @@ class SmsFilterService : Service() {
                 // Stop service after processing
                 stopSelf()
             }
+        }
+    }
+    
+    private enum class Stop2EndAction { NONE, REPLY_ONLY, SUPPRESS_AND_REPLY }
+    
+    /**
+     * Stop2End pipeline: (1) known senders pass, (2) the message needs an opt-out directive and
+     * must not be transactional/notification/OTP, (3) the classifier gate. By default the
+     * classifier must flag the message as promotional/junk, because legitimate senders end real
+     * messages with opt-out text too. If the user turns that setting off, a directive that closes
+     * the message is trusted as a spam signal on its own (suppress, log and reply). A "STOP2END"
+     * elsewhere always needs the classifier, and normal processing is left untouched.
+     */
+    private suspend fun evaluateStop2End(sender: String, message: String, result: FilterResult): Stop2EndAction {
+        if (!preferencesManager.isAutoReplyStopEnabled()) return Stop2EndAction.NONE
+        
+        // 1. Contacts or anyone the user has texted (except numbers we only auto-replied to)
+        if (senderHistoryChecker.isContact(sender)) return Stop2EndAction.NONE
+        val autoRepliedBefore = AutoReplyEngine.normalizeTarget(sender)
+            ?.let { database.autoReplyLogDao().getLastReplyAt(it) } != null
+        if (!autoRepliedBefore && senderHistoryChecker.hasOutboundHistory(sender)) return Stop2EndAction.NONE
+        
+        // 2. Opt-out directive
+        val directive = Stop2EndDetector.detect(message)
+        if (directive == Stop2EndDetector.Directive.NONE) return Stop2EndAction.NONE
+        
+        // Wanted messages (pharmacy, bank, clinic, codes) carry opt-out text too: never touch them
+        if (result.category == MessageCategory.TRANSACTION ||
+            result.category == MessageCategory.NOTIFICATION ||
+            otpHelper.testOtpDetection(message) != null
+        ) return Stop2EndAction.NONE
+        
+        // 3. Classifier gate
+        val flaggedAsSpam = result.isBlocked ||
+            result.category == MessageCategory.JUNK ||
+            result.category == MessageCategory.PROMOTION
+        return if (directive == Stop2EndDetector.Directive.AT_END) {
+            if (preferencesManager.isAutoReplyRequireSpam() && !flaggedAsSpam) {
+                Stop2EndAction.NONE
+            } else {
+                Stop2EndAction.SUPPRESS_AND_REPLY
+            }
+        } else if (flaggedAsSpam) {
+            Stop2EndAction.REPLY_ONLY
+        } else {
+            Stop2EndAction.NONE
         }
     }
     

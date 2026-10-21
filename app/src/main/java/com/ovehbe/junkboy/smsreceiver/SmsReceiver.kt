@@ -6,6 +6,7 @@ import android.content.Intent
 import android.provider.Telephony
 import android.telephony.SmsMessage
 import android.util.Log
+import com.ovehbe.junkboy.filters.ContentAllowlist
 import com.ovehbe.junkboy.service.SmsFilterService
 import com.ovehbe.junkboy.utils.PreferencesManager
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +47,8 @@ class SmsReceiver : BroadcastReceiver() {
                 
                 // Quick junk detection for immediate blocking
                 var shouldBlockBroadcast = false
-                if (isObviousJunk(fullMessageBody, preferencesManager)) {
+                val matchesAllowRule = ContentAllowlist.firstMatch(preferencesManager.getAllowRules(), fullMessageBody) != null
+                if (!matchesAllowRule && isObviousJunk(fullMessageBody, preferencesManager)) {
                     Log.d(TAG, "Blocking obvious junk message from $sender")
                     shouldBlockBroadcast = true
                 }

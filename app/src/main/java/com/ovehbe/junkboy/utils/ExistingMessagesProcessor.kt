@@ -109,15 +109,18 @@ class ExistingMessagesProcessor(private val context: Context) {
     
     private suspend fun processMessage(smsMessage: SmsMessage): FilteredMessage {
         // Check if sender is in allowed list using FLEXIBLE matching
-        val isAllowed = isAllowedSenderFlexible(smsMessage.sender)
-        if (isAllowed) {
+        val allowedBySender = isAllowedSenderFlexible(smsMessage.sender)
+        val allowedByContent = !allowedBySender &&
+            com.ovehbe.junkboy.filters.ContentAllowlist.firstMatch(preferencesManager.getAllowRules(), smsMessage.body) != null
+        if (allowedBySender || allowedByContent) {
             return FilteredMessage(
                 sender = smsMessage.sender,
                 messageBody = smsMessage.body,
                 receivedAt = Date(smsMessage.timestamp),
                 category = MessageCategory.ALLOWED,  // Use ALLOWED category!
                 confidence = 1.0f,
-                filterType = com.ovehbe.junkboy.database.FilterType.ALLOWED_SENDER,  // Use ALLOWED_SENDER filter type!
+                filterType = if (allowedBySender) com.ovehbe.junkboy.database.FilterType.ALLOWED_SENDER
+                    else com.ovehbe.junkboy.database.FilterType.ALLOWED_CONTENT,
                 isBlocked = false,
                 isUserOverride = true,
                 isRead = false

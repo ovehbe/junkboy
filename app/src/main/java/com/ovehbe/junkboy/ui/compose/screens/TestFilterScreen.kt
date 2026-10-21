@@ -484,6 +484,19 @@ private suspend fun testFilterMessage(
     customRegexPatterns: List<String>,
     smsClassifier: com.ovehbe.junkboy.classifier.SmsClassifier
 ): TestFilterResult {
+    // Content allow rules bypass everything, like an allowed sender
+    com.ovehbe.junkboy.filters.ContentAllowlist.firstMatch(
+        com.ovehbe.junkboy.utils.PreferencesManager(context).getAllowRules(), message
+    )?.let { rule ->
+        return TestFilterResult(
+            category = com.ovehbe.junkboy.database.MessageCategory.ALLOWED,
+            filterType = com.ovehbe.junkboy.database.FilterType.ALLOWED_CONTENT,
+            confidence = 1.0f,
+            isBlocked = false,
+            details = "Message matches allow rule '${rule.pattern}'"
+        )
+    }
+    
     // Check if sender is in allowed list FIRST with flexible matching
     try {
         val database = com.ovehbe.junkboy.database.AppDatabase.getDatabase(context)
@@ -646,6 +659,7 @@ private fun getFilterTypeIcon(filterType: FilterType): androidx.compose.ui.graph
         FilterType.USER_RULE -> Icons.Default.People
         FilterType.UNDER_ATTACK_MODE -> Icons.Default.Security
         FilterType.ALLOWED_SENDER -> Icons.Default.Verified
+        FilterType.ALLOWED_CONTENT -> Icons.Default.Verified
     }
 }
 
@@ -658,4 +672,5 @@ private val FilterType.displayName: String
         FilterType.USER_RULE -> "User Rule"
         FilterType.UNDER_ATTACK_MODE -> "Under Attack Mode"
         FilterType.ALLOWED_SENDER -> "Allowed Sender"
+        FilterType.ALLOWED_CONTENT -> "Allowed Content"
     } 

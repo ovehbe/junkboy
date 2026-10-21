@@ -3,6 +3,7 @@ package com.ovehbe.junkboy.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.ovehbe.junkboy.database.MessageCategory
+import com.ovehbe.junkboy.filters.AllowRule
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -28,6 +29,9 @@ class PreferencesManager(context: Context) {
         private const val KEY_NOTIFY_TRANSACTION = "notify_transaction"
         private const val KEY_NOTIFY_ALLOWED = "notify_allowed"
         
+        // Content allowlist (words/regexes that bypass all filtering)
+        private const val KEY_CONTENT_ALLOW_RULES = "content_allow_rules"
+        
         // Custom filters
         private const val KEY_CUSTOM_KEYWORDS = "custom_keywords"
         private const val KEY_CUSTOM_REGEX_PATTERNS = "custom_regex_patterns"
@@ -51,6 +55,11 @@ class PreferencesManager(context: Context) {
         // OTP Auto-Copy feature
         private const val KEY_OTP_AUTO_COPY_ENABLED = "otp_auto_copy_enabled"
         private const val KEY_OTP_COPY_COUNT = "otp_copy_count"
+        
+        // Stop2End auto-responder
+        private const val KEY_AUTO_REPLY_STOP_ENABLED = "auto_reply_stop_enabled"
+        // "_v2": the first version defaulted to off, which was unsafe; ignore any value stored under it
+        private const val KEY_AUTO_REPLY_REQUIRE_SPAM = "auto_reply_require_spam_v2"
         
         // Hub configuration
         private const val KEY_HUB_ENABLED = "hub_enabled"
@@ -142,6 +151,17 @@ class PreferencesManager(context: Context) {
         val current = getCustomKeywords().toMutableList()
         current.remove(keyword)
         setCustomKeywords(current)
+    }
+    
+    // Content allowlist
+    fun getAllowRules(): List<AllowRule> {
+        val json = prefs.getString(KEY_CONTENT_ALLOW_RULES, "[]")
+        val type = object : TypeToken<List<AllowRule>>() {}.type
+        return gson.fromJson<List<AllowRule>?>(json, type) ?: emptyList()
+    }
+    
+    fun setAllowRules(rules: List<AllowRule>) {
+        prefs.edit().putString(KEY_CONTENT_ALLOW_RULES, gson.toJson(rules)).apply()
     }
     
     fun getCustomRegexPatterns(): List<String> {
@@ -247,6 +267,15 @@ class PreferencesManager(context: Context) {
     
     fun arePermissionsGranted(): Boolean = prefs.getBoolean(KEY_PERMISSIONS_GRANTED, false)
     fun setPermissionsGranted(granted: Boolean) = prefs.edit().putBoolean(KEY_PERMISSIONS_GRANTED, granted).apply()
+    
+    // Stop2End auto-responder (off by default: sends SMS on the user's plan)
+    fun isAutoReplyStopEnabled(): Boolean = prefs.getBoolean(KEY_AUTO_REPLY_STOP_ENABLED, false)
+    fun setAutoReplyStopEnabled(enabled: Boolean) = prefs.edit().putBoolean(KEY_AUTO_REPLY_STOP_ENABLED, enabled).apply()
+    
+    // When true, the classifier must also flag the message as promotional/junk before replying.
+    // On by default: pharmacies, banks and clinics also end real messages with "STOP2END".
+    fun isAutoReplyRequireSpam(): Boolean = prefs.getBoolean(KEY_AUTO_REPLY_REQUIRE_SPAM, true)
+    fun setAutoReplyRequireSpam(enabled: Boolean) = prefs.edit().putBoolean(KEY_AUTO_REPLY_REQUIRE_SPAM, enabled).apply()
     
     // OTP Auto-Copy
     fun isOtpAutoCopyEnabled(): Boolean = prefs.getBoolean(KEY_OTP_AUTO_COPY_ENABLED, true)

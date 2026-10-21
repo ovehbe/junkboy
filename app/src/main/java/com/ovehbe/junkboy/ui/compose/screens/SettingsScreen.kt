@@ -1,6 +1,13 @@
 package com.ovehbe.junkboy.ui.compose.screens
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import java.text.DateFormat
+import java.util.Date
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,6 +58,17 @@ fun SettingsScreen() {
     var autoDeleteJunk by remember { mutableStateOf(false) }
     var autoDeleteStatus by remember { mutableStateOf("") }
     var otpAutoCopy by remember { mutableStateOf(true) }
+    var autoReplyStop by remember { mutableStateOf(false) }
+    var autoReplyRequireSpam by remember { mutableStateOf(true) }
+    val autoReplyLog by remember { database.autoReplyLogDao().getRecent() }.collectAsState(initial = emptyList())
+    val stopPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { granted ->
+        // READ_CONTACTS is required so known contacts are never auto-replied to
+        val ok = granted[Manifest.permission.SEND_SMS] == true && granted[Manifest.permission.READ_CONTACTS] == true
+        autoReplyStop = ok
+        preferencesManager.setAutoReplyStopEnabled(ok)
+    }
     var hubNotifications by remember { mutableStateOf(true) }
     var enabledHubApps by remember { mutableStateOf<Set<String>>(emptySet()) }
     
@@ -85,6 +103,8 @@ fun SettingsScreen() {
     
     var customKeywords by remember { mutableStateOf<List<String>>(emptyList()) }
     var customRegexPatterns by remember { mutableStateOf<List<String>>(emptyList()) }
+    var allowRules by remember { mutableStateOf<List<com.ovehbe.junkboy.filters.AllowRule>>(emptyList()) }
+    var showAddAllowRuleDialog by remember { mutableStateOf(false) }
     var allowedSenders by remember { mutableStateOf<List<com.ovehbe.junkboy.database.AllowedSender>>(emptyList()) }
     
     var showAddKeywordDialog by remember { mutableStateOf(false) }
@@ -108,6 +128,8 @@ fun SettingsScreen() {
         autoDeleteJunk = preferencesManager.isAutoDeleteJunkEnabled()
         autoDeleteStatus = smsDeleter.getAutoDeleteStatus()
         otpAutoCopy = preferencesManager.isOtpAutoCopyEnabled()
+        autoReplyStop = preferencesManager.isAutoReplyStopEnabled()
+        autoReplyRequireSpam = preferencesManager.isAutoReplyRequireSpam()
         hubNotifications = preferencesManager.isHubNotificationsEnabled()
         enabledHubApps = preferencesManager.getEnabledHubApps()
         
@@ -138,6 +160,7 @@ fun SettingsScreen() {
         
         customKeywords = preferencesManager.getCustomKeywords()
         customRegexPatterns = preferencesManager.getCustomRegexPatterns()
+        allowRules = preferencesManager.getAllowRules()
         
         // Load allowed senders
         database.allowedSenderDao().getAllowedSenders().collect { senders ->
@@ -623,6 +646,105 @@ fun SettingsScreen() {
             }
         }
         
+        // Stop2End Auto-Responder Section
+        item {
+            SettingsSection(
+                title = "Stop2End Auto-Responder",
+                icon = Icons.Default.Send
+            ) {
+                ToggleSettingItem(
+                    title = "Auto-reply STOP to Marketing SMS",
+                    subtitle = "Reply \"STOP\" to promotional messages that ask you to",
+                    checked = autoReplyStop,
+                    onCheckedChange = { enabled ->
+                        if (!enabled) {
+                            autoReplyStop = false
+                            preferencesManager.setAutoReplyStopEnabled(false)
+                        } else {
+                            val missing = listOf(Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS).filter {
+                                ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
+                            }
+                            if (missing.isEmpty()) {
+                                autoReplyStop = true
+                                preferencesManager.setAutoReplyStopEnabled(true)
+                            } else {
+                                stopPermissionLauncher.launch(missing.toTypedArray())
+                            }
+                        }
+                    }
+                )
+                
+                ToggleSettingItem(
+                    title = "Also require spam classification",
+                    subtitle = "Recommended. Pharmacies, banks and clinics also add opt-out text to real messages",
+                    checked = autoReplyRequireSpam,
+                    onCheckedChange = { enabled ->
+                        autoReplyRequireSpam = enabled
+                        preferencesManager.setAutoReplyRequireSpam(enabled)
+                    }
+                )
+                
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = DesignColors.InputBackground)
+                ) {
+                    Text(
+                        text = "Enabling this sends an outbound SMS from your carrier plan, which may incur charges. " +
+                            "Replies are only sent to messages that end with an explicit \"Reply STOP\" (or similar) " +
+                            "directive, from numbers that are not in your contacts and that you have never texted. " +
+                            "At most one reply per number every 24 hours.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = DesignColors.Secondary,
+                        modifier = Modifier.padding(DesignSpacing.SM)
+                    )
+                }
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Auto-reply log",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = DesignColors.Primary
+                    )
+                    if (autoReplyLog.isNotEmpty()) {
+                        TextButton(onClick = { serviceScope.launch { database.autoReplyLogDao().clear() } }) {
+                            Text("Clear")
+                        }
+                    }
+                }
+                
+                if (autoReplyLog.isEmpty()) {
+                    Text(
+                        text = "No auto-replies sent yet",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = DesignColors.Secondary
+                    )
+                } else {
+                    autoReplyLog.take(20).forEach { entry ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = entry.senderNumber,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = DesignColors.Primary
+                            )
+                            Text(
+                                text = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                                    .format(Date(entry.repliedAt)),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = DesignColors.Secondary
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        
         // SMS App Notification Control Section (Buzzkill-like feature)
         item {
             SettingsSection(
@@ -798,6 +920,39 @@ fun SettingsScreen() {
             }
         }
         
+        // Allowed Content Section
+        item {
+            SettingsSection(
+                title = "Allowed Content",
+                icon = Icons.Default.CheckCircle
+            ) {
+                Text(
+                    text = "Messages containing these words or matching these patterns skip all filtering, " +
+                        "including Stop2End. Useful for senders that look like spam but aren't.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DesignColors.Secondary
+                )
+                
+                ActionSettingItem(
+                    title = "Add Rule",
+                    subtitle = "Allow a word, phrase or regex",
+                    icon = Icons.Default.Add,
+                    onClick = { showAddAllowRuleDialog = true }
+                )
+                
+                allowRules.forEach { rule ->
+                    RegexPatternItem(
+                        pattern = if (rule.isRegex) "/${rule.pattern}/" else rule.pattern,
+                        onRemove = {
+                            val newRules = allowRules - rule
+                            allowRules = newRules
+                            preferencesManager.setAllowRules(newRules)
+                        }
+                    )
+                }
+            }
+        }
+        
         // Allowed Senders Section
         item {
             SettingsSection(
@@ -919,6 +1074,20 @@ fun SettingsScreen() {
                 customKeywords = newKeywords
                 preferencesManager.setCustomKeywords(newKeywords)
                 showAddKeywordDialog = false
+            }
+        )
+    }
+    
+    if (showAddAllowRuleDialog) {
+        AddAllowRuleDialog(
+            onDismiss = { showAddAllowRuleDialog = false },
+            onAdd = { rule ->
+                if (rule !in allowRules) {
+                    val newRules = allowRules + rule
+                    allowRules = newRules
+                    preferencesManager.setAllowRules(newRules)
+                }
+                showAddAllowRuleDialog = false
             }
         )
     }
@@ -1339,6 +1508,57 @@ private fun AddKeywordDialog(
         confirmButton = {
             TextButton(
                 onClick = { if (keyword.isNotBlank()) onAdd(keyword) }
+            ) {
+                Text("Add")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun AddAllowRuleDialog(
+    onDismiss: () -> Unit,
+    onAdd: (com.ovehbe.junkboy.filters.AllowRule) -> Unit
+) {
+    var pattern by remember { mutableStateOf("") }
+    var isRegex by remember { mutableStateOf(false) }
+    val rule = com.ovehbe.junkboy.filters.AllowRule(pattern.trim(), isRegex)
+    val error = if (pattern.isBlank()) null else com.ovehbe.junkboy.filters.ContentAllowlist.validate(rule)
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Add Allow Rule") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(DesignSpacing.SM)) {
+                OutlinedTextField(
+                    value = pattern,
+                    onValueChange = { pattern = it },
+                    label = { Text(if (isRegex) "Regex" else "Word or phrase") },
+                    isError = error != null,
+                    supportingText = { if (error != null) Text(error) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = isRegex, onCheckedChange = { isRegex = it })
+                    Text("Regular expression")
+                }
+                Text(
+                    text = if (isRegex) "Matched anywhere in the message, ignoring case."
+                    else "Matched as a whole word or phrase, ignoring case.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DesignColors.Secondary
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                enabled = pattern.isNotBlank() && error == null,
+                onClick = { onAdd(rule) }
             ) {
                 Text("Add")
             }
